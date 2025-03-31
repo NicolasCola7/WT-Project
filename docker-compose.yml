@@ -1,0 +1,50 @@
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: selfie-server
+    ports:
+      - "3000:3000"
+    environment:
+      # Make sure your server uses these environment variables for the DB connection string.
+      - MONGO_URI=mongodb://root:MatAleNic@mongodb:27018/selfie?authSource=admin
+    depends_on:
+      - mongodb
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: selfie-client
+    ports:
+      - "4200:80"
+
+  mongodb:
+    image: mongo:latest
+    container_name: selfie-mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: MatAleNic
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:  
+    image: mongo-express
+    container_name: selfie-mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      # Tells mongo-express to connect to the mongodb service by its name
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=MatAleNic
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
