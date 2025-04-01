@@ -2,6 +2,10 @@
     "name": "tw-project",
     "version": "1.0.0",
     "private": true,
+    "workspaces": [
+        "client",
+        "server"
+    ],
     "scripts": {
       "start:client": "npm start --prefix client",
       "start:server": "npm run start --prefix server",
