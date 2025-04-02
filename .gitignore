@@ -4,3 +4,4 @@ node_modules
 /client/.vscode
 /client/.angular
 /client/dist
+package-lock.json
