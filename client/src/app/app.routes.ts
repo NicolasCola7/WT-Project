@@ -5,10 +5,12 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuardLogin } from './services/auth-guard.service';
 import { AuthGuardNoLogin } from './services/no-auth-guard.service';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'register', component: RegisterComponent, canActivate: [AuthGuardNoLogin] },
     { path: 'login', component: LoginComponent, canActivate: [AuthGuardNoLogin] },
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuardLogin]}
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuardLogin]},
+    { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuardLogin]}
 ];

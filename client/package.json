@@ -17,7 +17,10 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@auth0/angular-jwt": "^5.2.0",
+    "@fullcalendar/angular": "^6.1.17",
+    "@fullcalendar/core": "^6.1.17",
     "@rollup/rollup-win32-x64-msvc": "^4.38.0",
+    "fullcalendar": "^6.1.17",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
