@@ -1,27 +1,33 @@
-<div>
-    <h4>Register</h4>
-    <div>
+
+<div id="register-container">
+    <h4>Registrati</h4>
+    <div id="form-container">
         <form [formGroup]="registerForm" (ngSubmit)="register()">
-            <div>
-                <input type="text" name="username" formControlName="username" placeholder="Username" required>
+            <div class="form-group">
+                <label for="email">Email <span> *</span></label>
+                <input type="email" name="email" formControlName="email" placeholder="nome@dominio.com" required>
             </div>
-            <div>
-                <input type="email" name="email" formControlName="email" placeholder="Email" required>
+            <div class="form-group">
+                <label for="username">Username <span> *</span></label>
+                <input type="text" name="username" formControlName="username" placeholder="utente123" required>
             </div>
-            <div>
-                <input type="password" name="password" formControlName="password" placeholder="Password" required>
+            <div class="form-group">
+                <label for="password">Password <span> *</span></label>
+                <input type="password" name="password" formControlName="password" placeholder="Scegli una password sicura" required>
             </div>
-            <div>
-                <input type="password" name="confirmPassword" formControlName="confirmPassword" placeholder="Conferma password" required>
+            <div class="form-group">
+                <label for="confirmPassword">Conferma password <span> *</span></label>
+                <input type="password" name="confirmPassword" formControlName="confirmPassword" placeholder="Reinserisci la password" required>
             </div>
-            <div>
-                <input type="date" name="birthday" formControlName="birthday" placeholder="Birthday">
+            <div class="form-group">
+                <label for="birthday">Data di nascita</label>
+                <input type="date" name="birthday" formControlName="birthday">
             </div>
             <div>
                 <a [routerLink]="['/login']"> Hai già un account? Accedi </a>
             </div>
             <button type="submit" [disabled]="!registerForm.valid">
-                Register
+                Registrati
             </button>
         </form>
     </div>

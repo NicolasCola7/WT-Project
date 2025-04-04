@@ -1,12 +1,14 @@
-<div>
+<div id="login-container">
     <h4>Login</h4>
-    <div>
+    <div id="form-container">
       <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <div>
-          <input type="email" name="email" formControlName="email" placeholder="Email">
+        <div class="form-group">
+            <label for="email">Email <span> *</span></label>
+            <input type="email" name="email" formControlName="email" placeholder="nome@dominio.com" required>
         </div>
-        <div>
-          <input class="form-control" type="password" name="password" formControlName="password" placeholder="Password">
+        <div class="form-group">
+          <label for="password">Password <span> *</span></label>
+          <input type="password" name="password" formControlName="password" placeholder="La tua password" required>
         </div>
         <div>
           <a [routerLink]="['/register']"> Non sei ancora registrato? Registrati</a>
