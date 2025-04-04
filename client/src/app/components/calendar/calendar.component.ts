@@ -1,6 +1,5 @@
 import { Component , signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -13,7 +12,8 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
   selector: 'app-calendar',
   imports: [CommonModule, FullCalendarModule],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+  styleUrl: './calendar.component.css',
+  standalone: true
 })
 export class CalendarComponent {
   calendarVisible = signal(true);

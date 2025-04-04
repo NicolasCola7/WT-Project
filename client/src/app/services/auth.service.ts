@@ -44,10 +44,9 @@ export class AuthService {
     return this.jwtHelper.decodeToken(token).user;
   }
 
-  setCurrentUser(decodedUser: User): void {
+  setCurrentUser(decodedUser: object): void {
     this.loggedIn = true;
-    this.currentUser._id = decodedUser._id;
-    this.currentUser.username = decodedUser.username;
-    this.currentUser.birthday = decodedUser.birthday;
+    const id = JSON.parse(JSON.stringify(decodedUser)).id;
+    this.currentUser._id = id;
   }
 }

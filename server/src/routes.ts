@@ -12,6 +12,7 @@ const setRoutes = (app: Application): void => {
   // Users
   router.route('/login').post(userController.login);
   router.route('/user').post(userController.insert);
+  router.route('/user/:id').get(userController.get);
 
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);

@@ -7,7 +7,7 @@
                 <input type="text" name="username" formControlName="username" placeholder="Username" required>
             </div>
             <div>
-                <input class="form-control" type="email" name="email" formControlName="email" placeholder="Email" required>
+                <input type="email" name="email" formControlName="email" placeholder="Email" required>
             </div>
             <div>
                 <input type="password" name="password" formControlName="password" placeholder="Password" required>
@@ -19,7 +19,7 @@
                 <input type="date" name="birthday" formControlName="birthday" placeholder="Birthday">
             </div>
             <div>
-                <a href="login"> Hai già un account? Accedi </a>
+                <a [routerLink]="['/login']"> Hai già un account? Accedi </a>
             </div>
             <button type="submit" [disabled]="!registerForm.valid">
                 Register

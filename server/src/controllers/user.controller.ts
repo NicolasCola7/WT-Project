@@ -20,9 +20,8 @@ class UserController extends BaseController<UserI> {
           res.sendStatus(403);
           return;
         }
-        const token = sign({ user: { id: user._id } }, secret, { expiresIn: '8h' });
+        const token = sign({ user: { id: user._id } }, secret, { expiresIn: '24h' });
         res.status(200).json({ token });
-        return;
       });
     } catch (err) {
       res.status(400).json({ error: (err as Error).message });

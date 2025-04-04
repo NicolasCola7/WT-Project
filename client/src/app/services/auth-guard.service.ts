@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Injectable({providedIn: 'root'})
 export class AuthGuardLogin  {
 
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(): boolean {
     if (!this.auth.loggedIn) {

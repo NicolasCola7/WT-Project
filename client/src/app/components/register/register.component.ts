@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,10 @@ import { UserService } from '../../services/user.service';
   styleUrl: './register.component.css',
   imports: [
     ReactiveFormsModule,
+    CommonModule,
+    RouterModule
   ],
+  standalone: true
 })
 export class RegisterComponent {
 

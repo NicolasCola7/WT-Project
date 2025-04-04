@@ -9,7 +9,7 @@
           <input class="form-control" type="password" name="password" formControlName="password" placeholder="Password">
         </div>
         <div>
-          <a href="register"> None sei ancora registrato? Registrati</a>
+          <a [routerLink]="['/register']"> None sei ancora registrato? Registrati</a>
         </div>
         <button type="submit" [disabled]="!loginForm.valid">
             Login
