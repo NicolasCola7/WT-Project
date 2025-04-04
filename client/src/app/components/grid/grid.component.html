@@ -1,0 +1,7 @@
+<gridster [options]="options">
+  @for (item of dashboard; track item) {
+    <gridster-item [item]="item">
+      <a [routerLink]="item.relativeUrl">{{ item.name }}</a>
+    </gridster-item>
+  }
+</gridster>

@@ -2,6 +2,7 @@
 import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LogoutComponent } from "../logout/logout.component";
+import { GridComponent } from "../grid/grid.component";
 import { RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -13,8 +14,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.css',
   imports: [
     LogoutComponent,
+    GridComponent,
     RouterModule,
-    CommonModule
+    CommonModule,
   ],
   standalone: true
 })
