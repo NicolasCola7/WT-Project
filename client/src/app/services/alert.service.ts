@@ -4,10 +4,10 @@ import Swal from 'sweetalert2';
 @Injectable({providedIn: 'root'})
 export class AlertService  {
 
-  showError(title: string, text: string) {
+  showError(text: string) {
     Swal.fire({
-        title,
-        text,
+        title: 'Errore!',
+        text: text,
         icon: 'error',
         confirmButtonText: 'OK'
     });

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
@@ -32,7 +31,7 @@ export class AuthService {
         this.loggedIn = true;
         this.router.navigate(['/home']);
       },
-      error: () => this.alertService.showError('Errore', 'Email o password errata!')
+      error: () => this.alertService.showError('Email o password errata!')
     });
   }
 

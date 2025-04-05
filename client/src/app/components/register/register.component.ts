@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -52,7 +53,8 @@ export class RegisterComponent {
 
   constructor(private formBuilder: UntypedFormBuilder,
               private router: Router,
-              private userService: UserService) {
+              private userService: UserService,
+              private alertService: AlertService) {
     this.registerForm = this.formBuilder.group({
       username: this.username,
       email: this.email,
@@ -66,13 +68,15 @@ export class RegisterComponent {
 
   register(): void {
     if(this.password.value != this.confirmPassword.value){
+      this.alertService.showError("Le due password non coincidono!")
       return;
     }
 
     this.userService.register(this.registerForm.value).subscribe({
       next: () => {
         this.router.navigate(['/login']);
-      }
+      },
+      error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
     });
   }
 }
