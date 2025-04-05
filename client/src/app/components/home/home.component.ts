@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 @Component({
   selector: 'app-home',
@@ -16,18 +17,22 @@ import { CommonModule } from '@angular/common';
     GridComponent,
     RouterModule,
     CommonModule,
+    LoadingComponent
   ],
   standalone: true
 })
 export class HomeComponent implements OnInit{ 
   user: User = new User();
+  isLoading = true;
+
   constructor(private userService: UserService,
               private authService: AuthService) {}
 
     ngOnInit(): void {
       this.userService.getUser(this.authService.currentUser).subscribe({
         next: data => this.user = data,
-        error: error => console.log(error)
+        error: error => console.log(error),
+        complete: () => this.isLoading = false
       });
     }
 }
