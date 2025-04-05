@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
+import { AlertService } from './alert.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -13,7 +14,8 @@ export class AuthService {
 
   constructor(private userService: UserService,
               private router: Router,
-              private jwtHelper: JwtHelperService) {
+              private jwtHelper: JwtHelperService,
+              private alertService: AlertService) {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedUser = this.decodeUserFromToken(token);
@@ -29,7 +31,8 @@ export class AuthService {
         this.setCurrentUser(decodedUser);
         this.loggedIn = true;
         this.router.navigate(['/home']);
-      }
+      },
+      error: () => this.alertService.showError('Errore', 'Email o password errata!')
     });
   }
 
