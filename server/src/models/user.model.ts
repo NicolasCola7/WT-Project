@@ -6,15 +6,19 @@ import bcrypt, { compare } from 'bcryptjs';
 interface UserI {
   username: string;
   email: string;
+  name: string;
+  surname: string;
   password: string;
   birthday?: Date;
   comparePassword(password: string, callback: (err: any, isMatch: boolean) => void): boolean;
 }
 
 const userSchema = new Schema<UserI>({
-    email: { type: String, required: true,unique: true, lowercase: true, trim: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    name: { type: String, required: true, trim: true },
+    surname: { type: String, required: true, trim: true },
+    username: { type: String, required: true, trim: true },
+    password: { type: String, required: true, trim: true },
     birthday: { type: Date, required: false}
 });
 

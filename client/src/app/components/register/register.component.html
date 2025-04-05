@@ -5,11 +5,19 @@
         <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group">
                 <label for="email">Email <span> *</span></label>
-                <input type="email" name="email" formControlName="email" placeholder="nome@dominio.com" required>
+                <input type="email" name="email" formControlName="email" placeholder="mario.rossi@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="ame">Nome <span> *</span></label>
+                <input type="text" name="name" formControlName="name" placeholder="Mario" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Cognome <span> *</span></label>
+                <input type="text" name="surname" formControlName="surname" placeholder="Rossi" required>
             </div>
             <div class="form-group">
                 <label for="username">Username <span> *</span></label>
-                <input type="text" name="username" formControlName="username" placeholder="utente123" required>
+                <input type="text" name="username" formControlName="username" placeholder="mario123" required>
             </div>
             <div class="form-group">
                 <label for="password">Password <span> *</span></label>

@@ -30,6 +30,16 @@ export class RegisterComponent {
     Validators.minLength(3),
     Validators.maxLength(100)
   ]);
+  name = new UntypedFormControl('', [
+    Validators.required,
+    Validators.minLength(3),
+    Validators.maxLength(50)
+  ]);
+  surname = new UntypedFormControl('', [
+    Validators.required,
+    Validators.minLength(3),
+    Validators.maxLength(50)
+  ]);
   password = new UntypedFormControl('', [
     Validators.required,
     Validators.minLength(6)
@@ -46,6 +56,8 @@ export class RegisterComponent {
     this.registerForm = this.formBuilder.group({
       username: this.username,
       email: this.email,
+      name: this.name,
+      surname: this.surname,
       password: this.password,
       confirmPassword: this.confirmPassword,
       birthday: this.birthday
