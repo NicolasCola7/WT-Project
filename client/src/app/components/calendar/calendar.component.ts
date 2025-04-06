@@ -19,7 +19,6 @@ import { AlertService } from '../../services/alert.service';
   standalone: true
 })
 export class CalendarComponent {
-  alertService = inject(AlertService);
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -41,7 +40,7 @@ export class CalendarComponent {
     selectMirror: true,
     dayMaxEvents: true,
     locales: [ itLocale ],
-    locale: 'it', // the initial locale
+    locale: 'it',
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
@@ -53,8 +52,8 @@ export class CalendarComponent {
   });
   currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private changeDetector: ChangeDetectorRef,
+              private alertService: AlertService){}
 
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
