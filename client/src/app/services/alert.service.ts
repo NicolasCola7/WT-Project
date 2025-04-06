@@ -31,9 +31,9 @@ export class AlertService  {
     });
   }
 
-  showQuestion(title: string, text: string, onConfirm: () => void) {
+  showQuestion(text: string, onConfirm: () => void) {
     Swal.fire({
-        title: title,
+        title: 'Attenzione!',
         text: text,
         icon: 'warning',
         showCancelButton: true,

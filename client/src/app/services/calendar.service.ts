@@ -4,10 +4,16 @@ import { Observable } from "rxjs";
 import { CalendarEvent } from "../models/event.model";
 import { Activity } from "../models/activity.model";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class CalendarService {
 
   constructor(private http: HttpClient) { }
+
+  getMyEvents(userID: string): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>('/api/events', {
+      params: {userID: userID}
+    });
+  }
 
   addEvent(event: CalendarEvent): Observable<CalendarEvent> {
     return this.http.post<CalendarEvent>('/api/event', event);
@@ -15,6 +21,12 @@ export class CalendarService {
 
   deleteEvent(event: CalendarEvent): Observable<string> {
     return this.http.delete(`/api/event/${event._id}`, { responseType: 'text' });
+  }
+
+  getMyActivities(userID: string): Observable<Activity[]> {
+    return this.http.get<Activity[]>('/api/activities', {
+      params: {userID: userID}
+    });
   }
 
   addActivity(activity: Activity): Observable<Activity> {

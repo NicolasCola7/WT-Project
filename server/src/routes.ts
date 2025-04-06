@@ -23,11 +23,13 @@ const setRoutes = (app: Application): void => {
   router.route('/event').post(eventController.insert);
   router.route('/event/:id').get(eventController.get);
   router.route('/event/:id').delete(eventController.delete);
+  router.route('/events').get(eventController.getMyEvents);
 
   //Activities
   router.route('/activity').post(activityController.insert);
   router.route('/activity/:id').get(activityController.get);
   router.route('/activity/:id').delete(activityController.delete);
+  router.route('/activities').get(activityController.getMyActivities);
 
 
   // AApplica a tutte le routes il prefisso /api

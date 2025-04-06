@@ -1,4 +1,4 @@
-import { Component , signal, ChangeDetectorRef } from '@angular/core';
+import { Component , signal, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
@@ -6,7 +6,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import itLocale from '@fullcalendar/core/locales/it';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
+import { AlertService } from '../../services/alert.service';
+
 
 @Component({
   selector: 'app-calendar',
@@ -16,6 +19,7 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
   standalone: true
 })
 export class CalendarComponent {
+  alertService = inject(AlertService);
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -36,6 +40,8 @@ export class CalendarComponent {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    locales: [ itLocale ],
+    locale: 'it', // the initial locale
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
@@ -79,9 +85,10 @@ export class CalendarComponent {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+    this.alertService.showQuestion(
+      `Sei sicuro di voler eliminare l'evento '${clickInfo.event.title}'`,
+      () => clickInfo.event.remove()
+    );
   }
 
   handleEvents(events: EventApi[]) {
