@@ -1,0 +1,71 @@
+.timer-shadow-container {
+    --timer-shadow-size: 35px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 4px solid transparent;
+    box-sizing: border-box;
+    box-shadow:
+      var(--timer-shadow-size) var(--timer-shadow-size) var(--timer-shadow-size) #1f1f1f,
+      calc(var(--timer-shadow-size) * -1) calc(var(--timer-shadow-size) * -1) var(--timer-shadow-size) #2d2d2d,
+      inset var(--timer-shadow-size) var(--timer-shadow-size) var(--timer-shadow-size) #1f1f1f,
+      inset calc(var(--timer-shadow-size) * -1) calc(var(--timer-shadow-size) * -1) var(--timer-shadow-size) #2d2d2d;
+  }
+  
+  .timer-inner-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .timer-mode {
+    color: #fff;
+    font-weight: lighter;
+  }
+  
+  .timer-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5.5rem;
+    line-height: 3.5rem;
+    font-weight: 600;
+    color: #fff;
+  
+    .timer-separator {
+      font-weight: 400;
+      margin: 0 6px;
+    }
+  }
+  
+  .timer-actions {
+  
+    .btn {
+      margin-right: 8px;
+  
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  .circle {
+    position: absolute;
+  
+    circle {
+      fill: none;
+      stroke-width: 4;
+      stroke: #876be6;
+      transform: rotate(-90deg);
+      transition: stroke-dasharray 1s linear;
+  
+      &.resetting {
+        transition: stroke-dasharray 0s;
+      }
+    }
+  }
+  

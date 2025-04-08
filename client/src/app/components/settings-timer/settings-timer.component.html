@@ -1,0 +1,17 @@
+<h2>Settings</h2>
+<div class="settings-form">
+  <form [formGroup]="settingsForm">
+    <div class="form-field">
+      <label for="work">Work (minutes)</label>
+      <input type="number" id="work" class="control" placeholder="Work" formControlName="work">
+    </div>
+    <div class="form-field">
+      <label for="break">Break (minutes)</label>
+      <input type="number" id="break" class="control" placeholder="Break" formControlName="break">
+    </div>
+  </form>
+</div>
+<div class="dialog-actions">
+  <button class="btn btn--secondary" (click)="close()">Cancel</button>
+  <button class="btn btn--primary" [disabled]="settingsForm.invalid" (click)="close(true)">Save</button>
+</div>

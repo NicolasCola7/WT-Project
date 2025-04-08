@@ -1,0 +1,12 @@
+<main>
+    <app-timer [intervalDuration]="currentIntervalDuration" [timerMode]="currentTimerMode" (sessionFinish)="onSessionFinish()"></app-timer>
+  
+    <div class="sessions">
+      <div class="session" *ngFor="let session of sessions" [ngClass]="{success: session}"></div>
+    </div>
+  
+    <div class="actions">
+      <button class="btn btn--secondary" (click)="openSettings()">Settings</button>
+    </div>
+</main>
+  

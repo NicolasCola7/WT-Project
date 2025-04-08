@@ -1,0 +1,85 @@
+:root {
+  --color-background: #1e1e2f;
+  --color-grey: #3c3c4e;
+  --color-primary: #f67280; /* un colore energico, motivante */
+  --color-success: #6cdb8b;
+  --color-text: #ffffff;
+  --color-accent: #ffb86c;
+  --btn-bg: #2c2c3f;
+  --btn-hover: #3f3f5a;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px;
+  background-color: var(--color-background);
+}
+
+.sessions {
+  display: grid;
+  gap: 12px 20px;
+  width: 300px;
+  margin-top: 50px;
+  height: auto;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.session {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background-color: var(--color-grey);
+  transition: background-color 0.3s ease;
+
+  &.success {
+    background-color: var(--color-success);
+  }
+}
+
+.actions {
+  margin-top: 40px;
+}
+
+button.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+.btn--secondary {
+  background-color: var(--btn-bg);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  background-color: var(--btn-hover);
+}
+
+.btn--secondary:active {
+  transform: scale(0.98);
+}
+
+.no-padding .mat-dialog-container {
+  min-width: 280px;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
