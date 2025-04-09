@@ -7,11 +7,6 @@
   max-width: 400vw; 
 }
 
-#delete{
-  font-weight: bold;
-  background-color: whitesmoke;
-  
-}
 
 #date-and-time {
   display: flex;
@@ -62,9 +57,4 @@
 
 #save-button:active {
   transform: translateY(1px);
-}
-
-/* For Angular Material v15+ you might need this selector instead */
-.custom-form-field.mat-focused .mat-form-field-ripple {
-  background-color: blue;
 }

@@ -10,8 +10,9 @@ import itLocale from '@fullcalendar/core/locales/it';
 import { DialogModule } from '@angular/cdk/dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { AlertService } from '../../services/alert.service';
-import { CreateEventDialogComponent } from '../create-event/create-event-dialog.component';
+import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateActivityDialogComponent } from '../create-activity-dialog/create-activity-dialog.component';
 
 
 @Component({
@@ -105,11 +106,12 @@ export class CalendarComponent {
     this.changeDetector.detectChanges();
   }
 
-  closeEventModal() {
-  }
-
   newActivity(){
-
+    const dialogRef = this.dialog.open(CreateActivityDialogComponent, {
+      width: '400vw',
+      height: 'auto',
+      data: {} 
+    });
   }
 
   newEvent(){
