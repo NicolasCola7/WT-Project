@@ -3,8 +3,8 @@ export class CalendarEvent {
     title?: string;
     startDate?: Date;
     endDate?: Date;
-    frequency?: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+    frequency?: 'NONE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
     repetitions?: 'INF' | number | Date;
-    partecipants?: Array<string>;
     location?: string;
+    creatorId?: string;
 }

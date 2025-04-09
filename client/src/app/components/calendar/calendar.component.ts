@@ -7,18 +7,27 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import itLocale from '@fullcalendar/core/locales/it';
+import { DialogModule } from '@angular/cdk/dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { AlertService } from '../../services/alert.service';
+import { CreateEventDialogComponent } from '../create-event/create-event-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, FullCalendarModule],
+  imports: [
+    CommonModule,
+    FullCalendarModule,
+    DialogModule,
+    CommonModule,
+  ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
   standalone: true
 })
 export class CalendarComponent {
+  selectedDate = new Date();
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -53,7 +62,8 @@ export class CalendarComponent {
   currentEvents = signal<EventApi[]>([]);
 
   constructor(private changeDetector: ChangeDetectorRef,
-              private alertService: AlertService){}
+              private alertService: AlertService,
+              private dialog: MatDialog,){}
 
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
@@ -92,6 +102,21 @@ export class CalendarComponent {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
+  }
+
+  closeEventModal() {
+  }
+
+  newActivity(){
+
+  }
+
+  newEvent(){
+    const dialogRef = this.dialog.open(CreateEventDialogComponent, {
+      width: '400vw',
+      height: 'auto',
+      data: {} 
+    });
   }
 }

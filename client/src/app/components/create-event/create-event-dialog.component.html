@@ -1,0 +1,57 @@
+<div class="eventDialog">
+  <div id="dialog-header">
+    <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Chiudi">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+    <mat-dialog-content>
+      <mat-form-field class="custom-form-field">
+        <mat-label>Titolo</mat-label>
+        <input matInput [(ngModel)]="data.title" [readonly]="isReadOnly" required>
+      </mat-form-field>
+  
+      <div id='date-and-time'>
+        <mat-form-field class="custom-form-field">
+          <mat-label>Data e ora di inizio </mat-label>
+          <input matInput type="datetime-local" [(ngModel)]="data.dateStart" required>
+        </mat-form-field>
+  
+        <mat-form-field class="custom-form-field" *ngIf="!allDay">
+          <mat-label>Data e ora di fine</mat-label>
+          <input matInput type="datetime-local" [(ngModel)]="data.dateEnd"  required>
+        </mat-form-field>
+      </div>
+      
+      <div id="all-day-check">
+          <input type="checkbox" [checked]="allDay" (change)="allDayChange()" />
+          <span>Tutto il giorno</span>
+      </div>
+     
+      <mat-form-field class="custom-form-field">
+        <mat-label>Ripeti</mat-label>
+        <mat-select [(ngModel)]="data.recurrence" required>
+          <mat-option value="none">Non si ripete</mat-option>
+          <mat-option value="DAILY">Ogni giorno</mat-option>
+          <mat-option value="WEEKLY">Ogni settimana</mat-option>
+          <mat-option value="MONTHLY">Ogni mese</mat-option>
+          <mat-option value="YEARLY">Ogni anno</mat-option>
+        </mat-select>
+      </mat-form-field> 
+  
+      <mat-form-field class="custom-form-field" *ngIf="data.recurrence !== 'none'">
+        <mat-label>Fine ripetizione</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="data.recurrenceEnd" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="custom-form-field">
+        <mat-label>Luogo</mat-label>
+        <input matInput [(ngModel)]="data.place">
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions >
+      <button mat-button id='save-button' (click)="onSave()">Salva</button>
+    </mat-dialog-actions>
+  </div>

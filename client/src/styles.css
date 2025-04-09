@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -22,3 +23,39 @@
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     --border-radius: 8px;
   }
+
+  /* Target Material select panels specifically */
+.mat-select-panel,
+.cdk-overlay-pane.mat-select-panel-wrapper,
+.mat-mdc-select-panel {
+  /* Ensure background is completely opaque */
+  background-color: white !important;
+  /* Add substantial shadow for visual separation */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  /* Add a border for additional definition */
+  border: 1px solid #ddd !important;
+  /* Ensure high z-index */
+  z-index: 10000 !important;
+}
+
+/* Target each option to ensure they're also opaque */
+.mat-option,
+.mat-mdc-option {
+  background-color: white !important;
+}
+
+.mat-mdc-option:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* Add a more general catch-all for overlay elements */
+.cdk-overlay-pane {
+  background-color: white !important;
+}
+
+/* Also target datepicker panels */
+.mat-datepicker-content {
+  background-color: white !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+}
+

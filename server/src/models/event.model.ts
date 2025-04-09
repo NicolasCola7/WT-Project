@@ -1,15 +1,15 @@
 import { model, Schema, Types } from "mongoose";
 
-export const frequencies = ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
+export const frequencies = ['NONE', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
 
 interface CalendarEventI {
     title: string;
     startDate: Date;
     endDate: Date;
-    frequency?: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+    frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
     repetitions?: 'INF' | number | Date;
-    partecipants: Array<Types.ObjectId>;
     location?: string;
+    creatorId: string;
 }
 
 const calendarEventSchema = new Schema<CalendarEventI>({
@@ -31,10 +31,10 @@ const calendarEventSchema = new Schema<CalendarEventI>({
             message: props => `${props.value} is not a valid repetition value!`
         }
     },
-    partecipants: [{ 
+    creatorId: [{ 
         type: Schema.Types.ObjectId, 
         ref: 'User',
-        required: false
+        required: true
     }],
     location: { type: String, required: false, trim: true }
 });

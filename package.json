@@ -6,7 +6,15 @@
         "client",
         "server"
     ],
+    "engines": {
+      "node": ">=20",
+      "npm": ">=10"
+    },
     "scripts": {
+      "ng": "ng",
+      "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
+      "build:client": "npm run build --prefix client",
+      "build:server": "cd server tsc",
       "start:client": "npm start --prefix client",
       "start:server": "npm run start --prefix server",
       "start": "concurrently \"npm run start:client\" \"npm run start:server\""
