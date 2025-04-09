@@ -29,8 +29,8 @@
      
       <mat-form-field class="custom-form-field">
         <mat-label>Ripeti</mat-label>
-        <mat-select [(ngModel)]="data.recurrence" required>
-          <mat-option value="none">Non si ripete</mat-option>
+        <mat-select [(ngModel)]="data.recurrence" matNativeControl required>
+          <mat-option value="NONE">Non si ripete</mat-option>
           <mat-option value="DAILY">Ogni giorno</mat-option>
           <mat-option value="WEEKLY">Ogni settimana</mat-option>
           <mat-option value="MONTHLY">Ogni mese</mat-option>
@@ -38,7 +38,7 @@
         </mat-select>
       </mat-form-field> 
   
-      <mat-form-field class="custom-form-field" *ngIf="data.recurrence !== 'none'">
+      <mat-form-field class="custom-form-field" *ngIf="data.recurrence !== 'NONE'">
         <mat-label>Fine ripetizione</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="data.recurrenceEnd" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

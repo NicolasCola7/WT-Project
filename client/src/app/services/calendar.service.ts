@@ -3,15 +3,16 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { CalendarEvent } from "../models/event.model";
 import { Activity } from "../models/activity.model";
+import { User } from "../models/user.model";
 
 @Injectable({ providedIn: 'root' })
 export class CalendarService {
 
   constructor(private http: HttpClient) { }
 
-  getMyEvents(userID: string): Observable<CalendarEvent[]> {
+  getMyEvents(user: User): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>('/api/events', {
-      params: {userID: userID}
+      params: {userID: user._id!}
     });
   }
 
@@ -23,9 +24,9 @@ export class CalendarService {
     return this.http.delete(`/api/event/${event._id}`, { responseType: 'text' });
   }
 
-  getMyActivities(userID: string): Observable<Activity[]> {
+  getMyActivities(user: User): Observable<Activity[]> {
     return this.http.get<Activity[]>('/api/activities', {
-      params: {userID: userID}
+      params: {userID: user._id!}
     });
   }
 

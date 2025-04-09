@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms'; 
 import { MatIconModule } from '@angular/material/icon';
 import { DateAdapter } from '@angular/material/core';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 
 @Component({
@@ -29,76 +31,77 @@ import { DateAdapter } from '@angular/material/core';
 })
 export class CreateEventDialogComponent {
   //proprietà della classe
-  title: string = '';
-  dateStart: null = null;
-  dateEnd: null = null;
+  title: string;
+  dateStart: Date;
+  dateEnd?: Date;
   allDay: boolean = false;
-  place: string = '';
-  notes: string = '';
-  recurrence: string = '';
-  recurrenceEnd: null = null;
-  authorUsername: string | null = null;
+  place?: string;
+  recurrence: string = 'NONE';
+  recurrenceEnd?: 'INF' | number | Date;
   isReadOnly: boolean = false;
 
   constructor(
-    public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
-    private dateAdapter: DateAdapter<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    // imposta i valori iniziali in base ai dati passati
-    this.title = data.title || '';           
-    this.dateStart = data.dateStart || null; 
-    this.dateEnd = data.dateEnd || null;     
-    this.allDay = data.allday || false;      
-    this.place = data.place || '';
-    this.notes = data.notes || '';
-    this.recurrence = data.recurrence || '';
-    this.recurrenceEnd = data.recurrenceEnd || null;
-    this.isReadOnly = data.updating;
+      public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
+      private dateAdapter: DateAdapter<any>,
+      private authService: AuthService,
+      private alertService: AlertService,
+      @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.title = this.data.title || '';           
+    this.dateStart = this.data.dateStart || null; 
+    this.dateEnd =this. data.dateEnd || null;     
+    this.allDay = this.data.allday || false;      
+    this.place = this.data.place || '';
+    this.recurrence = this.data.recurrence;
+    this.recurrenceEnd = this.data.recurrenceEnd || null;
+    this.isReadOnly = this.data.updating;
     this.dateAdapter.setLocale('it');
-  }
-
-  ngOnInit(): void {
-
-    //this.authorUsername = this.localStorageService.getItem('username');
-   
+    this.data.creatorId = this.authService.currentUser._id!;
   }
 
   onSave(): void {
-    const inputError = document.getElementById('inputError');
-
     //controllo sui campi obbligatori
-    if(!this.data.title || !this.data.dateStart || (!this.data.dateEnd && !this.allDay) || !this.data.recurrence){
-      if(inputError){
-        inputError.textContent = 'Titolo, data e ripetizione sono obbligatori!';
-      }
-     //controllo date 
-    }else if(this.data.dateStart > this.data.dateEnd) {
-      if(inputError){
-        inputError.textContent = 'Non può finire prima di iniziare!';
-      }
-    } else {
-      if (this.allDay) {
-        this.data.dateEnd = this.data.dateStart;
-      }
-      
-      this.dialogRef.close(this.data);
+    if(!this.data.title){
+        this.alertService.showError('Titolo obbligatoro');
+        return;
     }
 
+    if(!this.data.dateStart){
+      this.alertService.showError('Data di inizio obbligatoria');
+      return;
+    }
+
+    if(!this.data.dateEnd && !this.allDay){
+      this.alertService.showError('Data di fine obbligatoria');
+      return;
+    }
+    
+    if(this.data.dateStart > this.data.dateEnd) {
+      this.alertService.showError('Data di inizio magiore di data di fine');
+      return;
+    }
+
+    if(!this.data.recurrence) {
+      this.alertService.showError('Ripetizione obbligatoria');
+      return;
+    }
+
+    if(this.data.recurrence !== 'NONE' && !this.data.recurrenceEnd) {
+      this.alertService.showError('Fine ripetizione obbligatoria');
+      return;
+    }
+  
+    if (this.allDay) {
+        this.data.dateEnd = this.data.dateStart;
+    }
+
+    this.dialogRef.close(this.data);
   }
 
   public allDayChange(): void{
-
     this.allDay = !this.allDay;
-    
   }
 
   onCancel(): void {
-    this.dialogRef.close();
-  }
-
-  onDelete(): void{
     this.dialogRef.close(false);
   }
-
 }

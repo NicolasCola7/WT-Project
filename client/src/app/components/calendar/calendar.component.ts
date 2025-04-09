@@ -7,12 +7,15 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import itLocale from '@fullcalendar/core/locales/it';
+import rrulePlugin from '@fullcalendar/rrule';
 import { DialogModule } from '@angular/cdk/dialog';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { AlertService } from '../../services/alert.service';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateActivityDialogComponent } from '../create-activity-dialog/create-activity-dialog.component';
+import { CalendarEvent } from '../../models/event.model';
+import { CalendarService } from '../../services/calendar.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -30,12 +33,15 @@ import { CreateActivityDialogComponent } from '../create-activity-dialog/create-
 export class CalendarComponent {
   selectedDate = new Date();
   calendarVisible = signal(true);
+  events: CalendarEvent[] = [];
+  currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
+      rrulePlugin
     ],
     headerToolbar: {
       left: 'prev,next today',
@@ -43,7 +49,6 @@ export class CalendarComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
     selectable: true,
@@ -51,20 +56,66 @@ export class CalendarComponent {
     dayMaxEvents: true,
     locales: [ itLocale ],
     locale: 'it',
-    select: this.handleDateSelect.bind(this),
+    //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
   });
-  currentEvents = signal<EventApi[]>([]);
 
   constructor(private changeDetector: ChangeDetectorRef,
               private alertService: AlertService,
-              private dialog: MatDialog,){}
+              private dialog: MatDialog,
+              private calendarService: CalendarService,
+              private authService: AuthService){}
+
+  // Carica attività ed eventi nel calendario
+  private loadCalendar(): void {
+
+    this.calendarOptions.set({
+      ...this.calendarOptions(),
+    });
+
+    const calendarEvents = this.convertEvents();
+    const allCalendarEvents = [...calendarEvents ]; 
+
+    this.calendarOptions.set({
+      ...this.calendarOptions(),
+      events: allCalendarEvents 
+    });
+  }
+
+  private convertEvents() {
+    const converted = this.events.map(event => {
+      const rrule: any = {};  //creazione oggetto rrule per gestire ripetizione
+
+      if(event.frequency !== 'NONE'){
+        rrule.freq = event.frequency;
+        rrule.dtstart = new Date(event.startDate!).toISOString();
+      }
+
+      if (event.repetitions) {
+        rrule.until = new Date(event.repetitions).toISOString(); 
+      }
+
+      //serve per gli eventi ricorrenti (altrimenti non visualizza orario fine nel calendario)
+      const startTime = new Date(event.startDate!).getTime();
+      const endTime = new Date(event.endDate!).getTime();
+      const durationInMs = endTime - startTime;
+
+      return{
+        //ogni event di events diventa compatibile con FullCalendar
+        title: event.title,
+        start: event.startDate,
+        end: event.endDate,
+        place: event.location,
+        backgroundColor: '#4c95e4', 
+        rrule: Object.keys(rrule).length ? rrule : undefined,
+        duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
+        allDay: event.startDate == event.endDate 
+      }
+    });
+
+    return converted;
+  }
 
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
@@ -77,6 +128,7 @@ export class CalendarComponent {
     }));
   }
 
+  /*
   handleDateSelect(selectInfo: DateSelectArg) {
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
@@ -92,7 +144,7 @@ export class CalendarComponent {
         allDay: selectInfo.allDay
       });
     }
-  }
+  } */
 
   handleEventClick(clickInfo: EventClickArg) {
     this.alertService.showQuestion(
@@ -120,5 +172,40 @@ export class CalendarComponent {
       height: 'auto',
       data: {} 
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+
+    if (result) {
+        const newEvent: CalendarEvent = {
+          title: result.title,
+          startDate: result.dateStart,
+          endDate: result.dateEnd,
+          location: result.place,
+          frequency: result.recurrence,
+          repetitions: result.recurrenceEnd,
+          creatorId: result.creatorId
+        };
+
+        alert(newEvent.creatorId);
+        
+        this.calendarService.addEvent(newEvent).subscribe(
+          () =>  {
+            this.alertService.showSuccess('Evento creato con successo!')
+            this.fetchEvents()
+          }
+        );
+      }
+    });
+  }
+
+  fetchEvents() {
+    this.calendarService.getMyEvents(this.authService.currentUser).subscribe(
+      (data) => {
+
+        this.events = data;
+        this.loadCalendar();
+      }
+    );
   }
 }

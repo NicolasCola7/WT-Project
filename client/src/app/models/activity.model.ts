@@ -5,4 +5,5 @@ export class Activity {
     endDate?: Date;
     completed?: boolean;
     overdue?: boolean;
+    creatorId?: string;
 }

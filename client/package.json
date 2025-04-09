@@ -21,6 +21,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "@fullcalendar/angular": "^6.1.17",
     "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/rrule": "^6.1.17",
     "@rollup/rollup-win32-x64-msvc": "^4.38.0",
     "angular-gridster2": "^19.0.0",
     "fullcalendar": "^6.1.17",

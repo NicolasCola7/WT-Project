@@ -69,7 +69,6 @@ export class CreateActivityDialogComponent {
 
   }
 
-
   onCancel(): void {
     this.dialogRef.close();
   }

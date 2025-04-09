@@ -9,7 +9,7 @@ interface CalendarEventI {
     frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
     repetitions?: 'INF' | number | Date;
     location?: string;
-    creatorId: string;
+    creatorId: Types.ObjectId;
 }
 
 const calendarEventSchema = new Schema<CalendarEventI>({
@@ -31,11 +31,11 @@ const calendarEventSchema = new Schema<CalendarEventI>({
             message: props => `${props.value} is not a valid repetition value!`
         }
     },
-    creatorId: [{ 
+    creatorId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',
         required: true
-    }],
+    },
     location: { type: String, required: false, trim: true }
 });
 
