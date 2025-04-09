@@ -14,15 +14,15 @@ import { TimerComponent } from '../timer/timer.component';
 })
 export class PageTimerComponent implements OnInit {
   sessions: boolean[] = [false, false, false, false, false];
-  settings!: Settings;
-  currentIntervalDuration!: number;
+  settings: Settings = { work: 25, break: 5 };
+  currentIntervalDuration: number = this.settings.work;
   currentTimerMode: TimerMode = 'Focus';
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadSettings();
-    this.currentIntervalDuration = this.settings?.work || 25;
+    this.currentIntervalDuration = this.settings.work;
   }
 
   onSessionFinish(): void {
