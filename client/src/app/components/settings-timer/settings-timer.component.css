@@ -3,8 +3,9 @@ h2, .settings-form, .dialog-actions {
 }
 
 h2 {
-  border-bottom: 1px solid var(--color-grey);
-  font-weight: 300;
+  border-bottom: 1px solid var(--color-primary);
+  font-weight: 400;
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -12,15 +13,42 @@ h2 {
   border-bottom: 1px solid var(--color-grey);
 }
 
+.form-field {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.control {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-grey);
+  color: var(--color-text);
+  font-size: 16px;
+  outline: none;
+}
+
+.control:focus {
+  border: 1px solid var(--color-primary);
+}
+
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+  margin-top: 15px;
+}
 
-  button {
-    margin-right: 10px;
+.dialog-actions button {
+  margin-right: 10px;
 
-    &:last-child {
-      margin-right: 0;
-    }
+  &:last-child {
+    margin-right: 0;
   }
 }

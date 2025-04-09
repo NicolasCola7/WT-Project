@@ -1,5 +1,5 @@
 export const SETTINGS_KEY = 'SETTINGS';
-export type TimerMode = 'work' | 'break';
+export type TimerMode = 'Focus' | 'Riposo';
 
 export interface Settings {
   work: number;

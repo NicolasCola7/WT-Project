@@ -1,0 +1,48 @@
+.btn {
+  color: #eee;
+  background-color: rgba(31, 31, 31, .3);
+  padding: 6px 17px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 12px;
+
+  &:hover {
+    background-color: rgba(35, 35, 35, .3);
+  }
+
+  &[disabled] {
+    opacity: .3;
+    cursor: default;
+  }
+}
+
+.btn--primary {
+  background-color: rgb(99 78 173 / 30%);
+  color: #876be6;
+
+  &:hover {
+    background-color: rgb(99 78 173 / 40%);
+  }
+}
+
+.btn--secondary {
+  background-color: rgb(150 150 150 / 30%);
+  color: #dcdcdc;
+
+  &:hover {
+    background-color: rgb(150 150 150 / 40%);
+  }
+}
+
+.btn--danger {
+  background-color: rgb(173 78 78 / 30%);
+  color: #e66b6b;
+
+  &:hover {
+    background-color: rgb(173 78 78 / 40%);
+  }
+}

@@ -1,4 +1,6 @@
-<main>
+<div class="page-timer">
+  <main>
+    <h1>POMODORO TIMER</h1>
     <app-timer [intervalDuration]="currentIntervalDuration" [timerMode]="currentTimerMode" (sessionFinish)="onSessionFinish()"></app-timer>
   
     <div class="sessions">
@@ -6,7 +8,8 @@
     </div>
   
     <div class="actions">
-      <button class="btn btn--secondary" (click)="openSettings()">Settings</button>
+      <button class="btn btn--secondary" (click)="openSettings()">Impostazioni</button>
     </div>
 </main>
+</div>
   

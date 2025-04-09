@@ -7,7 +7,7 @@ import { Settings, SETTINGS_KEY } from '../../models/settings.model';
   selector: 'app-settings-timer',
   imports: [ReactiveFormsModule],
   templateUrl: './settings-timer.component.html',
-  styleUrl: './settings-timer.component.css'
+  styleUrls: ['./settings-timer.component.css','../../../assets/css/button.css']
 })
 export class SettingsTimerComponent implements OnInit{
   settingsForm = new FormGroup({

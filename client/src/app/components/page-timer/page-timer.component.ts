@@ -10,13 +10,13 @@ import { TimerComponent } from '../timer/timer.component';
   standalone: true,
   imports: [CommonModule, MatDialogModule, TimerComponent],
   templateUrl: './page-timer.component.html',
-  styleUrls: ['./page-timer.component.css']
+  styleUrls: ['./page-timer.component.css','../../../assets/css/button.css']
 })
 export class PageTimerComponent implements OnInit {
-  sessions: boolean[] = [false, false, false, false, false, false, false, false];
+  sessions: boolean[] = [false, false, false, false, false];
   settings!: Settings;
   currentIntervalDuration!: number;
-  currentTimerMode: TimerMode = 'work';
+  currentTimerMode: TimerMode = 'Focus';
 
   constructor(private dialog: MatDialog) {}
 
@@ -26,7 +26,7 @@ export class PageTimerComponent implements OnInit {
   }
 
   onSessionFinish(): void {
-    if (this.currentTimerMode === 'work') {
+    if (this.currentTimerMode === 'Focus') {
       this.sessions[this.sessions.indexOf(false)] = true;
       this.currentIntervalDuration = this.settings?.break || 25;
     } else {
@@ -36,7 +36,7 @@ export class PageTimerComponent implements OnInit {
   }
 
   toggleTimerMode(): void {
-    this.currentTimerMode = this.currentTimerMode === 'work' ? 'break' : 'work';
+    this.currentTimerMode = this.currentTimerMode === 'Focus' ? 'Riposo' : 'Focus';
   }
 
   loadSettings(): void {

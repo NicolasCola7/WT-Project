@@ -39,13 +39,13 @@
     </div>
     <div class="timer-actions">
       <button *ngIf="!isCounting; else pauseButton" class="btn btn--primary" (click)="startTimer()">
-        {{ currentValueMinutes === intervalDuration && currentValueSeconds === 0 ? 'Start' : 'Continue' }}
+        {{ currentValueMinutes === intervalDuration && currentValueSeconds === 0 ? 'Inizia' : 'Continua' }}
       </button>
       <button *ngIf="isCounting"
               class="btn btn--danger" (click)="resetTimer()">Reset
       </button>
       <ng-template #pauseButton>
-        <button class="btn btn--secondary" (click)="pauseTimer()">Pause</button>
+        <button class="btn btn--secondary" (click)="pauseTimer()">Pausa</button>
       </ng-template>
     </div>
   </div>

@@ -1,0 +1,31 @@
+.form-field {
+  margin-bottom: 20px;
+
+  label {
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+
+  label, input {
+    color: #fff;
+    display: block;
+  }
+}
+
+.control {
+  background-color: transparent;
+  outline: none;
+  padding: 5px 10px;
+  border: 1px solid var(--color-grey);
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 700;
+
+  &[type=number] {
+    width: 100px;
+  }
+
+  &:focus {
+    border-color: #fff;
+  }
+}

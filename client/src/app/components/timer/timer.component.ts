@@ -6,13 +6,13 @@ import { TimerMode } from '../../models/settings.model';
   selector: 'app-timer',
   imports: [CommonModule],
   templateUrl: './timer.component.html',
-  styleUrl: './timer.component.css'
+  styleUrls: ['./timer.component.css','../../../assets/css/button.css']
 })
 export class TimerComponent implements OnInit, OnChanges {
   /** Current interval duration passed from the parent component */
   @Input() intervalDuration = 25;
   /** Current timer mode passed from the parent component */
-  @Input() timerMode: TimerMode = 'work';
+  @Input() timerMode: TimerMode = 'Focus';
   /** Size of the timer itself. Based on this value styles of the circle are calculated */
   @Input() size = 350;
 
@@ -126,7 +126,7 @@ export class TimerComponent implements OnInit, OnChanges {
    */
   loadNotificationSound(): void {
     this.audio = new Audio();
-    this.audio.src = 'assets/goes-without-saying-608.mp3';
+    this.audio.src = '../../../assets/goes-without-saying-608.mp3';
     this.audio.load();
   }
 
