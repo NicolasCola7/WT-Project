@@ -30,6 +30,7 @@ const setRoutes = (app: Application): void => {
   router.route('/activity/:id').get(activityController.get);
   router.route('/activity/:id').delete(activityController.delete);
   router.route('/activities').get(activityController.getMyActivities);
+  router.route('/activity/:id').put(activityController.update);
 
 
   // AApplica a tutte le routes il prefisso /api

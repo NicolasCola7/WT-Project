@@ -41,6 +41,8 @@ export class CalendarComponent implements OnInit{
   calendarVisible = signal(true);
   events: CalendarEvent[] = [];
   activities: Activity[] = [];
+  completedActivities: Activity[] = [];
+  overdueActivities: Activity[] = [];
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -82,7 +84,7 @@ export class CalendarComponent implements OnInit{
   // Carica attività ed eventi nel calendario
   private loadCalendar(): void {
     const calendarEvents = this.convertEvents();
-    const calendarActivities = this.convertActivities();
+    const calendarActivities = [...this.convertActivities(this.activities), ...this.convertActivities(this.overdueActivities)];
     const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
 
     this.calendarOptions.set({
@@ -127,12 +129,13 @@ export class CalendarComponent implements OnInit{
     return converted;
   }
 
-  private convertActivities() {
-    const converted = this.activities.map(activity => ({
+  private convertActivities(activities: Activity[]) {
+    const converted = activities.map(activity => ({
       title: activity.title,
-      start: activity.startDate, 
-      end: activity.endDate,
+      start: this.isOverdue(activity.endDate!) ? new Date(Date.now()) : activity.endDate!, 
+      allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
+      borderColor: 'transparent',
     }));
 
     return converted;
@@ -143,7 +146,7 @@ export class CalendarComponent implements OnInit{
     if (activity.completed)
       return '#4c9621';
     
-    if(activity.overdue)
+    if(this.isOverdue(activity.endDate!))
       return '#d82839';
     
     return '#FFBB33';
@@ -257,6 +260,8 @@ export class CalendarComponent implements OnInit{
     this.calendarService.getMyActivities(this.authService.currentUser).subscribe({
       next: (data) => {
         this.activities = data;
+        this.getOverdueActivities();
+        this.getCompletedActivities();
         this.loadCalendar();
       },
       error: error => console.log(error),
@@ -264,6 +269,40 @@ export class CalendarComponent implements OnInit{
     });
   }
 
+  private getOverdueActivities() {
+    for (let i = this.activities.length - 1; i >= 0; i--) {
+      
+      if (!this.activities[i].completed && this.isOverdue(this.activities[i].endDate!)) {
+        this.overdueActivities.unshift(this.activities.splice(i, 1)[0]);
+      }
+    }
+  }
+
+  private getCompletedActivities() {
+    for (let i = this.activities.length - 1; i >= 0; i--) {
+      if (this.activities[i].completed) {
+        this.completedActivities.unshift(this.activities.splice(i, 1)[0]);
+      }
+    }
+  }
+
   changeActivityStatus(activity: Activity) {
+    activity.completed = !activity.completed;
+    
+    this.activities = [];
+    this.completedActivities = [];
+    this.overdueActivities = [];
+
+    this.calendarService.changeActivityStatus(activity).subscribe({
+      next: () => this.fetchActivities(),
+      error: (error) => console.log(error),
+      complete: () => this.isLoading = false
+    });
+  }
+
+  private isOverdue(date: Date) {
+    const endDate = new Date(date).getTime();
+
+    return endDate < Date.now();
   }
 }

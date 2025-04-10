@@ -56,11 +56,6 @@ export class CreateActivityDialogComponent {
       return;
     }
 
-    if(Date.now() > this.data.endDate) {
-      this.alertService.showError('Data corrente maggiore di data di fine');
-      return;
-    }
-
     this.dialogRef.close(this.data);
   }
 

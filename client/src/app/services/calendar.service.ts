@@ -38,4 +38,7 @@ export class CalendarService {
     return this.http.delete(`/api/activity/${activity._id}`, { responseType: 'text' });
   }
 
+  changeActivityStatus(activity: Activity): Observable<string> {
+    return this.http.put(`/api/activity/${activity._id}`, activity, { responseType: 'text' });
+  }
 }
