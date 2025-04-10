@@ -1,10 +1,11 @@
 <div class="timer-shadow-container"
+     [ngClass]="timerMode === 'Focus' ? 'focus-mode' : 'rest-mode'"
      [ngStyle]="{
         height: size + 'px',
         width: size + 'px',
         'border-radius': size + 'px'
-     }"
->
+     }">
+
   <svg
     class="circle"
     [attr.height]="size"

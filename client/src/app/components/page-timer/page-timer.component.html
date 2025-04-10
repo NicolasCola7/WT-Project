@@ -1,15 +1,26 @@
-<div class="page-timer">
+<div class="page-timer" [ngClass]="{
+  'focus-mode': currentTimerMode === 'Focus',
+  'rest-mode': currentTimerMode === 'Riposo'
+}">
   <main>
     <h1>POMODORO TIMER</h1>
-    <app-timer [intervalDuration]="currentIntervalDuration" [timerMode]="currentTimerMode" (sessionFinish)="onSessionFinish()"></app-timer>
-  
+
+    <app-timer
+      [intervalDuration]="currentIntervalDuration"
+      [timerMode]="currentTimerMode"
+      (sessionFinish)="onSessionFinish()"
+    ></app-timer>
+
     <div class="sessions">
-      <div class="session" *ngFor="let session of sessions" [ngClass]="{success: session}"></div>
+      <div
+        class="session"
+        *ngFor="let session of sessions"
+        [ngClass]="{ success: session }"
+      ></div>
     </div>
-  
+
     <div class="actions">
       <button class="btn btn--secondary" (click)="openSettings()">Impostazioni</button>
     </div>
-</main>
+  </main>
 </div>
-  
