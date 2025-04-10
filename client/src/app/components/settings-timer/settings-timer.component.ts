@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Settings, SETTINGS_KEY } from '../../models/settings.model';
@@ -10,18 +10,18 @@ import { Settings, SETTINGS_KEY } from '../../models/settings.model';
   styleUrls: ['./settings-timer.component.css','../../../assets/css/button.css']
 })
 export class SettingsTimerComponent implements OnInit{
+  
   settingsForm = new FormGroup({
     work: new FormControl(25, Validators.min(1)),
     break: new FormControl(5, Validators.min(1)),
+    cicle: new FormControl(1, [Validators.min(1), Validators.max(10)])
   });
 
-  constructor(
-    private dialogRef: MatDialogRef<SettingsTimerComponent>,
-  ) { }
+  constructor(private dialogRef: MatDialogRef<SettingsTimerComponent>,) { }
 
   ngOnInit(): void {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    const settings: Settings = raw ? JSON.parse(raw) : { work: 25, break: 5 };
+    const settings: Settings = raw ? JSON.parse(raw) : { work: 25, break: 5, cicle: 5 };
 
     if (settings) {
       this.settingsForm.setValue(settings);

@@ -4,4 +4,5 @@ export type TimerMode = 'Focus' | 'Riposo';
 export interface Settings {
   work: number;
   break: number;
+  cicle: number;
 }

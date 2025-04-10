@@ -8,16 +8,25 @@
     <app-timer
       [intervalDuration]="currentIntervalDuration"
       [timerMode]="currentTimerMode"
-      (sessionFinish)="onSessionFinish()"
+      (sessionFinish)="onCicleFinish()"
     ></app-timer>
 
-    <div class="sessions">
-      <div
-        class="session"
-        *ngFor="let session of sessions"
-        [ngClass]="{ success: session }"
-      ></div>
+    <div class="cicles">
+      <div>SESSIONE</div>
+    
+      <div class="cicle-list">
+        <div
+          id="cicle"
+          *ngFor="let cicle of cicles"
+          [ngClass]="{ success: cicle }"
+        ></div>
+      </div>
+    
+      <div>
+        <button class="btn btn--secondary" (click)="forcedEndSession()">Termina</button>
+      </div>
     </div>
+    
 
     <div class="actions">
       <button class="btn btn--secondary" (click)="openSettings()">Impostazioni</button>
