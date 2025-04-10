@@ -20,8 +20,8 @@ export class CalendarService {
     return this.http.post<CalendarEvent>('/api/event', event);
   }
 
-  deleteEvent(event: CalendarEvent): Observable<string> {
-    return this.http.delete(`/api/event/${event._id}`, { responseType: 'text' });
+  deleteEvent(eventId: string): Observable<string> {
+    return this.http.delete(`/api/event/${eventId}`, { responseType: 'text' });
   }
 
   getMyActivities(user: User): Observable<Activity[]> {
@@ -34,8 +34,8 @@ export class CalendarService {
     return this.http.post<Activity>('/api/activity', activity);
   }
 
-  deleteActivity(activity: Activity): Observable<string> {
-    return this.http.delete(`/api/activity/${activity._id}`, { responseType: 'text' });
+  deleteActivity(activityId: string): Observable<string> {
+    return this.http.delete(`/api/activity/${activityId}`, { responseType: 'text' });
   }
 
   changeActivityStatus(activity: Activity): Observable<string> {

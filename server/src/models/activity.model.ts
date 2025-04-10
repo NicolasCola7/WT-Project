@@ -5,16 +5,14 @@ interface ActivityI {
     startDate: Date;
     endDate: Date;
     completed: boolean;
-    overdue: boolean;
     creatorId: Types.ObjectId;
 }
 
 const activitySchema = new Schema<ActivityI>({
     title: {type: String, required: true, trim: true },
-    startDate: {type: Date, default: Date.now },
+    startDate: {type: Date, default: Date.now() },
     endDate: {type: Date, required: true },
     completed: {type: Boolean, default: false, required: true },
-    overdue: {type: Boolean, default: false, required: true },
     creatorId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',

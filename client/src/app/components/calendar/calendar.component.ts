@@ -20,7 +20,6 @@ import { AuthService } from '../../services/auth.service';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { Activity } from '../../models/activity.model';
 
-
 @Component({
   selector: 'app-calendar',
   imports: [
@@ -60,8 +59,8 @@ export class CalendarComponent implements OnInit{
     initialView: 'dayGridMonth',
     weekends: true,
     editable: true,
-    selectable: true,
-    selectMirror: true,
+    selectable: false,
+    selectMirror: false,
     dayMaxEvents: true,
     locales: [ itLocale ],
     locale: 'it',
@@ -115,7 +114,7 @@ export class CalendarComponent implements OnInit{
       const durationInMs = endTime - startTime;
 
       return{
-        //ogni event di events diventa compatibile con FullCalendar
+        id: event._id,
         title: event.title,
         start: event.startDate,
         end: event.endDate,
@@ -131,11 +130,13 @@ export class CalendarComponent implements OnInit{
 
   private convertActivities(activities: Activity[]) {
     const converted = activities.map(activity => ({
+      id: activity._id,
       title: activity.title,
       start: this.isOverdue(activity.endDate!) ? new Date(Date.now()) : activity.endDate!, 
       allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
       borderColor: 'transparent',
+      classNames: ['activity']
     }));
 
     return converted;
@@ -184,8 +185,12 @@ export class CalendarComponent implements OnInit{
   handleEventClick(clickInfo: EventClickArg) {
     this.alertService.showQuestion(
       `Sei sicuro di voler eliminare l'evento '${clickInfo.event.title}'`,
-      () => clickInfo.event.remove()
-    );
+      () => {
+        if(!clickInfo.event.classNames.length)
+          this.deleteEvent(clickInfo.event)
+        else
+          this.deleteActivity(clickInfo.event)
+      });
   }
 
   handleEvents(events: EventApi[]) {
@@ -257,6 +262,10 @@ export class CalendarComponent implements OnInit{
   }
 
   fetchActivities() {
+    this.activities = [];
+    this.completedActivities = [];
+    this.overdueActivities = [];
+    
     this.calendarService.getMyActivities(this.authService.currentUser).subscribe({
       next: (data) => {
         this.activities = data;
@@ -271,7 +280,6 @@ export class CalendarComponent implements OnInit{
 
   private getOverdueActivities() {
     for (let i = this.activities.length - 1; i >= 0; i--) {
-      
       if (!this.activities[i].completed && this.isOverdue(this.activities[i].endDate!)) {
         this.overdueActivities.unshift(this.activities.splice(i, 1)[0]);
       }
@@ -288,10 +296,6 @@ export class CalendarComponent implements OnInit{
 
   changeActivityStatus(activity: Activity) {
     activity.completed = !activity.completed;
-    
-    this.activities = [];
-    this.completedActivities = [];
-    this.overdueActivities = [];
 
     this.calendarService.changeActivityStatus(activity).subscribe({
       next: () => this.fetchActivities(),
@@ -304,5 +308,19 @@ export class CalendarComponent implements OnInit{
     const endDate = new Date(date).getTime();
 
     return endDate < Date.now();
+  }
+
+  private deleteActivity(activity: EventApi) {
+    this.calendarService.deleteActivity(activity.id).subscribe({
+      next: () => this.fetchActivities(),
+      error: (error) => console.log(error)
+    });
+  } 
+
+  private deleteEvent(event: EventApi) {
+    this.calendarService.deleteEvent(event.id!).subscribe({
+      next: () => this.fetchEvents(),
+      error: (error) => console.log(error)
+    });
   }
 }
