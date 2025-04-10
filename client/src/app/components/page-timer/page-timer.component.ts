@@ -4,11 +4,12 @@ import { SettingsTimerComponent } from '../settings-timer/settings-timer.compone
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Settings, SETTINGS_KEY, TimerMode } from '../../models/settings.model';
 import { TimerComponent } from '../timer/timer.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-page-timer',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, TimerComponent],
+  imports: [CommonModule, MatDialogModule, TimerComponent, MatIconModule],
   templateUrl: './page-timer.component.html',
   styleUrls: ['./page-timer.component.css','../../../assets/css/button.css']
 })

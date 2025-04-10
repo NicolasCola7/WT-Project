@@ -13,7 +13,7 @@
 
     <div class="cicles">
       <div>SESSIONE</div>
-    
+
       <div class="cicle-list">
         <div
           id="cicle"
@@ -21,15 +21,18 @@
           [ngClass]="{ success: cicle }"
         ></div>
       </div>
-    
+
       <div>
-        <button class="btn btn--secondary" (click)="forcedEndSession()">Termina</button>
+        <button class="btn btn--secondary" (click)="forcedEndSession()">
+          <mat-icon>stop_circle</mat-icon>
+        </button>
       </div>
     </div>
-    
 
     <div class="actions">
-      <button class="btn btn--secondary" (click)="openSettings()">Impostazioni</button>
+      <button class="btn btn--secondary" (click)="openSettings()">
+        <mat-icon>settings</mat-icon>
+      </button>
     </div>
   </main>
 </div>

@@ -18,10 +18,10 @@
       [attr.cx]="size / 2"
       [attr.cy]="size / 2"
       [ngStyle]="{
-      'stroke-dasharray': circleBaseLength + circleFillLength,
-      'stroke-dashoffset': circleBaseLength,
-      'transform-origin': (size / 2) + 'px'
-    }"
+        'stroke-dasharray': circleBaseLength + circleFillLength,
+        'stroke-dashoffset': circleBaseLength,
+        'transform-origin': (size / 2) + 'px'
+      }"
     />
   </svg>
 
@@ -38,15 +38,23 @@
       <div class="timer-separator">:</div>
       <div class="timer-seconds">{{ currentValueSeconds | number:'2.0' }}</div>
     </div>
+
     <div class="timer-actions">
-      <button *ngIf="!isCounting; else pauseButton" class="btn btn--primary" (click)="startTimer()">
-        {{ currentValueMinutes === intervalDuration && currentValueSeconds === 0 ? 'Inizia' : 'Continua' }}
+      <button 
+        *ngIf="!isCounting; else pauseButton" class="btn btn--primary" (click)="startTimer()">
+        <mat-icon>
+          {{ currentValueMinutes === intervalDuration && currentValueSeconds === 0 ? 'play_arrow' : 'play_circle' }}
+        </mat-icon>
       </button>
-      <button *ngIf="isCounting"
-              class="btn btn--danger" (click)="resetTimer()">Reset
+
+      <button *ngIf="isCounting" class="btn btn--danger" (click)="resetTimer()">
+        <mat-icon>restart_alt</mat-icon>
       </button>
+
       <ng-template #pauseButton>
-        <button class="btn btn--secondary" (click)="pauseTimer()">Pausa</button>
+        <button class="btn btn--secondary" (click)="pauseTimer()">
+          <mat-icon>pause</mat-icon>
+        </button>
       </ng-template>
     </div>
   </div>

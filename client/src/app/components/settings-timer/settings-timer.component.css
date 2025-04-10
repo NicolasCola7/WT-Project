@@ -52,3 +52,6 @@ label {
     margin-right: 0;
   }
 }
+.form-field input{
+  border: 1px solid lightgrey;
+}

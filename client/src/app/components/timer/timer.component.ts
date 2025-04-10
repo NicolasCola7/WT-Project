@@ -1,10 +1,11 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimerMode } from '../../models/settings.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-timer',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css','../../../assets/css/button.css']
 })
