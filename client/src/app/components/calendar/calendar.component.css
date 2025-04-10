@@ -12,6 +12,7 @@ h2 {
   li {
     margin: 1.5em 0;
     padding: 0;
+    align-items: center;
   }
   
   b { /* used for event dates/times */

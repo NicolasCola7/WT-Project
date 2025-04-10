@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms'; 
 import { MatIconModule } from '@angular/material/icon';
 import { DateAdapter } from '@angular/material/core';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 
 @Component({
@@ -28,53 +30,41 @@ import { DateAdapter } from '@angular/material/core';
   ]
 })
 export class CreateActivityDialogComponent {
-  //proprietà della classe
-  title: string = '';
-  dateEnd: null = null;
-  creatorId: string | null = null;
+  title: string;
+  endDate?: Date;
   isReadOnly: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<CreateActivityDialogComponent>,  //riferimento alla fialog
     private dateAdapter: DateAdapter<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authService: AuthService,
+    private alertService: AlertService
   ) {
-    // imposta i valori iniziali in base ai dati passati
-    this.title = data.title || '';           
-    this.dateEnd = data.dateEnd || null;     
+    this.title = data.title;           
+    this.endDate = data.endDate;     
     this.isReadOnly = data.updating;
     this.dateAdapter.setLocale('it');
+    this.data.creatorId = this.authService.currentUser._id!;
   }
 
-  ngOnInit(): void {
-
-    //this.authorUsername = this.localStorageService.getItem('username');
-   
-  }
 
   onSave(): void {
-    const inputError = document.getElementById('inputError');
-
-    //controllo sui campi obbligatori
-    if(!this.data.title || !this.data.dateEnd){
-      if(inputError){
-        inputError.textContent = 'Titolo  e data obbligatori!';
-      }
-     //controllo date 
-    }else if(Date.now > this.data.dateEnd) {
-      if(inputError){
-        inputError.textContent = 'Non può finire prima di iniziare!';
-      }
+   
+    if(!this.data.title){
+      this.alertService.showError('Titolo obbligatoro');
+      return;
     }
 
+    if(Date.now() > this.data.endDate) {
+      this.alertService.showError('Data corrente maggiore di data di fine');
+      return;
+    }
+
+    this.dialogRef.close(this.data);
   }
 
   onCancel(): void {
-    this.dialogRef.close();
-  }
-
-  onDelete(): void{
     this.dialogRef.close(false);
   }
-
 }

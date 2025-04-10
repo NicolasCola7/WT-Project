@@ -1,7 +1,7 @@
 import { Component , signal, ChangeDetectorRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
+import { CalendarOptions, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -12,11 +12,13 @@ import { DialogModule } from '@angular/cdk/dialog';
 import { AlertService } from '../../services/alert.service';
 import { CreateEventDialogComponent } from '../create-event-dialog/create-event-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { CreateActivityDialogComponent } from '../create-activity-dialog/create-activity-dialog.component';
 import { CalendarEvent } from '../../models/event.model';
 import { CalendarService } from '../../services/calendar.service';
 import { AuthService } from '../../services/auth.service';
 import { LoadingComponent } from '../../common/loading/loading.component';
+import { Activity } from '../../models/activity.model';
 
 
 @Component({
@@ -27,6 +29,7 @@ import { LoadingComponent } from '../../common/loading/loading.component';
     DialogModule,
     CommonModule,
     LoadingComponent,
+    MatCheckboxModule
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
@@ -37,6 +40,7 @@ export class CalendarComponent implements OnInit{
   selectedDate = new Date();
   calendarVisible = signal(true);
   events: CalendarEvent[] = [];
+  activities: Activity[] = [];
   currentEvents = signal<EventApi[]>([]);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -72,16 +76,18 @@ export class CalendarComponent implements OnInit{
 
   ngOnInit(): void {
     this.fetchEvents();
+    this.fetchActivities();
   }
 
   // Carica attività ed eventi nel calendario
   private loadCalendar(): void {
     const calendarEvents = this.convertEvents();
-    const allCalendarEvents = [...calendarEvents ]; 
+    const calendarActivities = this.convertActivities();
+    const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
 
     this.calendarOptions.set({
       ...this.calendarOptions(),
-      events: allCalendarEvents 
+      events: allCalendarEvents,
     });
   }
 
@@ -119,6 +125,28 @@ export class CalendarComponent implements OnInit{
     });
 
     return converted;
+  }
+
+  private convertActivities() {
+    const converted = this.activities.map(activity => ({
+      title: activity.title,
+      start: activity.startDate, 
+      end: activity.endDate,
+      backgroundColor: this.getActivityStatus(activity), 
+    }));
+
+    return converted;
+  }
+
+  private getActivityStatus(activity: Activity) {
+    
+    if (activity.completed)
+      return '#4c9621';
+    
+    if(activity.overdue)
+      return '#d82839';
+    
+    return '#FFBB33';
   }
 
   handleCalendarToggle() {
@@ -168,7 +196,23 @@ export class CalendarComponent implements OnInit{
       height: 'auto',
       data: {} 
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result) {
+          const newActivity: Activity = {
+            title: result.title,
+            endDate: result.endDate,
+            creatorId: result.creatorId
+          };
+  
+          this.calendarService.addActivity(newActivity).subscribe({
+            next: () => this.fetchActivities(),
+            error: error => console.log(error)
+          });
+        }
+      });
+    }
 
   newEvent(){
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
@@ -207,5 +251,19 @@ export class CalendarComponent implements OnInit{
       error: error => console.log(error),
       complete: () => this.isLoading = false
     });
+  }
+
+  fetchActivities() {
+    this.calendarService.getMyActivities(this.authService.currentUser).subscribe({
+      next: (data) => {
+        this.activities = data;
+        this.loadCalendar();
+      },
+      error: error => console.log(error),
+      complete: () => this.isLoading = false
+    });
+  }
+
+  changeActivityStatus(activity: Activity) {
   }
 }
