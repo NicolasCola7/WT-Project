@@ -4,7 +4,7 @@ export class CalendarEvent {
     startDate?: Date;
     endDate?: Date;
     frequency?: 'NONE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
-    repetitions?: 'INF' | number | Date;
+    repetitions?: number | Date;
     location?: string;
     creatorId?: string;
 }

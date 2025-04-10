@@ -1,4 +1,4 @@
-import { Component , signal, ChangeDetectorRef, inject } from '@angular/core';
+import { Component , signal, ChangeDetectorRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
@@ -16,6 +16,7 @@ import { CreateActivityDialogComponent } from '../create-activity-dialog/create-
 import { CalendarEvent } from '../../models/event.model';
 import { CalendarService } from '../../services/calendar.service';
 import { AuthService } from '../../services/auth.service';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 
 @Component({
@@ -25,12 +26,14 @@ import { AuthService } from '../../services/auth.service';
     FullCalendarModule,
     DialogModule,
     CommonModule,
+    LoadingComponent,
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
   standalone: true
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit{
+  isLoading = true;
   selectedDate = new Date();
   calendarVisible = signal(true);
   events: CalendarEvent[] = [];
@@ -67,13 +70,12 @@ export class CalendarComponent {
               private calendarService: CalendarService,
               private authService: AuthService){}
 
+  ngOnInit(): void {
+    this.fetchEvents();
+  }
+
   // Carica attività ed eventi nel calendario
   private loadCalendar(): void {
-
-    this.calendarOptions.set({
-      ...this.calendarOptions(),
-    });
-
     const calendarEvents = this.convertEvents();
     const allCalendarEvents = [...calendarEvents ]; 
 
@@ -91,9 +93,12 @@ export class CalendarComponent {
         rrule.freq = event.frequency;
         rrule.dtstart = new Date(event.startDate!).toISOString();
       }
-
       if (event.repetitions) {
-        rrule.until = new Date(event.repetitions).toISOString(); 
+        if(typeof event.repetitions === 'string') {
+          rrule.until = new Date(event.repetitions).toISOString(); 
+        } else {
+          rrule.count = event.repetitions;
+        }
       }
 
       //serve per gli eventi ricorrenti (altrimenti non visualizza orario fine nel calendario)
@@ -106,8 +111,7 @@ export class CalendarComponent {
         title: event.title,
         start: event.startDate,
         end: event.endDate,
-        place: event.location,
-        backgroundColor: '#4c95e4', 
+        place: event.location, 
         rrule: Object.keys(rrule).length ? rrule : undefined,
         duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
         allDay: event.startDate == event.endDate 
@@ -175,37 +179,33 @@ export class CalendarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       
-
     if (result) {
         const newEvent: CalendarEvent = {
           title: result.title,
-          startDate: result.dateStart,
-          endDate: result.dateEnd,
-          location: result.place,
-          frequency: result.recurrence,
-          repetitions: result.recurrenceEnd,
+          startDate: result.startDate,
+          endDate: result.endDate,
+          location: result.location,
+          frequency: result.frequency,
+          repetitions: result.repetitions,
           creatorId: result.creatorId
         };
 
-        alert(newEvent.creatorId);
-        
-        this.calendarService.addEvent(newEvent).subscribe(
-          () =>  {
-            this.alertService.showSuccess('Evento creato con successo!')
-            this.fetchEvents()
-          }
-        );
+        this.calendarService.addEvent(newEvent).subscribe({
+          next: () => this.fetchEvents(),
+          error: error => console.log(error)
+        });
       }
     });
   }
 
   fetchEvents() {
-    this.calendarService.getMyEvents(this.authService.currentUser).subscribe(
-      (data) => {
-
+    this.calendarService.getMyEvents(this.authService.currentUser).subscribe({
+      next: (data) => {
         this.events = data;
         this.loadCalendar();
-      }
-    );
+      },
+      error: error => console.log(error),
+      complete: () => this.isLoading = false
+    });
   }
 }

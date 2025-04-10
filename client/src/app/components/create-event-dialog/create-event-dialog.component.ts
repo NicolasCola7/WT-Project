@@ -32,14 +32,14 @@ import { AlertService } from '../../services/alert.service';
 export class CreateEventDialogComponent {
   //proprietà della classe
   title: string;
-  dateStart: Date;
-  dateEnd?: Date;
+  startDate: Date;
+  endDate?: Date;
   allDay: boolean = false;
-  place?: string;
-  recurrence: string = 'NONE';
-  recurrenceEnd?: 'INF' | number | Date;
+  location?: string;
+  frequency: string = 'NONE';
+  repetitionEndType?: 'NEVER' | 'COUNT' | 'UNTIL';
+  repetitions?: number | Date;
   isReadOnly: boolean = false;
-
   constructor(
       public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
       private dateAdapter: DateAdapter<any>,
@@ -47,12 +47,13 @@ export class CreateEventDialogComponent {
       private alertService: AlertService,
       @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = this.data.title || '';           
-    this.dateStart = this.data.dateStart || null; 
-    this.dateEnd =this. data.dateEnd || null;     
+    this.startDate = this.data.startDate || null; 
+    this.endDate = this.data.endDate || null;     
     this.allDay = this.data.allday || false;      
-    this.place = this.data.place || '';
-    this.recurrence = this.data.recurrence;
-    this.recurrenceEnd = this.data.recurrenceEnd || null;
+    this.location = this.data.location || '';
+    this.frequency = this.data.frequency;
+    this.repetitionEndType = this.data.repetitionEndType;
+    this.repetitions = this.data.repetitions || null;
     this.isReadOnly = this.data.updating;
     this.dateAdapter.setLocale('it');
     this.data.creatorId = this.authService.currentUser._id!;
@@ -65,33 +66,38 @@ export class CreateEventDialogComponent {
         return;
     }
 
-    if(!this.data.dateStart){
+    if(!this.data.startDate){
       this.alertService.showError('Data di inizio obbligatoria');
       return;
     }
-
-    if(!this.data.dateEnd && !this.allDay){
+    
+    if(!this.data.endDate && !this.allDay){
       this.alertService.showError('Data di fine obbligatoria');
       return;
     }
     
-    if(this.data.dateStart > this.data.dateEnd) {
-      this.alertService.showError('Data di inizio magiore di data di fine');
+    if(this.data.frequency !== 'NONE' && !this.data.repetitionEndType) {
+      this.alertService.showError('Tipo di ripetizione obbligatoria');
+      return;
+    }
+    
+    if(this.data.startDate > this.data.endDate) {
+      this.alertService.showError('Data di inizio maggiore di data di fine');
       return;
     }
 
-    if(!this.data.recurrence) {
+    if(!this.data.frequency) {
       this.alertService.showError('Ripetizione obbligatoria');
       return;
     }
 
-    if(this.data.recurrence !== 'NONE' && !this.data.recurrenceEnd) {
+    if(this.data.frequency !== 'NONE' && this.data.repetitionEndType !== 'NEVER' && !this.data.repetitions) {
       this.alertService.showError('Fine ripetizione obbligatoria');
       return;
     }
-  
+
     if (this.allDay) {
-        this.data.dateEnd = this.data.dateStart;
+        this.data.endDate = this.data.startDate;
     }
 
     this.dialogRef.close(this.data);

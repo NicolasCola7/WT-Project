@@ -9,8 +9,8 @@ import { PageTimerComponent } from './components/page-timer/page-timer.component
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'register', component: RegisterComponent, canActivate: [AuthGuardNoLogin] },
-    { path: 'login', component: LoginComponent, canActivate: [AuthGuardNoLogin] },
+    { path: 'register', component: RegisterComponent },
+    { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuardLogin] },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuardLogin] },
     { path: 'timer', component: PageTimerComponent, canActivate: [AuthGuardLogin] },

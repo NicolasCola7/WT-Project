@@ -1,3 +1,4 @@
+import { Timestamp } from "mongodb";
 import { model, Schema, Types } from "mongoose";
 
 export const frequencies = ['NONE', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
@@ -7,7 +8,7 @@ interface CalendarEventI {
     startDate: Date;
     endDate: Date;
     frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
-    repetitions?: 'INF' | number | Date;
+    repetitions?:  number | Date;
     location?: string;
     creatorId: Types.ObjectId;
 }
@@ -23,13 +24,7 @@ const calendarEventSchema = new Schema<CalendarEventI>({
     },
     repetitions: { 
         type: Schema.Types.Mixed, 
-        required: false,
-        validate: {
-            validator: function(v: any) {
-                return v === 'INF' || typeof v === 'number' || v instanceof Date;
-            },
-            message: props => `${props.value} is not a valid repetition value!`
-        }
+        required: false
     },
     creatorId: { 
         type: Schema.Types.ObjectId, 

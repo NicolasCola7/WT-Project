@@ -58,3 +58,9 @@
 #save-button:active {
   transform: translateY(1px);
 }
+
+#frequency {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
