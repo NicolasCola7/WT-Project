@@ -24,6 +24,7 @@ const setRoutes = (app: Application): void => {
   router.route('/event/:id').get(eventController.get);
   router.route('/event/:id').delete(eventController.delete);
   router.route('/events').get(eventController.getMyEvents);
+  router.route('/event/:id').put(eventController.update);
 
   //Activities
   router.route('/activity').post(activityController.insert);

@@ -24,6 +24,10 @@ export class CalendarService {
     return this.http.delete(`/api/event/${eventId}`, { responseType: 'text' });
   }
 
+  updateEvent(event: CalendarEvent): Observable<string> {
+    return this.http.put(`/api/event/${event._id}`, event, { responseType: 'text' });
+  }
+
   getMyActivities(user: User): Observable<Activity[]> {
     return this.http.get<Activity[]>('/api/activities', {
       params: {userID: user._id!}

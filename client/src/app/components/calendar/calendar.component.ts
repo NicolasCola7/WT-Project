@@ -178,11 +178,14 @@ export class CalendarComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
+        if (result === 'delete') {
           this.alertService.showQuestion(
             `Sei sicuro di voler eliminare l'evento '${eventData.title}'`,
             () => this.deleteEvent(eventData)
           );
+        }
+        if(result === 'edit') {
+          this.editEvent(eventData);
         }
       });
     }
@@ -314,6 +317,34 @@ export class CalendarComponent implements OnInit {
     this.calendarService.deleteEvent(event.id!).subscribe({
       next: () => this.fetchEvents(),
       error: (error) => console.log(error)
+    });
+  }
+
+  editEvent(event: EventApi) {
+    const dialogRef = this.dialog.open(CreateEventDialogComponent, {
+      width: '400vw',
+      height: 'auto',
+      data: event 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const updatedEvent: CalendarEvent = {
+          _id: event.id,
+          title: result.title,
+          startDate: result.startDate,
+          endDate: result.endDate,
+          location: result.location,
+          frequency: result.frequency,
+          repetitions: result.repetitions,
+          creatorId: result.creatorId
+        };
+
+        this.calendarService.updateEvent(updatedEvent).subscribe({
+          next: () => this.fetchEvents(),
+          error: error => console.log(error)
+        });
+      }
     });
   }
 }

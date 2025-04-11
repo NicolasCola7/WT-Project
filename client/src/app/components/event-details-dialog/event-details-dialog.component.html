@@ -1,9 +1,15 @@
 <div>
     <div id="dialog-header">
-        <button mat-icon-button class="close-button" (click)="onDelete()" aria-label="Elimina">
-            <mat-icon>delete_outline</mat-icon>
-        </button>
-        <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Chiudi">
+        <div>
+            <button mat-icon-button  (click)="onDelete()" aria-label="Elimina">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+            <button mat-icon-button  (click)="onEdit()" aria-label="Modifica">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        
+        <button mat-icon-button  (click)="onCancel()" aria-label="Chiudi">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -18,10 +24,10 @@
             </span>
             <span id="date">
                 <span>
-                    {{startDate}} alle {{startTime}} -
+                    {{startDate}} -
                 </span>
                 <span *ngIf="!data.allDay">
-                     {{endDate}} alle {{endTime}}
+                     {{endDate}}
                 </span>
                 <span *ngIf="data.allDay">
                     Tutto il giorno

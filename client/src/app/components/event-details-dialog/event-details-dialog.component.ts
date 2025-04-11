@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
@@ -16,18 +16,28 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class EventDetailsDialogComponent {
   dialogRef = inject(MatDialogRef);
-  data = inject(DIALOG_DATA);
-  startDate = this.data.start.toLocaleDateString();
-  startTime = this.data.start.getHours() + ':' + this.data.start.getMinutes();
-  endDate = this.data.end ? this.data.end.toLocaleDateString() : undefined;
-  endTime = this.data.end ? this.data.end.getHours() + ':' + this.data.end.getMinutes() : undefined;
+  data = inject(MAT_DIALOG_DATA);
+  startDate = this.data.start.toLocaleDateString('it-IT', { 
+    hour12: false, 
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  endDate = this.data.end ? this.data.end.toLocaleDateString('it-IT', { 
+    hour12: false, 
+    hour: '2-digit',
+    minute: '2-digit'
+  }) : undefined;
 
   onDelete() {
-    this.dialogRef.close(true);
+    this.dialogRef.close('delete');
   }
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  onEdit() {
+    this.dialogRef.close('edit');
   }
 }
 

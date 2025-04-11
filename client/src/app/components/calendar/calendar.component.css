@@ -21,10 +21,6 @@ h2 {
     justify-content: space-between;
   }
 
-  li:hover {
-    background-color: #f5f5f5;
-  }
-
   li > button {
     visibility: hidden;
     opacity: 0;
@@ -36,10 +32,6 @@ h2 {
   }
 
   li > button:hover {
-    background-color: #e0e0e0; /* Un grigio leggermente più scuro per il pulsante */
-  }
-
-  li > button:hover {
     background-color: #dde3ea;
   }
 
@@ -48,7 +40,7 @@ h2 {
     opacity: 1;
   }
 
-  b { /* used for event dates/times */
+  b { 
     margin-right: 3px;
   }
   
