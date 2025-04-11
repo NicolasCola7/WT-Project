@@ -7,7 +7,8 @@
 button {
     color: rgba(0, 0, 0, 0.54);
     border: 0px;
-    border-radius: 50px;
+    padding: 5px;
+    border-radius: 50%;
     background-color: transparent;
 }
 

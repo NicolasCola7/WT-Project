@@ -16,14 +16,14 @@
           <input matInput type="datetime-local" [(ngModel)]="data.startDate" required>
         </mat-form-field>
   
-        <mat-form-field class="custom-form-field" *ngIf="!allDay">
+        <mat-form-field class="custom-form-field" *ngIf="!data.allday">
           <mat-label>Data e ora di fine</mat-label>
           <input matInput type="datetime-local" [(ngModel)]="data.endDate"  required>
         </mat-form-field>
       </div>
       
       <div id="all-day-check">
-          <input type="checkbox" [checked]="allDay" (change)="allDayChange()" />
+          <input type="checkbox" [checked]="data.allday" (change)="!data.allday" />
           <span>Tutto il giorno</span>
       </div>
      

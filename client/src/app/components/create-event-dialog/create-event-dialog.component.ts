@@ -32,30 +32,13 @@ import { AlertService } from '../../services/alert.service';
 export class CreateEventDialogComponent {
   originalData = inject(MAT_DIALOG_DATA);
   data = {...this.originalData};
-  title: string;
-  startDate: Date;
-  endDate?: Date;
-  allDay: boolean = false;
-  location?: string;
-  frequency: string = 'NONE';
-  repetitionEndType?: 'NEVER' | 'COUNT' | 'UNTIL';
-  repetitions?: number | Date;
-  isReadOnly: boolean = false;
+
   constructor(
       public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
       private dateAdapter: DateAdapter<any>,
       private authService: AuthService,
       private alertService: AlertService,
      ) {
-    this.title = this.data.title || '';           
-    this.startDate = this.data.startDate || null; 
-    this.endDate = this.data.endDate || null;     
-    this.allDay = this.data.allday || false;      
-    this.location = this.data.location || '';
-    this.frequency = this.data.frequency;
-    this.repetitionEndType = this.data.repetitionEndType;
-    this.repetitions = this.data.repetitions || null;
-    this.isReadOnly = this.data.updating;
     this.dateAdapter.setLocale('it');
     this.data.creatorId = this.authService.currentUser._id!;
   }
@@ -72,7 +55,7 @@ export class CreateEventDialogComponent {
       return;
     }
     
-    if(!this.data.endDate && !this.allDay){
+    if(!this.data.endDate && !this.data.allday){
       this.alertService.showError('Data di fine obbligatoria');
       return;
     }
@@ -97,15 +80,11 @@ export class CreateEventDialogComponent {
       return;
     }
 
-    if (this.allDay) {
+    if (this.data.allday) {
         this.data.endDate = this.data.startDate;
     }
 
     this.dialogRef.close(this.data);
-  }
-
-  public allDayChange(): void{
-    this.allDay = !this.allDay;
   }
 
   onCancel(): void {

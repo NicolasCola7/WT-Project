@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -30,20 +30,15 @@ import { AlertService } from '../../services/alert.service';
   ]
 })
 export class CreateActivityDialogComponent {
-  title: string;
-  endDate?: Date;
-  isReadOnly: boolean = false;
 
+  data = inject(MAT_DIALOG_DATA);
   constructor(
     public dialogRef: MatDialogRef<CreateActivityDialogComponent>,  //riferimento alla fialog
     private dateAdapter: DateAdapter<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    
     private authService: AuthService,
     private alertService: AlertService
   ) {
-    this.title = data.title;           
-    this.endDate = data.endDate;     
-    this.isReadOnly = data.updating;
     this.dateAdapter.setLocale('it');
     this.data.creatorId = this.authService.currentUser._id!;
   }
@@ -53,6 +48,11 @@ export class CreateActivityDialogComponent {
    
     if(!this.data.title){
       this.alertService.showError('Titolo obbligatoro');
+      return;
+    }
+
+    if(!this.data.endDate){
+      this.alertService.showError('Data di fine obbligatoria');
       return;
     }
 

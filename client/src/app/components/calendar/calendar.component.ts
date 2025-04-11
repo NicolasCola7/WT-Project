@@ -219,6 +219,7 @@ export class CalendarComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '400vw',
       height: 'auto',
+      panelClass: 'custom-dialog-container',
       data: {} 
     });
 
