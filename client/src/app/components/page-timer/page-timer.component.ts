@@ -16,13 +16,16 @@ import { MatIconModule } from '@angular/material/icon';
 export class PageTimerComponent implements OnInit {
   @ViewChild(TimerComponent) timerComponent!: TimerComponent;
   cicles: boolean[] = [false, false, false, false, false];
-  settings: Settings = { work: 25, break: 5 , cicle: 5};
+  settings: Settings = { work: 30, break: 5 , cicle: 5};
   currentIntervalDuration: number = this.settings.work;
   currentTimerMode: TimerMode = 'Focus';
+  isSessionActive: boolean = false;
+
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
+
     this.loadSettings();
     this.currentIntervalDuration = this.settings.work;
     this.cicles = Array(this.settings.cicle).fill(false);
@@ -37,8 +40,9 @@ export class PageTimerComponent implements OnInit {
     }
 
     // Resetta il timer e la modalità
-    this.currentIntervalDuration = this.settings?.work || 25;
+    this.currentIntervalDuration = this.settings?.work || 30;
     this.currentTimerMode = 'Focus';  // Imposta la modalità iniziale a 'Focus'
+    this.isSessionActive = false;
   }
 
   onCicleFinish(): void {
@@ -48,10 +52,11 @@ export class PageTimerComponent implements OnInit {
       // Verifica se tutti gli elementi nell'array cicles sono true
       if (this.cicles.every(cicle => cicle === true)) {
         console.log('Tutti i cicli sono completi. Esecuzione terminata.');
+        this.isSessionActive = false;
         return;
       }
       
-      this.currentIntervalDuration = this.settings?.break || 25;
+      this.currentIntervalDuration = this.settings?.break || 30;
     } else {
       this.currentIntervalDuration = this.settings?.work || 5;
     }
@@ -59,12 +64,15 @@ export class PageTimerComponent implements OnInit {
   }
 
   toggleTimerMode(): void {
+    if (!this.isSessionActive) {
+      this.isSessionActive = true;
+    }
     this.currentTimerMode = this.currentTimerMode === 'Focus' ? 'Riposo' : 'Focus';
   }
 
   loadSettings(): void {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    this.settings = raw ? JSON.parse(raw) : { work: 25, break: 5 , cicle : 5};
+    this.settings = raw ? JSON.parse(raw) : { work: 30, break: 5 , cicle : 5};
   }
   
 
@@ -78,7 +86,7 @@ export class PageTimerComponent implements OnInit {
       if (result) {
         //aggiorno il controller con gli ultimi dati inseriti nella dialog
         this.loadSettings();
-        this.currentIntervalDuration = this.settings?.work || 25;
+        this.currentIntervalDuration = this.settings?.work || 30;
         this.cicles = Array(this.settings.cicle).fill(false);
       }
     });

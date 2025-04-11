@@ -12,7 +12,7 @@ import { Settings, SETTINGS_KEY } from '../../models/settings.model';
 export class SettingsTimerComponent implements OnInit{
   
   settingsForm = new FormGroup({
-    work: new FormControl(25, Validators.min(1)),
+    work: new FormControl(30, Validators.min(1)),
     break: new FormControl(5, Validators.min(1)),
     cicle: new FormControl(1, [Validators.min(1), Validators.max(10)])
   });
@@ -21,7 +21,7 @@ export class SettingsTimerComponent implements OnInit{
 
   ngOnInit(): void {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    const settings: Settings = raw ? JSON.parse(raw) : { work: 25, break: 5, cicle: 5 };
+    const settings: Settings = raw ? JSON.parse(raw) : { work: 30, break: 5, cicle: 5 };
 
     if (settings) {
       this.settingsForm.setValue(settings);

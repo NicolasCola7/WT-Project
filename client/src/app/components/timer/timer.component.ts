@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class TimerComponent implements OnInit, OnChanges {
   /** Current interval duration passed from the parent component */
-  @Input() intervalDuration = 25;
+  @Input() intervalDuration = 30;
   /** Current timer mode passed from the parent component */
   @Input() timerMode: TimerMode = 'Focus';
   /** Size of the timer itself. Based on this value styles of the circle are calculated */
@@ -19,6 +19,9 @@ export class TimerComponent implements OnInit, OnChanges {
 
   /** Event emitted when a session if finished */
   @Output() sessionFinish = new EventEmitter<void>();
+
+  @Output() countingStatusChanged = new EventEmitter<boolean>();
+
 
   /** Flag if the counter is on or off at the moment */
   isCounting = false;
@@ -71,6 +74,7 @@ export class TimerComponent implements OnInit, OnChanges {
    */
   startTimer(): void {
     this.isCounting = true;
+    this.countingStatusChanged.emit(this.isCounting); // notify parent
     this.countingInterval = window.setInterval(() => {
       this.subtractSecond();
     }, 1000);
@@ -118,6 +122,7 @@ export class TimerComponent implements OnInit, OnChanges {
    */
   finishSession(): void {
     this.playNotificationSound();
+    this.countingStatusChanged.emit(this.isCounting); // notify parent
     this.resetTimer();
     this.sessionFinish.emit();
   }
@@ -127,7 +132,7 @@ export class TimerComponent implements OnInit, OnChanges {
    */
   loadNotificationSound(): void {
     this.audio = new Audio();
-    this.audio.src = '../../../assets/goes-without-saying-608.mp3';
+    this.audio.src = 'assets/goes-without-saying-608.mp3';
     this.audio.load();
   }
 

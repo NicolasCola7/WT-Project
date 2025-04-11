@@ -8,6 +8,11 @@
   border: 4px solid transparent;
   box-sizing: border-box;
   transition: all 0.4s ease;
+  padding: 1rem;
+  max-width: 90vw;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
 }
 
 .timer-inner-container {
@@ -16,12 +21,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  padding: 10px;
+  padding: 1rem;
   text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .timer-mode {
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: bold;
   text-transform: uppercase;
   transition: color 0.3s ease;
@@ -31,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 10vw, 6rem);
   font-weight: 700;
   transition: color 0.3s ease;
 }
@@ -42,11 +50,14 @@
 
 .timer-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 button {
-  font-size: 18px;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   padding: 8px 20px;
   border: none;
   border-radius: 10px;
@@ -64,6 +75,7 @@ button {
   background-color: #fbc02d;
   color: black;
 }
+
 .btn--danger {
   background-color: #c62828;
   color: white;
@@ -72,6 +84,8 @@ button {
 /* CIRCLE BASE STYLE */
 .circle {
   position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .circle circle {
@@ -114,4 +128,20 @@ button {
 .rest-mode .circle circle {
   stroke: #002f27;
   fill: #b2dfdb;
+}
+
+/* 🔁 Media query per schermi molto piccoli */
+@media (max-height: 500px), (max-width: 400px) {
+  .timer-numbers {
+    font-size: 2.5rem;
+  }
+
+  .timer-mode {
+    font-size: 1rem;
+  }
+
+  .timer-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
