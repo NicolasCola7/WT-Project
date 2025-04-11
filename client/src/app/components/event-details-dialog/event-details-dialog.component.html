@@ -1,0 +1,40 @@
+<div>
+    <div id="dialog-header">
+        <button mat-icon-button class="close-button" (click)="onDelete()" aria-label="Elimina">
+            <mat-icon>delete_outline</mat-icon>
+        </button>
+        <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Chiudi">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-dialog-content>
+        <div id="title">
+            <h1> {{data.title}} </h1>
+        </div>
+        <div class="info-container">
+            <span class="icon">
+                <mat-icon>event</mat-icon>
+            </span>
+            <span id="date">
+                <span>
+                    {{startDate}} alle {{startTime}} -
+                </span>
+                <span *ngIf="!data.allDay">
+                     {{endDate}} alle {{endTime}}
+                </span>
+                <span *ngIf="data.allDay">
+                    Tutto il giorno
+                </span>
+            </span>
+        </div>
+        <div class='info-container' *ngIf="data.extendedProps.place">
+            <span class="icon">
+                <mat-icon>location_on</mat-icon>
+            </span>
+            <span>
+                {{data.extendedProps.place}} 
+            </span>
+        </div>
+    </mat-dialog-content>
+</div>

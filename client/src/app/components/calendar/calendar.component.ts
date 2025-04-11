@@ -1,7 +1,7 @@
-import { Component , signal, ChangeDetectorRef, inject, OnInit } from '@angular/core';
+import { Component , signal, ChangeDetectorRef, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg, EventApi } from '@fullcalendar/core';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, EventClickArg, EventApi, DateSelectArg, Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -19,6 +19,8 @@ import { CalendarService } from '../../services/calendar.service';
 import { AuthService } from '../../services/auth.service';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { Activity } from '../../models/activity.model';
+import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-calendar',
@@ -28,13 +30,15 @@ import { Activity } from '../../models/activity.model';
     DialogModule,
     CommonModule,
     LoadingComponent,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatIconModule
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
   standalone: true
 })
-export class CalendarComponent implements OnInit{
+export class CalendarComponent implements OnInit {
+  @ViewChild('fullcalendar') fullcalendar!: FullCalendarComponent
   isLoading = true;
   selectedDate = new Date();
   calendarVisible = signal(true);
@@ -62,11 +66,11 @@ export class CalendarComponent implements OnInit{
     selectable: false,
     selectMirror: false,
     dayMaxEvents: true,
+    nowIndicator: true,
     locales: [ itLocale ],
     locale: 'it',
     //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
   });
 
   constructor(private changeDetector: ChangeDetectorRef,
@@ -95,7 +99,7 @@ export class CalendarComponent implements OnInit{
   private convertEvents() {
     const converted = this.events.map(event => {
       const rrule: any = {};  //creazione oggetto rrule per gestire ripetizione
-
+      
       if(event.frequency !== 'NONE'){
         rrule.freq = event.frequency;
         rrule.dtstart = new Date(event.startDate!).toISOString();
@@ -121,7 +125,8 @@ export class CalendarComponent implements OnInit{
         place: event.location, 
         rrule: Object.keys(rrule).length ? rrule : undefined,
         duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
-        allDay: event.startDate == event.endDate 
+        allDay: event.startDate == event.endDate,
+        backgroundColor: '#4c95e4'
       }
     });
 
@@ -164,38 +169,23 @@ export class CalendarComponent implements OnInit{
     }));
   }
 
-  /*
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+  handleEventClick(clickInfo: EventClickArg) {
+    const eventData = clickInfo.event;
+    if(!eventData.classNames.length) {
+      const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
+        width: '80vw',
+        data: eventData,
+      });
 
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.alertService.showQuestion(
+            `Sei sicuro di voler eliminare l'evento '${eventData.title}'`,
+            () => this.deleteEvent(eventData)
+          );
+        }
       });
     }
-  } */
-
-  handleEventClick(clickInfo: EventClickArg) {
-    this.alertService.showQuestion(
-      `Sei sicuro di voler eliminare l'evento '${clickInfo.event.title}'`,
-      () => {
-        if(!clickInfo.event.classNames.length)
-          this.deleteEvent(clickInfo.event)
-        else
-          this.deleteActivity(clickInfo.event)
-      });
-  }
-
-  handleEvents(events: EventApi[]) {
-    this.currentEvents.set(events);
-    this.changeDetector.detectChanges();
   }
 
   newActivity(){
@@ -310,11 +300,14 @@ export class CalendarComponent implements OnInit{
     return endDate < Date.now();
   }
 
-  private deleteActivity(activity: EventApi) {
-    this.calendarService.deleteActivity(activity.id).subscribe({
-      next: () => this.fetchActivities(),
-      error: (error) => console.log(error)
-    });
+  deleteActivity(activity: Activity) {
+    this.alertService.showQuestion(
+      `Sei sicuro di voler eliminare l'attività '${activity.title}'`,
+      () => this.calendarService.deleteActivity(activity._id!).subscribe({
+        next: () => this.fetchActivities(),
+        error: (error) => console.log(error)
+      })
+    );
   } 
 
   private deleteEvent(event: EventApi) {

@@ -1,0 +1,35 @@
+#dialog-header {
+    display:flex;
+    justify-content: space-between;
+    padding: 2%;
+}
+
+button {
+    color: rgba(0, 0, 0, 0.54);
+    border: 0px;
+    border-radius: 50px;
+    background-color: transparent;
+}
+
+button:hover {
+    background-color: #dde3ea;
+}
+
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    align-content: center;
+}
+
+#title {
+    margin-bottom: 5%;
+    padding: 2%;
+}

@@ -48,6 +48,9 @@
             >
               {{completed.title}}
             </mat-checkbox>
+            <button mat-icon-button class="close-button" (click)="deleteActivity(completed)" aria-label="Elimina">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </li>
         </ul>
       </div>
