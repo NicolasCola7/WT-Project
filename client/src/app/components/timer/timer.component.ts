@@ -99,6 +99,10 @@ export class TimerComponent implements OnInit, OnChanges {
     this.circleFillLength = 0;
   }
 
+  next(): void {
+    this.finishSession();
+  }
+
   /**
    * Subtract a second from the current timer value
    */

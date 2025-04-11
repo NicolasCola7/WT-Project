@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, viewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingsTimerComponent } from '../settings-timer/settings-timer.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -53,6 +53,7 @@ export class PageTimerComponent implements OnInit {
       if (this.cicles.every(cicle => cicle === true)) {
         console.log('Tutti i cicli sono completi. Esecuzione terminata.');
         this.isSessionActive = false;
+        this.forcedEndSession();
         return;
       }
       

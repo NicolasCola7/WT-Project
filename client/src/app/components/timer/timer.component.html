@@ -51,6 +51,10 @@
         <mat-icon>restart_alt</mat-icon>
       </button>
 
+      <button *ngIf="isCounting" class="btn btn--danger" (click)="next()">
+        <mat-icon>skip_next</mat-icon>
+      </button>
+
       <ng-template #pauseButton>
         <button class="btn btn--secondary" (click)="pauseTimer()">
           <mat-icon>pause</mat-icon>
