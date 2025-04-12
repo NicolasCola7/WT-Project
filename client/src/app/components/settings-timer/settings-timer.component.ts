@@ -10,7 +10,6 @@ import { Settings, SETTINGS_KEY } from '../../models/settings.model';
   styleUrls: ['./settings-timer.component.css','../../../assets/css/button.css']
 })
 export class SettingsTimerComponent implements OnInit{
-  
   settingsForm = new FormGroup({
     work: new FormControl(30, Validators.min(1)),
     break: new FormControl(5, Validators.min(1)),
@@ -19,6 +18,10 @@ export class SettingsTimerComponent implements OnInit{
 
   constructor(private dialogRef: MatDialogRef<SettingsTimerComponent>,) { }
 
+  /*
+    quando viene inzializzato il componente carico i settings di default oppure quelli impostati
+    dall'utente in precedenza
+  */
   ngOnInit(): void {
     const raw = localStorage.getItem(SETTINGS_KEY);
     const settings: Settings = raw ? JSON.parse(raw) : { work: 30, break: 5, cicle: 5 };
@@ -29,9 +32,9 @@ export class SettingsTimerComponent implements OnInit{
   }
 
   /**
-   * Close the settings dialog. Save changes if called from the 'Save' button
-   * @param saveChanges flag telling if changes must be saved
-   */
+  * Chiude la finestra di dialogo delle impostazioni. Salva le modifiche se richiamate dal pulsante "Salva".
+  * @param saveChanges è che indica se le modifiche devono essere salvate.
+  */
   close(saveChanges = false): void {
     if (saveChanges) {
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settingsForm.value));

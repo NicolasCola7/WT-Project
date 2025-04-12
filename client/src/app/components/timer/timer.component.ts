@@ -10,37 +10,34 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./timer.component.css','../../../assets/css/button.css']
 })
 export class TimerComponent implements OnInit, OnChanges {
-  /** Current interval duration passed from the parent component */
+  //Durata dell'intervallo di tempo 'focus' passato dal componente padre: PageTimerComponent
   @Input() intervalDuration = 30;
-  /** Current timer mode passed from the parent component */
+  //Modalità del timer passata dal componente padre: PageTimerComponent
   @Input() timerMode: TimerMode = 'Focus';
-  /** Size of the timer itself. Based on this value styles of the circle are calculated */
   @Input() size = 350;
 
-  /** Event emitted when a session if finished */
+  //evento emesso quando finisce un ciclo 'focus'
   @Output() sessionFinish = new EventEmitter<void>();
-
+  //evento emesso quando cambia lo stato del timer
   @Output() countingStatusChanged = new EventEmitter<boolean>();
 
-
-  /** Flag if the counter is on or off at the moment */
+  //flag che mi dice se il timer è accesso
   isCounting = false;
-  /** Value of minutes displayed in the timer at the moment */
   currentValueMinutes = this.intervalDuration;
-  /** Value of seconds displayed in the timer at the moment */
+  
+  //secondi mostrati a schermo nel timer
   currentValueSeconds = 0;
-
-  /** Counting interval got from setInterval() function */
+  //numero di intervalli presi dalla funzion setInterval
   countingInterval!: number;
 
-  /** Length of the timer circle */
+  //circonferenza del cerchio del timer
   circleBaseLength!: number;
-  /** Length of the filled part of the timer circle. Needed for styles */
-  circleFillLength = 0;
-  /** Part of the circle filled in one second. Value is based on the current interval duration */
+  //lunghezza della parte 'avanzata' del cerchio del timer
+  circleFillLength = 0; 
+  //parte del circonferenza riempita in un secondo
   fractionsInOneSecond!: number;
 
-  /** Notification sound */
+  
   audio!: HTMLAudioElement;
 
   constructor() { }
@@ -51,11 +48,15 @@ export class TimerComponent implements OnInit, OnChanges {
     this.loadNotificationSound();
   }
 
+  //metodo richiamato ogni qualvolta che il componente timer subisce un cambiamento
   ngOnChanges(changes: SimpleChanges): void {
+    //controllo se esiste un cambiamento per la variabile intervalDuration
     if (!!changes['intervalDuration']) {
       this.currentValueMinutes = changes['intervalDuration'].currentValue;
       this.calculateFractionsInOneSecond();
     }
+    //se ci sono stati cambiamenti, ma non è il primo cambiamento (ovvero quello che avviene all'inizializzazione)
+    //facciamo partire il timer
     if (changes['timerMode'] && !changes['timerMode'].firstChange) {
       this.startTimer();
     }
@@ -69,29 +70,26 @@ export class TimerComponent implements OnInit, OnChanges {
     this.fractionsInOneSecond = this.circleBaseLength / (this.intervalDuration * 60);
   }
 
-  /**
-   * Start time counting. Change isCounting flag
-   */
+  //metodo invocato quando l'utente clicca play
   startTimer(): void {
     this.isCounting = true;
-    this.countingStatusChanged.emit(this.isCounting); // notify parent
+    //notifico PageTimerComponent che lo stato del timer è cambiato
+    this.countingStatusChanged.emit(this.isCounting);
     this.countingInterval = window.setInterval(() => {
       this.subtractSecond();
     }, 1000);
   }
 
-  /**
-   * Pause the counting
-   */
+  //metodo invocato quando l'utente mette in pausa il timer
   pauseTimer(): void {
     this.isCounting = false;
+    //ricalibro la posizione corretta della progress bar nel punto corretto
     this.circleFillLength -= this.fractionsInOneSecond;
+    //stoppo il timer
     clearInterval(this.countingInterval);
   }
 
-  /**
-   * Stop and reset the timer
-   */
+  //metodo invoca quando l'utente clicca il bottone per resettare il ciclo di quel timer
   resetTimer(): void {
     this.pauseTimer();
     this.currentValueMinutes = this.intervalDuration;
@@ -99,6 +97,7 @@ export class TimerComponent implements OnInit, OnChanges {
     this.circleFillLength = 0;
   }
 
+  //metodo invocato quando l'utente forza il passaggio successivo alla fase successiva
   next(): void {
     this.finishSession();
   }
@@ -121,42 +120,31 @@ export class TimerComponent implements OnInit, OnChanges {
     this.circleFillLength += this.fractionsInOneSecond;
   }
 
-  /**
-   * Finish session when timer came to 0
-   */
+  //metodo invocato quando finisce una fase del ciclo
   finishSession(): void {
     this.playNotificationSound();
-    this.countingStatusChanged.emit(this.isCounting); // notify parent
     this.resetTimer();
+    //notifico il PageTimerComponent degli eventi accaduti
+    this.countingStatusChanged.emit(this.isCounting);
     this.sessionFinish.emit();
   }
-
-  /**
-   * Load the audio of the notification sound played always at the session finish
-   */
+  
   loadNotificationSound(): void {
     this.audio = new Audio();
     this.audio.src = 'assets/goes-without-saying-608.mp3';
     this.audio.load();
   }
-
-  /**
-   * Play notification sound
-   */
+  
   playNotificationSound(): void {
     this.audio.play();
   }
 
-  /**
-   * Change state of the counter to the opposite: start/pause
-   */
+  //Cambia lo stato del contatore nell'opposto: avvio/pausa
   toggleCounter(): void {
     this.isCounting ? this.pauseTimer() : this.startTimer();
   }
 
-  /**
-   * Listen for the Space key press to start/pause the counter
-   */
+  //metodo che ascolta la tastiera che serve per stoppare/avviare il timer con il stato 'spazio'
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (event.code === 'Space') {

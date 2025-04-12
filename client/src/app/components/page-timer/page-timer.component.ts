@@ -20,12 +20,12 @@ export class PageTimerComponent implements OnInit {
   currentIntervalDuration: number = this.settings.work;
   currentTimerMode: TimerMode = 'Focus';
   isSessionActive: boolean = false;
-
+  showAnimation = false;
 
   constructor(private dialog: MatDialog) {}
 
+  //quando il componente viene inizializzato carico i settings iniziali
   ngOnInit(): void {
-
     this.loadSettings();
     this.currentIntervalDuration = this.settings.work;
     this.cicles = Array(this.settings.cicle).fill(false);
@@ -40,27 +40,37 @@ export class PageTimerComponent implements OnInit {
     }
 
     // Resetta il timer e la modalità
-    this.currentIntervalDuration = this.settings?.work || 30;
-    this.currentTimerMode = 'Focus';  // Imposta la modalità iniziale a 'Focus'
+    this.currentIntervalDuration = this.settings.work || 30;
+    this.currentTimerMode = 'Focus';
     this.isSessionActive = false;
   }
 
+  //metodo richiamato ogni volta che scade un timer
   onCicleFinish(): void {
     if (this.currentTimerMode === 'Focus') {
+      //aggiorno il flag a true per il ciclo corrente che è appena stato completato
       this.cicles[this.cicles.indexOf(false)] = true;
-
-      // Verifica se tutti gli elementi nell'array cicles sono true
+  
+      //se la condizione è vera significa che la sessione è finita
       if (this.cicles.every(cicle => cicle === true)) {
-        console.log('Tutti i cicli sono completi. Esecuzione terminata.');
         this.isSessionActive = false;
+        this.showAnimation = true;
+  
+        // Nascondi l'animazione dopo 5 secondi
+        setTimeout(() => {
+          this.showAnimation = false;
+        }, 5000);
+  
         this.forcedEndSession();
         return;
       }
-      
-      this.currentIntervalDuration = this.settings?.break || 30;
+  
+      this.currentIntervalDuration = this.settings.break || 30;
     } else {
-      this.currentIntervalDuration = this.settings?.work || 5;
+      this.currentIntervalDuration = this.settings.work || 5;
     }
+  
+    //inverto la modalità del timer
     this.toggleTimerMode();
   }
 
@@ -72,20 +82,23 @@ export class PageTimerComponent implements OnInit {
   }
 
   loadSettings(): void {
+    //carico gli ultimi settings impostati dall'utente altrimenti imposto quelli di default
     const raw = localStorage.getItem(SETTINGS_KEY);
     this.settings = raw ? JSON.parse(raw) : { work: 30, break: 5 , cicle : 5};
   }
   
 
   openSettings(): void {
+    //apro il componente
     const dialogRef = this.dialog.open(SettingsTimerComponent, {
       panelClass: 'no-padding',
       data: this.settings,
     });
 
+    //callback richiamata dopo la chiusura della dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        //aggiorno il controller con gli ultimi dati inseriti nella dialog
+        //aggiorno il componente con gli ultimi dati inseriti nella dialog
         this.loadSettings();
         this.currentIntervalDuration = this.settings?.work || 30;
         this.cicles = Array(this.settings.cicle).fill(false);
