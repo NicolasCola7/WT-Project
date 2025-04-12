@@ -1,0 +1,29 @@
+.list-container {
+    margin-bottom: 10px;
+}
+  
+.list-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+}
+  
+.list-content {
+    padding: 16px;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+}
+  
+.hidden {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+  
+.toggle-icon {
+    transition: transform 0.3s;
+}

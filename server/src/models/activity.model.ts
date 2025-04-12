@@ -6,6 +6,7 @@ interface ActivityI {
     endDate: Date;
     completed: boolean;
     creatorId: Types.ObjectId;
+    description?: string; 
 }
 
 const activitySchema = new Schema<ActivityI>({
@@ -18,6 +19,7 @@ const activitySchema = new Schema<ActivityI>({
         ref: 'User',
         required: true
     },
+    description: { type: String, required: false, trim: true }
 });
 
 const Activity = model<ActivityI>('Activity', activitySchema);

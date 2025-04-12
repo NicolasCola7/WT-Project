@@ -15,13 +15,33 @@ h2 {
     width: 100%;
     margin: 0;
     padding: 0;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .activity-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 
-  li > button {
+  .activity-description {
+    margin-left: 5%;
+    max-height: 50px;
+    overflow: hidden;
+		overflow-y: auto;
+  }
+
+  .activity-description::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .activity-description::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .activity-header > button {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.2s ease;
@@ -32,7 +52,7 @@ h2 {
     background-color: transparent;
   }
 
-  li > button:hover {
+  .activity-header > button:hover {
     background-color: #dde3ea;
   }
 
@@ -60,7 +80,8 @@ h2 {
   }
   
   .demo-app-sidebar-section {
-    padding: 2em;
+    display: flex;
+    flex-direction: column;
   }
   
   .demo-app-main {

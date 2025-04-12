@@ -9,13 +9,14 @@
           <mat-label>Titolo</mat-label>
           <input matInput [(ngModel)]="data.title"  required>
         </mat-form-field>
-    
-        <div id='date-and-time'>
-          <mat-form-field class="custom-form-field">
+        <mat-form-field class="custom-form-field">
             <mat-label>Data e ora di fine</mat-label>
             <input matInput type="datetime-local" [(ngModel)]="data.endDate"  required>
-          </mat-form-field>
-        </div>
+        </mat-form-field>
+        <mat-form-field class="custom-form-field">
+          <mat-label>Descrizione</mat-label>
+          <textarea matInput [(ngModel)]="data.description"></textarea>
+        </mat-form-field>
       </mat-dialog-content>
   
       <mat-dialog-actions >

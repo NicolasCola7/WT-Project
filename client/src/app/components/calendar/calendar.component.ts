@@ -21,6 +21,8 @@ import { LoadingComponent } from '../../common/loading/loading.component';
 import { Activity } from '../../models/activity.model';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
+import { CollapsibleListComponent } from "../../common/collapsible-list/collapsible-list.component";
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-calendar',
@@ -31,8 +33,10 @@ import {MatIconModule} from '@angular/material/icon';
     CommonModule,
     LoadingComponent,
     MatCheckboxModule,
-    MatIconModule
-  ],
+    MatIconModule,
+    CollapsibleListComponent,
+    MatListModule
+],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
   standalone: true
@@ -141,7 +145,8 @@ export class CalendarComponent implements OnInit {
       allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
       borderColor: 'transparent',
-      classNames: ['activity']
+      classNames: ['activity'],
+      description: activity.description
     }));
 
     return converted;
@@ -204,7 +209,8 @@ export class CalendarComponent implements OnInit {
           const newActivity: Activity = {
             title: result.title,
             endDate: result.endDate,
-            creatorId: result.creatorId
+            creatorId: result.creatorId,
+            description: result.description
           };
   
           this.calendarService.addActivity(newActivity).subscribe({

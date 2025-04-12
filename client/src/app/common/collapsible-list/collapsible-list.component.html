@@ -1,0 +1,12 @@
+<div class="list-container">
+      <div class="list-header" (click)="toggleList()">
+        <h3>{{ title }}</h3>
+        <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
+      </div>
+      
+      <div class="list-content" [ngClass]="{'hidden': !isExpanded}">
+        <div class="content-wrapper">
+          <ng-content></ng-content>
+        </div>
+      </div>
+</div>
