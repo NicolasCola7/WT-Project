@@ -23,7 +23,7 @@
       </div>
       
       <div id="all-day-check">
-          <input type="checkbox" [checked]="data.allday" (change)="!data.allday" />
+          <input type="checkbox" [checked]="data.allday" (change)="data.allday = !data.allday" />
           <span>Tutto il giorno</span>
       </div>
      
@@ -38,7 +38,6 @@
         </mat-select>
       </mat-form-field> 
   
-       <!-- Gestione fine ripetizione con 3 opzioni -->
     <div *ngIf="data.frequency !== 'NONE'" id="frequency">
       <mat-form-field class="custom-form-field">
         <mat-label>Tipo di fine ripetizione</mat-label>

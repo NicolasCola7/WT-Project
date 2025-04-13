@@ -1,0 +1,56 @@
+#dialog-header {
+    display:flex;
+    justify-content: space-between;
+    padding: 2%;
+}
+
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+button {
+    color: rgba(0, 0, 0, 0.54);
+    border: 0px;
+    padding: 5px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+button:hover {
+    background-color: #dde3ea;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    align-content: center;
+    max-width: 400vw;
+}
+
+mat-dialog-content {
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+#title {
+    margin-bottom: 5%;
+    padding: 2%;
+}
+
+.completed {
+    color: #4c9621;
+}
+
+.in-time {
+    color: #FFBB33;
+}
+
+.overdue {
+    color: #d82839;
+}

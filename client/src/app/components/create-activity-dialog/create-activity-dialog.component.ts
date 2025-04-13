@@ -30,8 +30,8 @@ import { AlertService } from '../../services/alert.service';
   ]
 })
 export class CreateActivityDialogComponent {
-
-  data = inject(MAT_DIALOG_DATA);
+  originalData = inject(MAT_DIALOG_DATA);
+  data = {...this.originalData};
   constructor(
     public dialogRef: MatDialogRef<CreateActivityDialogComponent>,  //riferimento alla fialog
     private dateAdapter: DateAdapter<any>,
@@ -51,8 +51,8 @@ export class CreateActivityDialogComponent {
       return;
     }
 
-    if(!this.data.endDate){
-      this.alertService.showError('Data di fine obbligatoria');
+    if(!this.data.dueDate){
+      this.alertService.showError('Data di scadenza obbligatoria');
       return;
     }
 

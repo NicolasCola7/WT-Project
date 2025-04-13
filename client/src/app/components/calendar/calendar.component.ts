@@ -23,6 +23,7 @@ import { EventDetailsDialogComponent } from '../event-details-dialog/event-detai
 import {MatIconModule} from '@angular/material/icon';
 import { CollapsibleListComponent } from "../../common/collapsible-list/collapsible-list.component";
 import {MatListModule} from '@angular/material/list';
+import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activity-details-dialog.component';
 
 @Component({
   selector: 'app-calendar',
@@ -141,12 +142,16 @@ export class CalendarComponent implements OnInit {
     const converted = activities.map(activity => ({
       id: activity._id,
       title: activity.title,
-      start: this.isOverdue(activity.endDate!) ? new Date(Date.now()) : activity.endDate!, 
+      start: this.isOverdue(activity.dueDate!) ? new Date(Date.now()) : activity.dueDate!, 
       allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
       borderColor: 'transparent',
       classNames: ['activity'],
-      description: activity.description
+      completed: activity.completed,
+      description: activity.description,
+      isActivity: true,
+      creatorId: activity.creatorId,
+
     }));
 
     return converted;
@@ -157,7 +162,7 @@ export class CalendarComponent implements OnInit {
     if (activity.completed)
       return '#4c9621';
     
-    if(this.isOverdue(activity.endDate!))
+    if(this.isOverdue(activity.dueDate!))
       return '#d82839';
     
     return '#FFBB33';
@@ -176,24 +181,55 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(clickInfo: EventClickArg) {
     const eventData = clickInfo.event;
-    if(!eventData.classNames.length) {
-      const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
-        width: '80vw',
-        data: eventData,
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 'delete') {
-          this.alertService.showQuestion(
-            `Sei sicuro di voler eliminare l'evento '${eventData.title}'`,
-            () => this.deleteEvent(eventData)
-          );
-        }
-        if(result === 'edit') {
-          this.editEvent(eventData);
-        }
-      });
+    if(!eventData.extendedProps['isActivity']) {
+      this.viewEventDetails(eventData);
+    } else {
+      const activity: Activity = {
+        _id: eventData.id,
+        title: eventData.title,
+        dueDate: eventData.start!,
+        completed: eventData.extendedProps['completed'],
+        description: eventData.extendedProps['description'],
+        creatorId: eventData.extendedProps['creatorId']
+      };
+      this.viewActivityDetails(activity);
     }
+  }
+
+  viewEventDetails(event: EventApi) {
+    const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
+      width: '80vw',
+      data: event,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.alertService.showQuestion(
+          `Sei sicuro di voler eliminare l'evento '${event.title}'`,
+          () => this.deleteEvent(event)
+        );
+      }
+      if(result === 'edit') {
+        this.editEvent(event);
+      }
+    });
+  }
+
+  viewActivityDetails(activity: Activity) {
+    const dialogRef = this.dialog.open(ActivityDetailsDialogComponent, {
+      width: '80vw',
+      data: activity,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteActivity(activity._id!, activity.title!);
+      }
+
+      if(result === 'edit') {
+        this.editActivity(activity);
+      }
+    });
   }
 
   newActivity(){
@@ -208,7 +244,7 @@ export class CalendarComponent implements OnInit {
       if (result) {
           const newActivity: Activity = {
             title: result.title,
-            endDate: result.endDate,
+            dueDate: result.dueDate,
             creatorId: result.creatorId,
             description: result.description
           };
@@ -280,7 +316,7 @@ export class CalendarComponent implements OnInit {
 
   private getOverdueActivities() {
     for (let i = this.activities.length - 1; i >= 0; i--) {
-      if (!this.activities[i].completed && this.isOverdue(this.activities[i].endDate!)) {
+      if (!this.activities[i].completed && this.isOverdue(this.activities[i].dueDate!)) {
         this.overdueActivities.unshift(this.activities.splice(i, 1)[0]);
       }
     }
@@ -297,7 +333,7 @@ export class CalendarComponent implements OnInit {
   changeActivityStatus(activity: Activity) {
     activity.completed = !activity.completed;
 
-    this.calendarService.changeActivityStatus(activity).subscribe({
+    this.calendarService.updateActivity(activity).subscribe({
       next: () => this.fetchActivities(),
       error: (error) => console.log(error),
       complete: () => this.isLoading = false
@@ -310,10 +346,10 @@ export class CalendarComponent implements OnInit {
     return endDate < Date.now();
   }
 
-  deleteActivity(activity: Activity) {
+  deleteActivity(id: string, title: string) {
     this.alertService.showQuestion(
-      `Sei sicuro di voler eliminare l'attività '${activity.title}'`,
-      () => this.calendarService.deleteActivity(activity._id!).subscribe({
+      `Sei sicuro di voler eliminare l'attività '${title}'`,
+      () => this.calendarService.deleteActivity(id).subscribe({
         next: () => this.fetchActivities(),
         error: (error) => console.log(error)
       })
@@ -349,6 +385,31 @@ export class CalendarComponent implements OnInit {
 
         this.calendarService.updateEvent(updatedEvent).subscribe({
           next: () => this.fetchEvents(),
+          error: error => console.log(error)
+        });
+      }
+    });
+  }
+
+  editActivity(activity: Activity) {
+    const dialogRef = this.dialog.open(CreateActivityDialogComponent, {
+      width: '400vw',
+      height: 'auto',
+      data: activity 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const updatedActivity: Activity = {
+          _id: activity._id,
+          title: result.title,
+          dueDate: result.dueDate,
+          description: result.description,
+          creatorId: result.creatorId
+        };
+
+        this.calendarService.updateActivity(updatedActivity).subscribe({
+          next: () => this.fetchActivities(),
           error: error => console.log(error)
         });
       }

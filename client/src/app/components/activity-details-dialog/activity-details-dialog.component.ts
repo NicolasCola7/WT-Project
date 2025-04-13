@@ -4,28 +4,25 @@ import { Component, inject } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 
 @Component({
-  selector: 'app-event-details-dialog',
+  selector: 'app-activity-details-dialog',
   imports: [
     MatIconModule,
     CommonModule,
     MatDialogModule
   ],
-  templateUrl: './event-details-dialog.component.html',
-  styleUrl: './event-details-dialog.component.css'
+  templateUrl: './activity-details-dialog.component.html',
+  styleUrl: './activity-details-dialog.component.css'
 })
-export class EventDetailsDialogComponent {
+export class ActivityDetailsDialogComponent {
   dialogRef = inject(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  startDate = this.data.start.toLocaleDateString('it-IT', { 
+  dueDate =  new Date(this.data.dueDate).toLocaleDateString('it-IT', { 
     hour12: false, 
     hour: '2-digit',
     minute: '2-digit'
   });
-  endDate = this.data.end ? this.data.end.toLocaleDateString('it-IT', { 
-    hour12: false, 
-    hour: '2-digit',
-    minute: '2-digit'
-  }) : undefined;
+  overdue =  new Date(this.data.dueDate).getTime() < Date.now();
+
 
   onDelete() {
     this.dialogRef.close('delete');
@@ -39,5 +36,3 @@ export class EventDetailsDialogComponent {
     this.dialogRef.close('edit');
   }
 }
-
-

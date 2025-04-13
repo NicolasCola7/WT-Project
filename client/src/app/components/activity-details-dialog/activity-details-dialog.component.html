@@ -1,0 +1,46 @@
+<div>
+    <div id="dialog-header">
+        <div>
+            <button mat-icon-button  (click)="onDelete()" aria-label="Elimina">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+            <button mat-icon-button  (click)="onEdit()" aria-label="Modifica">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        
+        <button mat-icon-button  (click)="onCancel()" aria-label="Chiudi">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-dialog-content>
+        <div id="title">
+            <h1> {{data.title}} </h1>
+        </div>
+        <div class="info-container">
+            <span class="icon">
+                <mat-icon>av_timer</mat-icon>
+            </span>
+            <span id="date">
+                <span>
+                    {{dueDate}} -
+                </span>
+                <span *ngIf='!data.completed' [ngClass]="overdue ? 'overdue' : 'in-time'">
+                    {{ overdue ? 'Scaduta' : "In tempo"}}
+                </span>
+                <span *ngIf='data.completed' class="completed">
+                    Completata
+                </span>
+            </span>
+        </div>
+        <div class="info-container" *ngIf="data.description">
+            <span class="icon">
+                <mat-icon>description</mat-icon>
+            </span>
+            <span>
+                {{data.description}}
+            </span>
+        </div>
+    </mat-dialog-content>
+</div>

@@ -2,8 +2,7 @@ import { model, Schema, Types } from "mongoose";
 
 interface ActivityI {
     title: string;
-    startDate: Date;
-    endDate: Date;
+    dueDate: Date;
     completed: boolean;
     creatorId: Types.ObjectId;
     description?: string; 
@@ -11,8 +10,7 @@ interface ActivityI {
 
 const activitySchema = new Schema<ActivityI>({
     title: {type: String, required: true, trim: true },
-    startDate: {type: Date, default: Date.now() },
-    endDate: {type: Date, required: true },
+    dueDate: {type: Date, required: true },
     completed: {type: Boolean, default: false, required: true },
     creatorId: { 
         type: Schema.Types.ObjectId, 

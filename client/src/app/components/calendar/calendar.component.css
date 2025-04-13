@@ -15,33 +15,13 @@ h2 {
     width: 100%;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .activity-header {
+    align-items: center;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
   }
 
-  .activity-description {
-    margin-left: 5%;
-    max-height: 50px;
-    overflow: hidden;
-		overflow-y: auto;
-  }
-
-  .activity-description::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .activity-description::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
-
-  .activity-header > button {
+  li > div > button {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.2s ease;
@@ -52,13 +32,19 @@ h2 {
     background-color: transparent;
   }
 
-  .activity-header > button:hover {
+  li > div > button:hover {
     background-color: #dde3ea;
   }
 
-  li:hover button {
+  li:hover div button {
     visibility: visible;
     opacity: 1;
+  }
+
+  .activity-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
   }
 
   b { 
