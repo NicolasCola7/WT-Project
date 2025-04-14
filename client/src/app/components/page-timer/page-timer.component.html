@@ -4,43 +4,43 @@
 }">
   <main>
     <h1>POMODORO TIMER</h1>
+    <div class="contenuto">
+      <app-timer
+        [intervalDuration]="currentIntervalDuration"
+        [timerMode]="currentTimerMode"
+        [isForcedEndSession]="isForcedEndSession"
+        (sessionFinish)="onCicleFinish()"
+        (countingStatusChanged)="isSessionActive = $event"
+      ></app-timer>
 
-    <app-timer
-      [intervalDuration]="currentIntervalDuration"
-      [timerMode]="currentTimerMode"
-      [isForcedEndSession]="isForcedEndSession"
-      (sessionFinish)="onCicleFinish()"
-      (countingStatusChanged)="isSessionActive = $event"
-    ></app-timer>
+      <div class="cicles">
+        <div>SESSIONE</div>
 
-    <div class="cicles">
-      <div>SESSIONE</div>
+        <div class="cicle-list">
+          <div
+            id="cicle"
+            *ngFor="let cicle of cicles"
+            [ngClass]="{ success: cicle }"
+          ></div>
+        </div>
 
-      <div class="cicle-list">
-        <div
-          id="cicle"
-          *ngFor="let cicle of cicles"
-          [ngClass]="{ success: cicle }"
-        ></div>
+        <div>
+          <button class="btn btn--secondary" 
+          (click)="forcedEndSession()"
+          [disabled]="!isSessionActive">
+            <mat-icon>stop_circle</mat-icon>
+          </button>
+        </div>
       </div>
 
-      <div>
-        <button class="btn btn--secondary" 
-        (click)="forcedEndSession()"
-        [disabled]="!isSessionActive">
-          <mat-icon>stop_circle</mat-icon>
-        </button>
-      </div>
+      <button
+        class="btn btn--secondary"
+        (click)="openSettings()"
+        [disabled]="isSessionActive"
+      >
+        <mat-icon>settings</mat-icon>
+      </button>
     </div>
-
-    <button
-      class="btn btn--secondary"
-      (click)="openSettings()"
-      [disabled]="isSessionActive"
-    >
-      <mat-icon>settings</mat-icon>
-    </button>
-
     <div class="session-complete-animation" *ngIf="showAnimation">
       <p>🎉 Sessione completata! Ottimo lavoro! 🎉</p>
     </div>    

@@ -30,10 +30,6 @@ export class AlertService  {
         confirmButtonText: 'OK'
     });
   }
-  
-  showQuestion(text: string, onConfirm: () => void): void;
-
-  showQuestion(text: string, onConfirm: () => void, onNotConfirm: () => void): void;
 
   showQuestion(text: string, onConfirm: () => void, onNotConfirm?: () => void): void {
     Swal.fire({

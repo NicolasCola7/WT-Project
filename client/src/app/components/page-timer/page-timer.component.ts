@@ -52,6 +52,7 @@ export class PageTimerComponent implements OnInit {
     this.alertService.showQuestion("Sei sicuro di voler annullare i progressi svolti in questa sessione di studio?", () => this.EndSession(), () =>{
       this.timerComponent.startTimer();
     });
+    this.isForcedEndSession = false;
   }
 
   //metodo richiamato ogni volta che scade un timer

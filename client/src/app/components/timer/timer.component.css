@@ -133,15 +133,10 @@ button {
 /* 🔁 Media query per schermi molto piccoli */
 @media (max-height: 500px), (max-width: 400px) {
   .timer-numbers {
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
 
   .timer-mode {
     font-size: 1rem;
-  }
-
-  .timer-actions {
-    flex-direction: column;
-    gap: 8px;
   }
 }

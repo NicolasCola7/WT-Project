@@ -41,6 +41,14 @@ body {
   box-sizing: border-box;
 }
 
+/* CONTENUTO: default column */
+.page-timer .contenuto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
 
 /* TITOLO */
 .page-timer h1 {
@@ -128,7 +136,6 @@ body {
   100% { opacity: 0; transform: scale(0.8); }
 }
 
-
 /* MEDIA QUERY PER PICCOLI SCHERMI */
 @media (max-width: 480px), (max-height: 600px) {
   .page-timer .cicles {
@@ -147,3 +154,12 @@ body {
   }
 }
 
+/* NUOVA MEDIA QUERY: modalità landscape su smartphone */
+@media screen and (max-width: 932px) and (orientation: landscape) {
+  .page-timer .contenuto {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
