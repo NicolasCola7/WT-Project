@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingsTimerComponent } from '../settings-timer/settings-timer.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Settings, SETTINGS_KEY, TimerMode } from '../../models/settings.model';
 import { TimerComponent } from '../timer/timer.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-page-timer',
@@ -21,8 +22,9 @@ export class PageTimerComponent implements OnInit {
   currentTimerMode: TimerMode = 'Focus';
   isSessionActive: boolean = false;
   showAnimation = false;
+  isForcedEndSession!: boolean;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private alertService: AlertService) {}
 
   //quando il componente viene inizializzato carico i settings iniziali
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class PageTimerComponent implements OnInit {
     this.cicles = Array(this.settings.cicle).fill(false);
   }
   
-  forcedEndSession() {
+  EndSession() {
     // Ripristina completamente i cicli a "false"
     this.cicles = Array(this.settings.cicle).fill(false);
 
@@ -43,6 +45,13 @@ export class PageTimerComponent implements OnInit {
     this.currentIntervalDuration = this.settings.work || 30;
     this.currentTimerMode = 'Focus';
     this.isSessionActive = false;
+  }
+  forcedEndSession(){
+    this.isForcedEndSession = true;
+    this.timerComponent.pauseTimer();
+    this.alertService.showQuestion("Sei sicuro di voler annullare i progressi svolti in questa sessione di studio?", () => this.EndSession(), () =>{
+      this.timerComponent.startTimer();
+    });
   }
 
   //metodo richiamato ogni volta che scade un timer
@@ -61,7 +70,7 @@ export class PageTimerComponent implements OnInit {
           this.showAnimation = false;
         }, 5000);
   
-        this.forcedEndSession();
+        this.EndSession();
         return;
       }
   

@@ -15,6 +15,8 @@ export class TimerComponent implements OnInit, OnChanges {
   //Modalità del timer passata dal componente padre: PageTimerComponent
   @Input() timerMode: TimerMode = 'Focus';
   @Input() size = 350;
+  //informazione sul fatto che è stato premuto il bottone reset sessione
+  @Input() isForcedEndSession!: boolean;
 
   //evento emesso quando finisce un ciclo 'focus'
   @Output() sessionFinish = new EventEmitter<void>();
@@ -55,9 +57,10 @@ export class TimerComponent implements OnInit, OnChanges {
       this.currentValueMinutes = changes['intervalDuration'].currentValue;
       this.calculateFractionsInOneSecond();
     }
-    //se ci sono stati cambiamenti, ma non è il primo cambiamento (ovvero quello che avviene all'inizializzazione)
+    //se ci sono stati cambiamenti, ma non è il primo cambiamento 
+    //(ovvero quello che avviene all'inizializzazione) e non è stato premuto il tasto di reset di sessione
     //facciamo partire il timer
-    if (changes['timerMode'] && !changes['timerMode'].firstChange) {
+    if (changes['timerMode'] && !changes['timerMode'].firstChange && !this.isForcedEndSession) {
       this.startTimer();
     }
   }

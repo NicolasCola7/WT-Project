@@ -30,23 +30,29 @@ export class AlertService  {
         confirmButtonText: 'OK'
     });
   }
+  
+  showQuestion(text: string, onConfirm: () => void): void;
 
-  showQuestion(text: string, onConfirm: () => void) {
+  showQuestion(text: string, onConfirm: () => void, onNotConfirm: () => void): void;
+
+  showQuestion(text: string, onConfirm: () => void, onNotConfirm?: () => void): void {
     Swal.fire({
-        title: 'Attenzione!',
-        text: text,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: "Conferma",
-        cancelButtonText: "Annulla",
-        customClass: {
-            confirmButton: "my-confirm-button",
-            cancelButton: "my-cancel-button"
-        }
+      title: 'Attenzione!',
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: "Conferma",
+      cancelButtonText: "Annulla",
+      customClass: {
+        confirmButton: "my-confirm-button",
+        cancelButton: "my-cancel-button"
+      }
     }).then(result => {
-        if (result.isConfirmed) {
-            onConfirm();
-        }
+      if (result.isConfirmed) {
+        onConfirm();
+      } else if (onNotConfirm) {
+        onNotConfirm();
+      }
     });
   }
 }

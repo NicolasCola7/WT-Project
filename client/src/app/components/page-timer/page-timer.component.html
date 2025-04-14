@@ -8,6 +8,7 @@
     <app-timer
       [intervalDuration]="currentIntervalDuration"
       [timerMode]="currentTimerMode"
+      [isForcedEndSession]="isForcedEndSession"
       (sessionFinish)="onCicleFinish()"
       (countingStatusChanged)="isSessionActive = $event"
     ></app-timer>
