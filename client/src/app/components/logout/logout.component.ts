@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
-  styleUrl: './logout.component.css',
+  styleUrls: ['./logout.component.css','../../../assets/css/button.css'],
   standalone: true,
   imports: [CommonModule]
 })

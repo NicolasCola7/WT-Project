@@ -35,11 +35,11 @@ export class GridComponent {
       resizable: {
         enabled: true,
       },
-      //griglia 6x6
-      minCols: 6,
-      minRows: 6,
-      maxCols: 6,
-      maxRows: 6,
+      //griglia 12x12
+      minCols: 12,
+      minRows: 12,
+      maxCols: 12,
+      maxRows: 12,
       setGridSize: true,
       pushItems: false,
       displayGrid: 'none',
@@ -47,12 +47,16 @@ export class GridComponent {
     };
     //componenti della dashboard
     this.dashboard = [
-      { cols: 2, rows: 3, y: 0, x: 0, name: 'Calendario', relativeUrl: '/calendar' },
-      { cols: 2, rows: 3, y: 0, x: 2, name: 'Timer', relativeUrl: '/timer'},
-      { cols: 2, rows: 3, y: 0, x: 4, name: 'Note', relativeUrl: '/note' },
-      { cols: 2, rows: 3, y: 3, x: 0, name: 'Time Machine', relativeUrl: '/time-machine' },
-      { cols: 2, rows: 3, y: 3, x: 2, name: 'Extra 1', relativeUrl: '/extra1' },
-      { cols: 2, rows: 3, y: 3, x: 4, name: 'Extra 2', relativeUrl: '/extra2' },
+      // Prima riga (y: 0)
+      { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: '/calendar' },
+      { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: '/timer' },
+      { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: '/note' },
+    
+      // Seconda riga (y: 3)
+      { cols: 4, rows: 6, y: 3, x: 0, name: 'Time Machine', relativeUrl: '/time-machine' },
+      { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 1', relativeUrl: '/extra1' },
+      { cols: 4, rows: 6, y: 3, x: 8, name: 'Extra 2', relativeUrl: '/extra2' },
     ];
+    
   }
 }

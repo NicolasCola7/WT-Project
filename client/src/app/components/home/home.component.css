@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background-color: lightblue;
+    position: relative; /* necessario per posizionare il logout */
+}
+
+app-logout {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    z-index: 10;
+}
+
+.header p {
+    font-size: 30px;
+    text-align: center;
+    padding: 40px 0px;
+    font-weight: bold;
+}
+
+.grid {
+    flex: 4;
+}

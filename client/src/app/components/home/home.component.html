@@ -1,5 +1,10 @@
 <app-loading [condition]="isLoading"></app-loading>
-
-<p> Ciao {{user.username}}</p>
-<app-grid />
-<app-logout />
+<main>
+    <div class="header">
+        <app-logout />
+        <p> Ciao {{user.username}}. Benvenuto/a in SELFIE</p>
+    </div>
+    <div class="grid">
+        <app-grid />
+    </div>
+</main>
