@@ -89,7 +89,6 @@ export class CalendarComponent implements OnInit {
     this.fetchActivities();
   }
 
-  // Carica attività ed eventi nel calendario
   private loadCalendar(): void {
     const calendarEvents = this.convertEvents();
     const calendarActivities = [...this.convertActivities(this.activities), ...this.convertActivities(this.overdueActivities)];
@@ -103,7 +102,7 @@ export class CalendarComponent implements OnInit {
 
   private convertEvents() {
     const converted = this.events.map(event => {
-      const rrule: any = {};  //creazione oggetto rrule per gestire ripetizione
+      const rrule: any = {};
       
       if(event.frequency !== 'NONE'){
         rrule.freq = event.frequency;

@@ -30,21 +30,21 @@ import { AlertService } from '../../services/alert.service';
   ]
 })
 export class CreateEventDialogComponent {
-  originalData = inject(MAT_DIALOG_DATA);
-  data = {...this.originalData};
+  data: any;
 
   constructor(
       public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
       private dateAdapter: DateAdapter<any>,
       private authService: AuthService,
       private alertService: AlertService,
+      @Inject(MAT_DIALOG_DATA) public originalData: any
      ) {
+    this.data = {...originalData};
     this.dateAdapter.setLocale('it');
     this.data.creatorId = this.authService.currentUser._id!;
   }
 
   onSave(): void {
-    //controllo sui campi obbligatori
     if(!this.data.title){
         this.alertService.showError('Titolo obbligatoro');
         return;
