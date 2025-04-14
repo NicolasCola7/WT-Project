@@ -5,18 +5,18 @@
     </button>
   </div>
     <mat-dialog-content>
-      <mat-form-field class="custom-form-field">
+      <mat-form-field class="custom-form-field" appearance="outline">
         <mat-label>Titolo</mat-label>
         <input matInput [(ngModel)]="data.title"  required>
       </mat-form-field>
   
       <div id='date-and-time'>
-        <mat-form-field class="custom-form-field">
+        <mat-form-field class="custom-form-field" appearance="outline">
           <mat-label>Data e ora di inizio </mat-label>
           <input matInput type="datetime-local" [(ngModel)]="data.startDate" required>
         </mat-form-field>
   
-        <mat-form-field class="custom-form-field" *ngIf="!data.allday">
+        <mat-form-field class="custom-form-field" *ngIf="!data.allday" appearance="outline">
           <mat-label>Data e ora di fine</mat-label>
           <input matInput type="datetime-local" [(ngModel)]="data.endDate"  required>
         </mat-form-field>
@@ -27,9 +27,9 @@
           <span>Tutto il giorno</span>
       </div>
      
-      <mat-form-field class="custom-form-field">
+      <mat-form-field class="custom-form-field" appearance="outline">
         <mat-label>Ripeti</mat-label>
-        <mat-select [(ngModel)]="data.frequency" required>
+        <mat-select [(ngModel)]="data.frequency" value="NONE" required>
           <mat-option value="NONE">Non si ripete</mat-option>
           <mat-option value="DAILY">Ogni giorno</mat-option>
           <mat-option value="WEEKLY">Ogni settimana</mat-option>
@@ -38,8 +38,8 @@
         </mat-select>
       </mat-form-field> 
   
-    <div *ngIf="data.frequency !== 'NONE'" id="frequency">
-      <mat-form-field class="custom-form-field">
+    <div *ngIf="data.frequency !== 'NONE'" id="frequency" >
+      <mat-form-field class="custom-form-field" appearance="outline">
         <mat-label>Tipo di fine ripetizione</mat-label>
         <mat-select [(ngModel)]="data.repetitionEndType" required>
           <mat-option value="NEVER">Nessuna fine</mat-option>
@@ -48,12 +48,12 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="custom-form-field" *ngIf="data.repetitionEndType === 'COUNT'">
+      <mat-form-field class="custom-form-field" *ngIf="data.repetitionEndType === 'COUNT'" appearance="outline">
         <mat-label>Numero di ripetizioni</mat-label>
         <input matInput type="number" min="1" [(ngModel)]="data.repetitions" required>
       </mat-form-field>
 
-      <mat-form-field class="custom-form-field" *ngIf="data.repetitionEndType === 'UNTIL'">
+      <mat-form-field class="custom-form-field" *ngIf="data.repetitionEndType === 'UNTIL'" appearance="outline">
         <mat-label>Fine ripetizione</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="data.repetitions" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -61,7 +61,7 @@
       </mat-form-field>
     </div>
 
-      <mat-form-field class="custom-form-field">
+      <mat-form-field class="custom-form-field" appearance="outline">
         <mat-label>Luogo</mat-label>
         <input matInput [(ngModel)]="data.location">
       </mat-form-field>

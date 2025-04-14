@@ -16,16 +16,20 @@ import { MatIconModule } from '@angular/material/icon';
 export class EventDetailsDialogComponent {
   dialogRef = inject(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  startDate = this.data.start.toLocaleDateString('it-IT', { 
+  startDate = this.data.startDate.toLocaleDateString('it-IT', { 
     hour12: false, 
     hour: '2-digit',
     minute: '2-digit'
   });
-  endDate = this.data.end ? this.data.end.toLocaleDateString('it-IT', { 
+  endDate = this.data.endDate ? this.data.endDate.toLocaleDateString('it-IT', { 
     hour12: false, 
     hour: '2-digit',
     minute: '2-digit'
   }) : undefined;
+  recurrent = this.data.frequency !== 'NONE';
+  count = typeof this.data.repetitions === 'number';
+  until = typeof this.data.repetitions === 'string';
+  repetitions = this.until ? new Date(this.data.repetitions).toLocaleDateString() : this.data.repetitions;
 
   onDelete() {
     this.dialogRef.close('delete');

@@ -11,62 +11,59 @@
             <button (click)="newActivity()">Attività</button>
         </div>
       </div>
-      <div class='demo-app-sidebar-section'>
-        <app-collapsible-list title="Attività completate ({{overdueActivities.length}})">
-          <ul>
-            <li *ngFor='let overdue of overdueActivities'>
-                <mat-checkbox (change)="changeActivityStatus(overdue)">
-                  {{overdue.title}}
+      <div class="activities">
+        <app-collapsible-list title="Attività">
+          <app-collapsible-list title="Scadute ({{overdueActivities.length}})">
+            <ul>
+              <li *ngFor='let overdue of overdueActivities'>
+                  <mat-checkbox (change)="changeActivityStatus(overdue)">
+                    {{overdue.title}}
+                  </mat-checkbox>
+                  <div class="activity-actions">
+                    <button mat-icon-button  (click)="viewActivityDetails(overdue)" aria-label="Dettagli">
+                      <mat-icon>open_in_new</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deleteActivity(overdue._id!, overdue.title!)" aria-label="Elimina">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </div>
+              </li>
+            </ul>
+          </app-collapsible-list>
+          <app-collapsible-list title="Da completare ({{activities.length}})">
+            <ul>
+              <li *ngFor='let activity of activities'>
+                <mat-checkbox (change)="changeActivityStatus(activity)">
+                  {{activity.title}}
                 </mat-checkbox>
                 <div class="activity-actions">
-                  <button mat-icon-button  (click)="viewActivityDetails(overdue)" aria-label="Dettagli">
+                  <button mat-icon-button  (click)="viewActivityDetails(activity)" aria-label="Dettagli">
                     <mat-icon>open_in_new</mat-icon>
                   </button>
-                  <button mat-icon-button (click)="deleteActivity(overdue._id!, overdue.title!)" aria-label="Elimina">
+                  <button mat-icon-button (click)="deleteActivity(activity._id!, activity.title!)" aria-label="Elimina">
                     <mat-icon>delete_outline</mat-icon>
                   </button>
                 </div>
-            </li>
-          </ul>
-        </app-collapsible-list>
-        
-      </div>
-      <div class='demo-app-sidebar-section'>
-        <app-collapsible-list title="Attività da completare ({{activities.length}})">
-          <ul>
-            <li *ngFor='let activity of activities'>
-              <mat-checkbox (change)="changeActivityStatus(activity)">
-                {{activity.title}}
-              </mat-checkbox>
-              <div class="activity-actions">
-                <button mat-icon-button  (click)="viewActivityDetails(activity)" aria-label="Dettagli">
-                  <mat-icon>open_in_new</mat-icon>
-                </button>
-                <button mat-icon-button (click)="deleteActivity(activity._id!, activity.title!)" aria-label="Elimina">
-                  <mat-icon>delete_outline</mat-icon>
-                </button>
-              </div>
-            </li>
-          </ul>
-        </app-collapsible-list>
-      </div>
-      <div class='demo-app-sidebar-section'>
-        <app-collapsible-list title="Attività completate ({{completedActivities.length}})">
-          <ul>
-            <li *ngFor='let completed of completedActivities'>
-              <mat-checkbox checked (change)="changeActivityStatus(completed)">
-                {{completed.title}}
-              </mat-checkbox>
-              <div class="activity-actions">
-                <button mat-icon-button  (click)="viewActivityDetails(completed)" aria-label="Dettagli">
-                  <mat-icon>open_in_new</mat-icon>
-                </button>
-                <button mat-icon-button (click)="deleteActivity(completed._id!, completed.title!)" aria-label="Elimina">
-                  <mat-icon>delete_outline</mat-icon>
-                </button>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </app-collapsible-list>
+          <app-collapsible-list title="Completate ({{completedActivities.length}})">
+            <ul>
+              <li *ngFor='let completed of completedActivities'>
+                <mat-checkbox checked (change)="changeActivityStatus(completed)">
+                  {{completed.title}}
+                </mat-checkbox>
+                <div class="activity-actions">
+                  <button mat-icon-button  (click)="viewActivityDetails(completed)" aria-label="Dettagli">
+                    <mat-icon>open_in_new</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteActivity(completed._id!, completed.title!)" aria-label="Elimina">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </app-collapsible-list>
         </app-collapsible-list>
       </div>
     </div>

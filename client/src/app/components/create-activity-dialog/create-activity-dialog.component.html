@@ -5,15 +5,15 @@
       </button>
     </div>
       <mat-dialog-content>
-        <mat-form-field class="custom-form-field">
+        <mat-form-field class="custom-form-field" appearance="outline">
           <mat-label>Titolo</mat-label>
           <input matInput [(ngModel)]="data.title"  required>
         </mat-form-field>
-        <mat-form-field class="custom-form-field">
+        <mat-form-field class="custom-form-field" appearance="outline">
             <mat-label>Data e ora di fine</mat-label>
             <input matInput type="datetime-local" [(ngModel)]="data.dueDate"  required>
         </mat-form-field>
-        <mat-form-field class="custom-form-field">
+        <mat-form-field class="custom-form-field" appearance="outline">
           <mat-label>Descrizione</mat-label>
           <textarea matInput [(ngModel)]="data.description"></textarea>
         </mat-form-field>

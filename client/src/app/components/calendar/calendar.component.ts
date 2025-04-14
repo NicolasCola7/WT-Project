@@ -74,7 +74,6 @@ export class CalendarComponent implements OnInit {
     nowIndicator: true,
     locales: [ itLocale ],
     locale: 'it',
-    //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
   });
 
@@ -90,6 +89,7 @@ export class CalendarComponent implements OnInit {
   }
 
   private loadCalendar(): void {
+    this.isLoading = true;
     const calendarEvents = this.convertEvents();
     const calendarActivities = [...this.convertActivities(this.activities), ...this.convertActivities(this.overdueActivities)];
     const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
@@ -130,7 +130,9 @@ export class CalendarComponent implements OnInit {
         rrule: Object.keys(rrule).length ? rrule : undefined,
         duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
         allDay: event.startDate == event.endDate,
-        backgroundColor: '#4c95e4'
+        backgroundColor: '#4c95e4',
+        frequency: Object.keys(rrule).length ? rrule.freq : 'NONE',
+        repetitions: Object.keys(rrule).length ? (rrule.count ? rrule.count : rrule.until) : undefined
       }
     });
 
@@ -141,16 +143,14 @@ export class CalendarComponent implements OnInit {
     const converted = activities.map(activity => ({
       id: activity._id,
       title: activity.title,
-      start: this.isOverdue(activity.dueDate!) ? new Date(Date.now()) : activity.dueDate!, 
+      start: this.isOverdue(activity.dueDate!) ? new Date(Date.now()) : activity.dueDate!,
       allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
-      borderColor: 'transparent',
-      classNames: ['activity'],
       completed: activity.completed,
       description: activity.description,
       isActivity: true,
       creatorId: activity.creatorId,
-
+      borderColor: this.getActivityStatus(activity)
     }));
 
     return converted;
@@ -181,7 +181,18 @@ export class CalendarComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     const eventData = clickInfo.event;
     if(!eventData.extendedProps['isActivity']) {
-      this.viewEventDetails(eventData);
+      //alert(JSON.stringify(eventData));
+      const event: CalendarEvent = {
+        _id: eventData.id,
+        title: eventData.title,
+        startDate: eventData.start!,
+        endDate: eventData.end!,
+        location: eventData.extendedProps['place'],
+        frequency: eventData.extendedProps['frequency'],
+        repetitions: eventData.extendedProps['repetitions'],
+        creatorId: eventData.extendedProps['creatorId']
+      }
+      this.viewEventDetails(event);
     } else {
       const activity: Activity = {
         _id: eventData.id,
@@ -195,7 +206,7 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  viewEventDetails(event: EventApi) {
+  viewEventDetails(event: CalendarEvent) {
     const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
       width: '80vw',
       data: event,
@@ -260,7 +271,6 @@ export class CalendarComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '400vw',
       height: 'auto',
-      panelClass: 'custom-dialog-container',
       data: {} 
     });
 
@@ -297,7 +307,6 @@ export class CalendarComponent implements OnInit {
   }
 
   fetchActivities() {
-    this.activities = [];
     this.completedActivities = [];
     this.overdueActivities = [];
     
@@ -355,24 +364,24 @@ export class CalendarComponent implements OnInit {
     );
   } 
 
-  private deleteEvent(event: EventApi) {
-    this.calendarService.deleteEvent(event.id!).subscribe({
+  private deleteEvent(event: CalendarEvent) {
+    this.calendarService.deleteEvent(event._id!).subscribe({
       next: () => this.fetchEvents(),
       error: (error) => console.log(error)
     });
   }
 
-  editEvent(event: EventApi) {
+  editEvent(event: CalendarEvent) {
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '400vw',
       height: 'auto',
-      data: event 
+      data: event
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const updatedEvent: CalendarEvent = {
-          _id: event.id,
+          _id: event._id,
           title: result.title,
           startDate: result.startDate,
           endDate: result.endDate,

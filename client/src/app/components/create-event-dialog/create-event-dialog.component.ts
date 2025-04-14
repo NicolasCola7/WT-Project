@@ -30,17 +30,20 @@ import { AlertService } from '../../services/alert.service';
   ]
 })
 export class CreateEventDialogComponent {
-  data: any;
+  originalData = inject(MAT_DIALOG_DATA);
+  data = {...this.originalData};
 
   constructor(
-      public dialogRef: MatDialogRef<CreateEventDialogComponent>,  //riferimento alla fialog
+      public dialogRef: MatDialogRef<CreateEventDialogComponent>, 
       private dateAdapter: DateAdapter<any>,
       private authService: AuthService,
       private alertService: AlertService,
-      @Inject(MAT_DIALOG_DATA) public originalData: any
      ) {
-    this.data = {...originalData};
+    alert(JSON.stringify(this.originalData));
+    this.data.allday = !this.data.endDate;
     this.dateAdapter.setLocale('it');
+    this.data.endDate = this.convertDate(this.data.endDate);
+    this.data.startDate = this.convertDate(this.data.startDate);
     this.data.creatorId = this.authService.currentUser._id!;
   }
 
@@ -89,5 +92,31 @@ export class CreateEventDialogComponent {
 
   onCancel(): void {
     this.dialogRef.close(false);
+  }
+
+  private convertDate(toConvert: any) {
+    if (toConvert instanceof Date) {
+      const date = toConvert;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      toConvert = `${year}-${month}-${day}T${hours}:${minutes}`;
+    } 
+    // If it's an ISO string or timestamp, convert first
+    else {
+      const date = new Date(toConvert);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      toConvert = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    return toConvert;
   }
 }

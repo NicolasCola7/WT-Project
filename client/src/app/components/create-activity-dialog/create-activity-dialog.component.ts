@@ -35,17 +35,16 @@ export class CreateActivityDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CreateActivityDialogComponent>,  //riferimento alla fialog
     private dateAdapter: DateAdapter<any>,
-    
     private authService: AuthService,
     private alertService: AlertService
   ) {
+    this.convertDueDate();
     this.dateAdapter.setLocale('it');
     this.data.creatorId = this.authService.currentUser._id!;
   }
 
 
   onSave(): void {
-   
     if(!this.data.title){
       this.alertService.showError('Titolo obbligatoro');
       return;
@@ -61,5 +60,29 @@ export class CreateActivityDialogComponent {
 
   onCancel(): void {
     this.dialogRef.close(false);
+  }
+
+  private convertDueDate() {
+    if (this.data.dueDate instanceof Date) {
+      const date = this.data.dueDate;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      this.data.dueDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+    } 
+    // If it's an ISO string or timestamp, convert first
+    else {
+      const date = new Date(this.data.dueDate);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      this.data.dueDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
   }
 }

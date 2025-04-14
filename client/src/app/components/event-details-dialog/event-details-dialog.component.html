@@ -26,20 +26,48 @@
                 <span>
                     {{startDate}} -
                 </span>
-                <span *ngIf="!data.allDay">
+                <span *ngIf="data.endDate">
                      {{endDate}}
                 </span>
-                <span *ngIf="data.allDay">
+                <span *ngIf="!data.endDate">
                     Tutto il giorno
                 </span>
             </span>
         </div>
-        <div class='info-container' *ngIf="data.extendedProps.place">
+        <div class='info-container'>
+            <span class="icon">
+                <mat-icon>repeat</mat-icon>
+            </span>
+            <span>
+                @switch(data.frequency) {
+                    @case('NONE') {
+                        Non si ripete
+                    }
+                    @case('DAILY') {
+                        Giornaliero -
+                    }
+                    @case('WEEKLY') {
+                        Settimanale -
+                    }
+                    @case('MONTHLY') {
+                        Mensile -
+                    }
+                    @case('YEARLY') {
+                        Annuale -
+                    }
+                }
+                <span *ngIf="until">fino al </span>
+                <span>{{repetitions}}</span>
+                <span *ngIf="count"> volte</span>
+                <span *ngIf="!count && !until"> Senza fine</span>
+            </span>
+        </div>
+        <div class='info-container' *ngIf="data.location">
             <span class="icon">
                 <mat-icon>location_on</mat-icon>
             </span>
             <span>
-                {{data.extendedProps.place}} 
+                {{data.location}} 
             </span>
         </div>
     </mat-dialog-content>
