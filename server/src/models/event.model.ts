@@ -1,4 +1,3 @@
-import { Timestamp } from "mongodb";
 import { model, Schema, Types } from "mongoose";
 
 export const frequencies = ['NONE', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
