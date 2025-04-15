@@ -1,0 +1,16 @@
+.input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+  }
+  .categories {
+    margin: 10px 0;
+  }
+  .tag {
+    display: inline-block;
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-right: 5px;
+  }

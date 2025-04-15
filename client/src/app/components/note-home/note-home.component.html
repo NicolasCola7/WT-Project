@@ -1,0 +1,29 @@
+<h1>Note</h1>
+<div>
+  <button routerLink="/editor">Nuova nota</button>
+</div>
+
+<div>
+  <label>Ordina per:</label>
+  <select [(ngModel)]="sortBy">
+    <option value="title">Titolo</option>
+    <option value="createdAt">Data</option>
+    <option value="length">Lunghezza</option>
+  </select>
+
+  <label>Categoria:</label>
+  <select [(ngModel)]="selectedCategory">
+    <option>Tutte</option>
+    <option *ngFor="let cat of getCategories()">{{ cat }}</option>
+  </select>
+
+  <input [(ngModel)]="searchText" placeholder="Cerca..." />
+</div>
+
+<div *ngFor="let note of sortedNotes()">
+  <h2>{{ note.title }}</h2>
+  <div [innerHTML]="note.content | slice:0:200"></div>
+  <button [routerLink]="['/editor', note.id]">Modifica</button>
+  <button (click)="duplicate(note.id)">Duplica</button>
+  <button (click)="delete(note.id)">Elimina</button>
+</div>
