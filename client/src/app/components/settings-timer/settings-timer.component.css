@@ -28,15 +28,10 @@ label {
   width: 100%;
   padding: 10px 14px;
   border-radius: 8px;
-  border: none;
   background-color: var(--color-grey);
   color: var(--color-text);
   font-size: 16px;
   outline: none;
-}
-
-.control:focus {
-  border: 1px solid var(--color-primary);
 }
 
 .dialog-actions {

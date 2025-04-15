@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Settings, SETTINGS_KEY } from '../../models/settings.model';
+import { StudioScenario } from '../../models/studio-scenario.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-settings-timer',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './settings-timer.component.html',
   styleUrls: ['./settings-timer.component.css','../../../assets/css/button.css']
 })
@@ -18,6 +20,10 @@ export class SettingsTimerComponent implements OnInit{
 
   constructor(private dialogRef: MatDialogRef<SettingsTimerComponent>,) { }
 
+  mode: 'manuale' | 'automatica' = 'manuale';
+  totalMinutes: number | null = null;
+
+  scenari: StudioScenario[] = [];
   /*
     quando viene inzializzato il componente carico i settings di default oppure quelli impostati
     dall'utente in precedenza
@@ -41,4 +47,36 @@ export class SettingsTimerComponent implements OnInit{
     }
     this.dialogRef.close(saveChanges);
   }
+
+  generateScenarios(): void {
+    this.scenari = [];
+  
+    if (!this.totalMinutes || this.totalMinutes < 30) {
+      return; // non ha senso proporre scenari se il tempo è troppo basso
+    }
+  
+    const total = this.totalMinutes;
+  
+    const possible = [
+      { work: 25, break: 5 },
+      { work: 30, break: 10 },
+      { work: 45, break: 15 }
+    ];
+  
+    for (const combo of possible) {
+      const cycleTime = combo.work + combo.break;
+      const cicle = Math.floor(total / cycleTime);
+  
+      if (cicle >= 1) {
+        const totalUsed = cicle * cycleTime;
+        this.scenari.push({
+          work: combo.work,
+          break: combo.break,
+          cicle: cicle,
+          total: totalUsed
+        });
+      }
+    }
+  }
+  
 }
