@@ -39,11 +39,19 @@ export class CreateEventDialogComponent {
       private authService: AuthService,
       private alertService: AlertService,
      ) {
-    alert(JSON.stringify(this.originalData));
     this.data.allday = !this.data.endDate;
     this.dateAdapter.setLocale('it');
-    this.data.endDate = this.convertDate(this.data.endDate);
+    if(this.data.endDate)
+      this.data.endDate = this.convertDate(this.data.endDate);
     this.data.startDate = this.convertDate(this.data.startDate);
+    this.data.repetitionEndType = this.data.repetitions ?
+     ( 
+      typeof this.data.repetitions === 'number' ?
+        'COUNT' :
+        'UNTIL'
+      ) :
+      'NEVER'; 
+    this.data.frequency = this.data.frequency ? this.data.frequency : 'NONE';
     this.data.creatorId = this.authService.currentUser._id!;
   }
 
@@ -70,11 +78,6 @@ export class CreateEventDialogComponent {
     
     if(this.data.startDate > this.data.endDate) {
       this.alertService.showError('Data di inizio maggiore di data di fine');
-      return;
-    }
-
-    if(!this.data.frequency) {
-      this.alertService.showError('Ripetizione obbligatoria');
       return;
     }
 
