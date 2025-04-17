@@ -5,14 +5,14 @@
   <div class="chat-content">
     <div class="messages">
       @for (message of messages(); track message.id) {
-        <pre
+        <div
           class="message"
           [ngClass]="{
             'from-user': message.role === 'user',
             generating: message.generating
           }"
-          >{{ message.content }}</pre
-        >
+          ><p markdown [data]="message.content"> </p>
+        </div>
       }
     </div>
     <div class="message-form">

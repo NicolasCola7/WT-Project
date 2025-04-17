@@ -3,14 +3,16 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-ai-assistant',
   imports: [
     FormsModule,
     NgClass,
-    MatIconModule
-    ],
+    MatIconModule,
+    MarkdownComponent,
+  ],
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css'
 })

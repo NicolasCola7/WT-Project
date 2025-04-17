@@ -29,9 +29,9 @@
   margin: 0.5rem 0;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
-  white-space: pre-wrap; /* Allows line breaks */
-  word-wrap: break-word; /* Breaks long words */
-  overflow-wrap: break-word; /* Modern version */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   line-height: 1.4;
   box-sizing: border-box;
 }
