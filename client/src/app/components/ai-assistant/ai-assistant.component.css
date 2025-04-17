@@ -1,0 +1,102 @@
+
+.assistant-container {
+  display: flex;
+  height: 100vh;
+}
+
+.chat-sidebar {
+  width: 20%;
+  background: #1e2b37;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background:#f7f7f8;
+}
+
+.messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 65%;
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  white-space: pre-wrap; /* Allows line breaks */
+  word-wrap: break-word; /* Breaks long words */
+  overflow-wrap: break-word; /* Modern version */
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* Messaggi dell'utente (allineati a destra) */
+.message.from-user {
+  justify-self: right;
+  background:  var(--primary-color);
+  color: white;
+}
+
+/* Messaggi dell'assistente (allineati a sinistra) */
+.message:not(.from-user) {
+  align-self: flex-start;
+  background:  #e5e5ea;
+  color: #000;
+}
+
+/* Messaggio in fase di generazione */
+.message.generating {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.message-form {
+  display: flex;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #ccc;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  width: 100%;
+}
+
+.message-form input[name="message"] {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  outline: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.message-form button {
+  margin-left: 0.5rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  align-items: center;
+  background: var(--primary-color);
+  cursor: pointer;
+  color: white;
+}
+.message-form button:hover {
+  background-color: var(--primary-hover);
+}
+
+.message-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

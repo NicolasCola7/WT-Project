@@ -1,1 +1,34 @@
-<p>ai-assistant works!</p>
+<div class="assistant-container">
+  <div class="chat-sidebar">
+
+  </div>
+  <div class="chat-content">
+    <div class="messages">
+      @for (message of messages(); track message.id) {
+        <pre
+          class="message"
+          [ngClass]="{
+            'from-user': message.role === 'user',
+            generating: message.generating
+          }"
+          >{{ message.content }}</pre
+        >
+      }
+    </div>
+    <div class="message-form">
+      <form #form="ngForm" (ngSubmit)="sendMessage(form, form.value.message)">
+        <input
+          name="message"
+          placeholder="Chiedi qualcosa..."
+          ngModel
+          required
+          autofocus
+        />
+        <button type="submit" [disabled]="form.invalid">
+          <mat-icon>send</mat-icon>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+

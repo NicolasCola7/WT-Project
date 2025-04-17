@@ -8,6 +8,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { PageTimerComponent } from './components/page-timer/page-timer.component';
 import { NoteHomeComponent } from './components/note-home/note-home.component';
 import { NoteEditorComponent } from './components/note-editor/note-editor.component';
+import { AiAssistantComponent } from './components/ai-assistant/ai-assistant.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'timer', component: PageTimerComponent, canActivate: [AuthGuardLogin] },
     { path: 'note', component: NoteHomeComponent, canActivate: [AuthGuardLogin] },
     { path: 'editor', component: NoteEditorComponent, canActivate: [AuthGuardLogin] },
+    { path: 'assistant', component: AiAssistantComponent, canActivate: [AuthGuardLogin] },
     { path: '**', component: HomeComponent, canActivate: [AuthGuardLogin] }
 ];

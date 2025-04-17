@@ -54,7 +54,7 @@ export class GridComponent {
     
       // Seconda riga (y: 3)
       { cols: 4, rows: 6, y: 3, x: 0, name: 'Time Machine', relativeUrl: '/time-machine' },
-      { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 1', relativeUrl: '/extra1' },
+      { cols: 4, rows: 6, y: 3, x: 4, name: 'AsistenteAi', relativeUrl: '/assistant' },
       { cols: 4, rows: 6, y: 3, x: 8, name: 'Extra 2', relativeUrl: '/extra2' },
     ];
     
