@@ -213,10 +213,45 @@
   color: #000;
 }
 
+/* Animazione per messaggi in generazione */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #4eb5f1; }
+}
+
+@keyframes typing {
+  0% { width: 0; }
+  33% { width: 1em; }
+  66% { width: 2em; }
+  100% { width: 3em; }
+}
+
 /* Messaggio in fase di generazione */
 .message.generating {
-  opacity: 0.6;
-  font-style: italic;
+  position: relative;
+  animation: pulse 1.5s infinite ease-in-out;
+  border-left: 3px solid transparent;
+  animation: pulse 1.5s infinite ease-in-out, blink 1.5s infinite ease-in-out;
+}
+
+/* Indicatore "sta scrivendo" */
+.message.generating::after {
+  content: "";
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0.5rem;
+  height: 8px;
+  width: 8px;
+  background-color: #4eb5f1;
+  border-radius: 50%;
+  box-shadow: 16px 0 0 0 #4eb5f1, 32px 0 0 0 #4eb5f1;
+  animation: typing 1.5s infinite ease-in-out;
 }
 
 .message-form {
@@ -226,6 +261,22 @@
   background: #fff;
   box-sizing: border-box;
   width: 100%;
+  position: relative;
+}
+
+/* Indicatore di generazione nel form dei messaggi */
+.message-form.generating::before {
+  content: "Generazione in corso...";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #1e2b37;
+  background-color: rgba(78, 181, 241, 0.1);
+  padding: 2px 8px;
+  border-radius: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 form {
@@ -257,15 +308,17 @@ form {
   cursor: pointer;
   color: white;
   flex-shrink: 0; /* Impedisce al pulsante di restringersi */
+  transition: background-color 0.3s ease;
 }
 
-.message-form button:hover {
+.message-form button:hover:not(:disabled) {
   background-color: #2d3e4f;
 }
 
 .message-form button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: #ccc;
 }
 
 /* Responsive per tablet e desktop */

@@ -43,7 +43,7 @@
         </div>
       }
     </div>
-    <div class="message-form">
+    <div class="message-form" [class.generating]="generatingInProgress()">
       <form #form="ngForm" (ngSubmit)="sendMessage(form, form.value.message)">
         <input
           name="message"
@@ -52,7 +52,7 @@
           required
           autofocus
         />
-        <button type="submit" [disabled]="form.invalid">
+        <button type="submit" [disabled]="generatingInProgress() || form.invalid">
           <mat-icon>send</mat-icon>
         </button>
       </form>

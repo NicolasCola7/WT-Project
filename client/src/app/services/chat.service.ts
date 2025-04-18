@@ -11,7 +11,10 @@ export class ChatService {
     private readonly _messages = signal<Message[]>([]);
     private readonly _chats = signal<Chat[]>([]);
     private currentChat?: Chat;
+    private readonly _generatingInProgress = signal<boolean>(false);
+
     readonly messages = this._messages.asReadonly();
+    readonly generatingInProgress = this._generatingInProgress.asReadonly();
     readonly chats = this._chats.asReadonly();
 
     constructor(private http: HttpClient,
@@ -35,6 +38,8 @@ export class ChatService {
     }
 
     sendMessage(chat: Chat): void {
+      this._generatingInProgress.set(true);
+
       this._messages.set([
         ...chat.messages!
       ]);
@@ -46,6 +51,7 @@ export class ChatService {
             next: () => {
               this._messages.set([...chat.messages!])
             },
+            complete: () => this._generatingInProgress.set(false),
             error: (error) => console.log(error)
           })
         },

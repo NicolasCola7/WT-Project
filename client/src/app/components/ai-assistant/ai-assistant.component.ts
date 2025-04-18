@@ -20,6 +20,7 @@ import Chat from '../../models/chat.model';
 })
 export class AiAssistantComponent implements OnInit{
   private readonly chatService = inject(ChatService);
+  readonly generatingInProgress = this.chatService.generatingInProgress;
   readonly messages = this.chatService.messages;
   chats = signal<Chat[]>([]);
   currentChat?: Chat;
