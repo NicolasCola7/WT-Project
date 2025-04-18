@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
     { provide: JWT_OPTIONS, useValue: { tokenGetter } },
     JwtHelperService,
     provideNativeDateAdapter(),

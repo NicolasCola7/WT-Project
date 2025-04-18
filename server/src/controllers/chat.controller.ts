@@ -26,18 +26,13 @@ export default class ChatController extends BaseController<ChatI> {
 
     generateResponse = async (req: Request, res: Response): Promise<void> => {
         try {
-            const prompt = req.body;
+            const chatHistory = req.body;
             const completion = await this.openai.chat.completions.create({
                 model: this.MODEL,
-                messages: [{ role: 'user', content: prompt }],
-                //stream: true,
+                messages: chatHistory,
             });
-            
-            /*for await (const chunk of completion) {
-                res.write(chunk.choices[0].delta.content);
-            }*/
 
-            res.status(200).json(completion.choices[0].message.content);
+            res.status(200).json(completion.choices[0].message);
         } catch (err) {
             res.status(400).json({ error: (err as Error).message });
         }

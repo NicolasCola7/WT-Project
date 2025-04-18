@@ -36,8 +36,11 @@ const setRoutes = (app: Application): void => {
 
   //Chat
   router.route('/chats').post(chatController.insert);
-  router.route('/events').get(chatController.getMyChats);
-  router.route('/chats/chatid').post(chatController.generateResponse);
+  router.route('/chats').get(chatController.getMyChats);
+  router.route('/chats/:id').post(chatController.generateResponse);
+  router.route('/chats/:id').put(chatController.update);
+  router.route('/chats/:id').get(chatController.get);
+  router.route('/chats/:id').delete(chatController.delete);
 
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);

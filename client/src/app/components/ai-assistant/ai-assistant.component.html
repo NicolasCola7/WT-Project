@@ -1,12 +1,40 @@
 <div class="assistant-container">
-  <div class="chat-sidebar">
-
+  <button class="sidebar-toggle" (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+  
+  <div class="chat-sidebar" [class.open]="sidebarOpen">
+    <button class="new-chat-btn" (click)="newChat()">
+      <mat-icon>add_circle_outline</mat-icon>
+      Nuova Chat
+    </button>
+    <div class="chats">
+      @for (chat of chats(); track chat._id) {
+        <div class="chat" 
+             [class.selected]="selectedChatId === chat._id"
+             (click)="loadChat(chat); closeSidebar()">
+          <p class="chat-title">"{{chat.title}}"</p>
+          <div class="chat-actions">
+            <button (click)="renameChat(chat); $event.stopPropagation()">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="deleteChat(chat); $event.stopPropagation()">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
   </div>
+  
   <div class="chat-content">
     <div class="messages">
-      @for (message of messages(); track message.id) {
+      @for (message of messages(); track message._id) {
         <div
           class="message"
+          *ngIf="message.role !== 'system'"
           [ngClass]="{
             'from-user': message.role === 'user',
             generating: message.generating
@@ -31,4 +59,3 @@
     </div>
   </div>
 </div>
-

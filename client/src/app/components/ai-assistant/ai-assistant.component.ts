@@ -1,9 +1,10 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MarkdownComponent } from 'ngx-markdown';
+import Chat from '../../models/chat.model';
 
 @Component({
   selector: 'app-ai-assistant',
@@ -12,31 +13,88 @@ import { MarkdownComponent } from 'ngx-markdown';
     NgClass,
     MatIconModule,
     MarkdownComponent,
+    CommonModule
   ],
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css'
 })
-export class AiAssistantComponent {
+export class AiAssistantComponent implements OnInit{
   private readonly chatService = inject(ChatService);
-
   readonly messages = this.chatService.messages;
-  //readonly generatingInProgress = this.chatService.generatingInProgress;
+  chats = signal<Chat[]>([]);
+  currentChat?: Chat;
+  sidebarOpen = false;
+  selectedChatId: string | null = null;
 
-  private readonly scrollOnMessageChanges = effect(() => {
-    // run this effect on every messages change
-    this.messages();
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+  
+  closeSidebar() {
+    this.sidebarOpen = false;
+  }
+  
+  ngOnInit(): void {
+    this.loadMyChats();
+  }
 
-    // scroll after the messages render
-    setTimeout(() =>
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth',
-      }),
-    );
-  });
+  async sendMessage(form: NgForm, messageText: string): Promise<void> {
+    if(!this.currentChat) {
+      await this.newChat();
+    }
 
-  sendMessage(form: NgForm, messageText: string): void {
-    this.chatService.sendMessage(messageText);
+    this.currentChat?.messages?.push({
+      role: 'user',
+      content: messageText
+    });
+
+    this.chatService.sendMessage(this.currentChat!);
     form.resetForm();
   }
+
+  newChat(): Promise<Chat> {
+    return new Promise((resolve, reject) => {
+      this.chatService.newChat().subscribe({
+        next: (chat) => {
+          this.currentChat = chat;
+          this.chats.set([...this.chats(), chat]);
+          resolve(chat);
+        },
+        error: (error) => {
+          console.log(error);
+          reject(error);
+        }
+      });
+    });
+  }
+
+  loadMyChats() {
+    this.chatService.getMyChats().subscribe({
+      next: (chats) =>this.chats.set([...chats]),
+      error: (error) => console.log(error)
+    });
+  }
+
+  loadChat(chat: Chat) {
+    this.chatService.loadChat(chat).subscribe({
+      next: (chat) => {
+        this.currentChat = chat
+        this.selectedChatId = chat._id!
+        this.chatService.setChatMessages(chat.messages!);
+      },
+      error: (error) => console.log(error)
+    })
+  }
+
+  deleteChat(chat: Chat) {
+    this.chatService.deleteChat(chat).subscribe({
+      next: () => this.loadMyChats(),
+      error: (error) => console.log(error)
+    })
+  }
+
+  renameChat(chat: Chat) {
+
+  }
+  
 }
