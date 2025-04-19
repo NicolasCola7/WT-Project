@@ -4,7 +4,7 @@ h2, .settings-form, .dialog-actions {
 
 h2 {
   border-bottom: 1px solid var(--color-primary);
-  font-weight: 400;
+  font-weight: bold;
   color: var(--color-primary);
   margin: 0;
 }
@@ -20,11 +20,11 @@ h2 {
 label {
   display: block;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--color-text);
 }
 
-.control {
+.control, .scenari {
   width: 100%;
   padding: 10px 14px;
   border-radius: 8px;
@@ -47,6 +47,15 @@ label {
     margin-right: 0;
   }
 }
-.form-field input{
+.form-field input, .scenari, select{
   border: 1px solid lightgrey;
+}
+.scenario{
+  margin-top: 15px;
+}
+#num_cicli{
+  font-weight: bold;
+}
+#radio{
+  margin-right: 15px;
 }

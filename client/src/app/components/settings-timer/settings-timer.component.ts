@@ -4,10 +4,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Settings, SETTINGS_KEY } from '../../models/settings.model';
 import { StudioScenario } from '../../models/studio-scenario.model';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-settings-timer',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, MatIconModule],
   templateUrl: './settings-timer.component.html',
   styleUrls: ['./settings-timer.component.css','../../../assets/css/button.css']
 })
@@ -22,6 +23,7 @@ export class SettingsTimerComponent implements OnInit{
 
   mode: 'manuale' | 'automatica' = 'manuale';
   totalMinutes: number | null = null;
+  selectedScenario!: StudioScenario;
 
   scenari: StudioScenario[] = [];
   /*
@@ -42,8 +44,12 @@ export class SettingsTimerComponent implements OnInit{
   * @param saveChanges è che indica se le modifiche devono essere salvate.
   */
   close(saveChanges = false): void {
-    if (saveChanges) {
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settingsForm.value));
+    if(saveChanges){
+      if (this.mode == 'manuale') {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settingsForm.value));
+      }else{
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.selectedScenario));
+      }
     }
     this.dialogRef.close(saveChanges);
   }
@@ -51,32 +57,44 @@ export class SettingsTimerComponent implements OnInit{
   generateScenarios(): void {
     this.scenari = [];
   
-    if (!this.totalMinutes || this.totalMinutes < 30) {
-      return; // non ha senso proporre scenari se il tempo è troppo basso
-    }
+    //se il tempo è minore di 20 minuti non ha senso creare uno scenario
+    if (!this.totalMinutes || this.totalMinutes < 20) return;
   
     const total = this.totalMinutes;
+    const scenariTrovati: any[] = [];
   
-    const possible = [
-      { work: 25, break: 5 },
-      { work: 30, break: 10 },
-      { work: 45, break: 15 }
-    ];
+    /*
+      viene esplorata una griglia di combinazioni possibili:
+        . work: da 15 a 60 minuti, a step di 5
+        . pause: da 3 a 20 minuti, a step di 2
+    */
+    for (let work = 15; work <= 60; work += 5) {
+      for (let pause = 3; pause <= 20; pause += 2) {
+        // scarto pause più lunghe del focus
+        if (pause >= work) continue; 
   
-    for (const combo of possible) {
-      const cycleTime = combo.work + combo.break;
-      const cicle = Math.floor(total / cycleTime);
+        //calcolo della durata di un ciclo e del numero di cicli da fare
+        const cicloTime = work + pause;
+        const cicli = Math.floor(total / cicloTime);
   
-      if (cicle >= 1) {
-        const totalUsed = cicle * cycleTime;
-        this.scenari.push({
-          work: combo.work,
-          break: combo.break,
-          cicle: cicle,
-          total: totalUsed
+        //se il numero di cicli è minore di 1 non ha senso proporlo
+        if (cicli < 1) continue;
+  
+        const tempoUsato = cicli * cicloTime;
+  
+        scenariTrovati.push({
+          work: work,
+          break: pause,
+          cicle: cicli,
+          total: tempoUsato
         });
       }
     }
-  }
   
+    // ordina per tempoUsato decrescente (più utilizza il tempo disponibile = meglio)
+    scenariTrovati.sort((a, b) => b.total - a.total);
+  
+    // seleziona i primi 3 scenari più "efficienti"
+    this.scenari = scenariTrovati.slice(0, 3);
+  }
 }

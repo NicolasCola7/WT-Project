@@ -32,9 +32,8 @@
 <!-- Form automatica -->
 <div class="settings-form" *ngIf="mode === 'automatica'">
   <div class="form-field">
-    <label for="total">Minuti totali</label>
+    <label for="totalMinutes">Quanto tempo hai a disposizione?</label>
     <input type="number"
-           id="total"
            class="control"
            placeholder="Minuti totali"
            [(ngModel)]="totalMinutes"
@@ -43,14 +42,15 @@
   </div>
 
   <!-- Scenari generati -->
-  <div *ngIf="scenari.length > 0">
-    <h3>Scenari consigliati:</h3>
-    <ul>
-      <li *ngFor="let s of scenari">
-        <strong>{{ s.cicle }} cicli</strong>: {{ s.work }} min focus, {{ s.break }} min pausa
+  <div *ngIf="scenari.length > 0" class="scenari">
+    <p>Scenari consigliati:</p>
+    <div *ngFor="let s of scenari" class="scenario">
+      <label>
+        <input type="radio" name="scenario" id="radio" [(ngModel)]="selectedScenario" [value]="s">
+        <span id="num_cicli">{{ s.cicle }} cicli</span>: {{ s.work }} min focus, {{ s.break }} min pausa
         (Totale: {{ s.total }} min)
-      </li>
-    </ul>
+      </label>
+    </div>
   </div>
 </div>
 
