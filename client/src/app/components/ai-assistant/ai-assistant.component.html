@@ -44,7 +44,7 @@
   </div>
   
   <div class="chat-content">
-    <div class="messages">
+    <div class="messages" #chatContent>
       @for (message of messages(); track message._id) {
         <div
           #messageElems

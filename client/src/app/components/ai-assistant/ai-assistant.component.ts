@@ -27,18 +27,19 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
   sidebarOpen = false;
   selectedChatId: string | null = null;
   @ViewChildren('titleInput') titleInputs!: QueryList<ElementRef>;
-  @ViewChildren('messageElems') private messageElems!: QueryList<ElementRef>;
+  @ViewChild('chatContent') private chatContainer!: ElementRef<HTMLDivElement>;
+
 
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
 
   private scrollToBottom() {
-    const elems = this.messageElems.toArray();
-    if (!elems.length) 
-      return;
-    const last = elems[elems.length - 1].nativeElement;
-    last.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = this.chatContainer.nativeElement;
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: 'smooth'
+    });
   }
 
   toggleSidebar() {
