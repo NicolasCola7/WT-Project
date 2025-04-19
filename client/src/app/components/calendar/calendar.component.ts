@@ -24,6 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { CollapsibleListComponent } from "../../common/collapsible-list/collapsible-list.component";
 import {MatListModule} from '@angular/material/list';
 import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activity-details-dialog.component';
+import { TimeMachineService } from '../../services/time-machine.service';
 
 @Component({
   selector: 'app-calendar',
@@ -45,7 +46,7 @@ import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activ
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') fullcalendar!: FullCalendarComponent
   isLoading = true;
-  selectedDate = new Date();
+  selectedDate!: Date;
   calendarVisible = signal(true);
   events: CalendarEvent[] = [];
   activities: Activity[] = [];
@@ -81,11 +82,16 @@ export class CalendarComponent implements OnInit {
               private alertService: AlertService,
               private dialog: MatDialog,
               private calendarService: CalendarService,
-              private authService: AuthService){}
+              private authService: AuthService,
+              private timeMachineService: TimeMachineService){}
 
   ngOnInit(): void {
-    this.fetchEvents();
-    this.fetchActivities();
+    this.timeMachineService.currentDate$.subscribe(date => {
+      console.log(date);
+      this.selectedDate = date;
+      this.fetchEvents();
+      this.fetchActivities();
+    }); 
   }
 
   private loadCalendar(): void {
