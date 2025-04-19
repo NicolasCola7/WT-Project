@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { CommonModule, NgClass } from '@angular/common';
@@ -26,6 +26,7 @@ export class AiAssistantComponent implements OnInit{
   currentChat?: Chat;
   sidebarOpen = false;
   selectedChatId: string | null = null;
+  @ViewChildren('titleInput') titleInputs!: QueryList<ElementRef>;
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
@@ -58,6 +59,7 @@ export class AiAssistantComponent implements OnInit{
       this.chatService.newChat().subscribe({
         next: (chat) => {
           this.currentChat = chat;
+          this.selectedChatId = chat._id!
           this.chats.set([...this.chats(), chat]);
           resolve(chat);
         },
@@ -94,8 +96,49 @@ export class AiAssistantComponent implements OnInit{
     })
   }
 
-  renameChat(chat: Chat) {
+  // Metodo per avviare la modifica del titolo
+  startEditChat(chat: Chat, event: MouseEvent): void {
+    event.stopPropagation();
+    
+    // Prima imposta tutte le chat in modalità non modifica
+    this.chats().forEach(c => c.editing = false);
+    
+    // Imposta questa chat in modalità modifica
+    chat.editing = true;
+    chat.editTitle = chat.title;
+    
+    // Dopo il rendering, cerca l'input giusto
+    setTimeout(() => {
+      const inputs = this.titleInputs.toArray();
+      if (inputs.length > 0) {
+        // Trova l'input corrispondente alla chat corrente
+        const index = this.chats().findIndex(c => c._id === chat._id);
+        if (index >= 0 && index < inputs.length) {
+          const inputElement = inputs[index].nativeElement;
+          inputElement.focus();
+          inputElement.select();
+        }
+      }
+    });
+  }
 
+  // Metodo per salvare il titolo modificato
+  saveEditedTitle(chat: Chat): void {
+    if (chat.editTitle && chat.editTitle.trim() !== '') {
+      chat.title = chat.editTitle.trim();
+      
+      this.chatService.updateChat(chat).subscribe({
+        error: (error) => console.log(error)
+      });
+    }
+    
+    // Esci dalla modalità modifica
+    chat.editing = false;
+  }
+
+  // Metodo per annullare la modifica
+  cancelEdit(chat: Chat): void {
+    chat.editing = false;
   }
   
 }

@@ -15,9 +15,23 @@
         <div class="chat" 
              [class.selected]="selectedChatId === chat._id"
              (click)="loadChat(chat); closeSidebar()">
-          <p class="chat-title">"{{chat.title}}"</p>
+          <!-- Titolo normale (visibile quando non in modalità modifica) -->
+          <p class="chat-title" *ngIf="!chat.editing">"{{chat.title}}"</p>
+          
+          <!-- Input per modifica (visibile solo quando in modalità modifica) -->
+          <input
+            *ngIf="chat.editing"
+            class="chat-title-edit"
+            type="text"
+            [(ngModel)]="chat.editTitle"
+            (blur)="saveEditedTitle(chat)"
+            (keyup.enter)="saveEditedTitle(chat)"
+            (keyup.escape)="cancelEdit(chat)"
+            #titleInput
+          />
+          
           <div class="chat-actions">
-            <button (click)="renameChat(chat); $event.stopPropagation()">
+            <button (click)="startEditChat(chat, $event); $event.stopPropagation()">
               <mat-icon>edit</mat-icon>
             </button>
             <button (click)="deleteChat(chat); $event.stopPropagation()">
@@ -45,13 +59,14 @@
     </div>
     <div class="message-form" [class.generating]="generatingInProgress()">
       <form #form="ngForm" (ngSubmit)="sendMessage(form, form.value.message)">
-        <input
+        <textarea
           name="message"
           placeholder="Chiedi qualcosa..."
           ngModel
           required
           autofocus
-        />
+          rows="1"
+        ></textarea>
         <button type="submit" [disabled]="generatingInProgress() || form.invalid">
           <mat-icon>send</mat-icon>
         </button>

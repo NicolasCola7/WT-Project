@@ -151,6 +151,30 @@
   background-color: #dde3ea;
 }
 
+/* Stile per l'input di modifica del titolo */
+.chat-title-edit {
+  max-width: 70%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #f7f7f8;
+  color: #f7f7f8;
+  padding: 0.25rem 0;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Quando è in modalità scura */
+.chat:hover .chat-title-edit {
+  color: #1e2b37;
+  border-bottom: 1px solid #1e2b37;
+}
+
+/* Per la chat selezionata */
+.chat.selected .chat-title-edit {
+  color: #f7f7f8;
+  border-bottom: 1px solid #f7f7f8;
+}
+
 /* Contenuto chat */
 .chat-content {
   flex: 1;
@@ -210,6 +234,7 @@
 .message:not(.from-user) {
   align-self: flex-start;
   background: #e5e5ea;
+  padding-left: 1.5rem;
   color: #000;
 }
 
@@ -284,7 +309,8 @@ form {
   width: 100%;
 }
 
-.message-form input[name="message"] {
+/* Stile per il textarea che si espande automaticamente */
+.message-form textarea[name="message"] {
   flex: 1;
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
@@ -294,21 +320,42 @@ form {
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  
+  /* Proprietà chiave per l'auto-espansione */
+  resize: none; /* Disabilita il resize manuale */
+  overflow-y: auto; /* Abilita scrollbar solo quando necessario */
+  min-height: 38px; /* Altezza minima iniziale */
+  max-height: 50vh; /* Altezza massima = metà dello schermo */
+  
+  line-height: 1.4;
+  font-family: inherit;
   min-width: 0; /* Previene l'espansione oltre il container */
 }
 
+/* Aggiusta il form per gestire meglio l'altezza variabile */
+.message-form form {
+  display: flex;
+  width: 100%;
+  align-items: flex-start; /* Allinea gli elementi all'inizio */
+}
+
+/* Migliora l'allineamento del pulsante di invio */
 .message-form button {
   margin-left: 0.5rem;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   border: none;
   border-radius: 0.5rem;
+  display: flex;
   align-items: center;
+  justify-content: center;
   background: #1e2b37;
   cursor: pointer;
   color: white;
-  flex-shrink: 0; /* Impedisce al pulsante di restringersi */
+  flex-shrink: 0;
   transition: background-color 0.3s ease;
+  height: 38px; /* Altezza fissa per il pulsante */
+  align-self: flex-start; /* Allinea il pulsante all'inizio */
 }
 
 .message-form button:hover:not(:disabled) {
