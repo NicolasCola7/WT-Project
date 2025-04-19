@@ -47,6 +47,7 @@
     <div class="messages">
       @for (message of messages(); track message._id) {
         <div
+          #messageElems
           class="message"
           *ngIf="message.role !== 'system'"
           [ngClass]="{

@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { AfterViewChecked, Component, effect, ElementRef, inject, OnInit, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
 import { CommonModule, NgClass } from '@angular/common';
@@ -18,7 +18,7 @@ import Chat from '../../models/chat.model';
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css'
 })
-export class AiAssistantComponent implements OnInit{
+export class AiAssistantComponent implements OnInit, AfterViewChecked{
   private readonly chatService = inject(ChatService);
   readonly generatingInProgress = this.chatService.generatingInProgress;
   readonly messages = this.chatService.messages;
@@ -27,6 +27,19 @@ export class AiAssistantComponent implements OnInit{
   sidebarOpen = false;
   selectedChatId: string | null = null;
   @ViewChildren('titleInput') titleInputs!: QueryList<ElementRef>;
+  @ViewChildren('messageElems') private messageElems!: QueryList<ElementRef>;
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom() {
+    const elems = this.messageElems.toArray();
+    if (!elems.length) 
+      return;
+    const last = elems[elems.length - 1].nativeElement;
+    last.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
