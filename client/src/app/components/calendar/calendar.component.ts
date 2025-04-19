@@ -44,7 +44,7 @@ import { TimeMachineService } from '../../services/time-machine.service';
   standalone: true
 })
 export class CalendarComponent implements OnInit {
-  @ViewChild('fullcalendar') fullcalendar!: FullCalendarComponent
+  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent
   isLoading = true;
   selectedDate!: Date;
   calendarVisible = signal(true);
@@ -87,12 +87,22 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.timeMachineService.currentDate$.subscribe(date => {
-      console.log(date);
       this.selectedDate = date;
+  
+      // Carica eventi/attività
       this.fetchEvents();
       this.fetchActivities();
-    }); 
+  
+      // Sposta il calendario sulla nuova data
+      setTimeout(() => {
+        const calendarApi = this.calendarComponent?.getApi?.();
+        if (calendarApi) {
+          calendarApi.gotoDate(date);
+        }
+      });
+    });
   }
+              
 
   private loadCalendar(): void {
     this.isLoading = true;
