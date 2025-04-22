@@ -4,6 +4,8 @@ import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFor
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../services/alert.service';
+import { CalendarService } from '../../services/calendar.service';
+import { CalendarEvent } from '../../models/event.model';
 
 @Component({
   selector: 'app-register',
@@ -54,7 +56,8 @@ export class RegisterComponent {
   constructor(private formBuilder: UntypedFormBuilder,
               private router: Router,
               private userService: UserService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private calendarService: CalendarService) {
     this.registerForm = this.formBuilder.group({
       username: this.username,
       email: this.email,
@@ -73,8 +76,22 @@ export class RegisterComponent {
     }
 
     this.userService.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
+      next: (user) => {
+        if(this.birthday.value) {
+          const birthday: CalendarEvent = {
+            title: 'Il tuo compleanno',
+            startDate: this.birthday.value,
+            endDate:  this.birthday.value,
+            frequency: 'YEARLY',
+            creatorId: user._id
+          }
+          this.calendarService.addEvent(birthday).subscribe({
+            next: () => this.router.navigate(['/login']),
+            error: (error) => console.log(error)
+          })
+        } else {
+          this.router.navigate(['/login']);
+        }
       },
       error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
     });

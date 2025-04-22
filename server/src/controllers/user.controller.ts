@@ -3,10 +3,9 @@ import { Request, Response } from 'express';
 import User, { UserI } from '../models/user.model';
 import BaseController from './base.controller';
 
-const secret: Secret = process.env.JWT_TOKEN as string;
-
 class UserController extends BaseController<UserI> {
   model = User;
+  secret: Secret = process.env.JWT_SECRET as string;
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -20,7 +19,7 @@ class UserController extends BaseController<UserI> {
           res.sendStatus(403);
           return;
         }
-        const token = sign({ user: { id: user._id } }, secret, { expiresIn: '24h' });
+        const token = sign({ user: { id: user._id } }, this.secret, { expiresIn: '24h' });
         res.status(200).json({ token });
       });
     } catch (err) {

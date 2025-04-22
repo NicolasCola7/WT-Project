@@ -217,12 +217,6 @@
   overflow-wrap: break-word;
 }
 
-/* Gestione di contenuti specifici nei messaggi */
-.message pre, .message code, .message img, .message table {
-  max-width: 100%;
-  overflow-x: auto;
-}
-
 /* Messaggi dell'utente (allineati a destra) */
 .message.from-user {
   align-self: flex-end;
