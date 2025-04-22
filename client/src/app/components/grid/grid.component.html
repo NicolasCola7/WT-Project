@@ -1,7 +1,8 @@
 <gridster [options]="options">
   @for (item of dashboard; track item) {
-    <gridster-item [item]="item">
-      <a [routerLink]="item.relativeUrl">{{ item.name }}</a>
+    <gridster-item [item]="item" (dblclick)="goToPage(item.relativeUrl)">
+      <img src="../../../assets/icon/{{item.urlImg}}">
+      <p>{{item.name}}</p>
     </gridster-item>
   }
 </gridster>
