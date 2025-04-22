@@ -1,9 +1,12 @@
-<div class="time-machine">
-  <button (click)="goBack()">⏪</button>
-
-  <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" (change)="onDateChange($event)">
-  <input type="time" [value]="formatTime(currentDate)" (change)="onTimeChange($event)">
-
-  <button (click)="goForward()">⏩</button>
-  <button (click)="resetToNow()">🔄 Ora</button>
+<div class="dark-theme">
+  <div class="title">
+    <h1>TIME MACHINE</h1>
+  </div>
+  <div class="time-machine">
+    <button (click)="goBack()">⏪</button>
+    <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" (change)="onDateChange($event)">
+    <input type="time" [value]="formatTime(currentDate)" (change)="onTimeChange($event)">
+    <button (click)="goForward()">⏩</button>
+    <button (click)="resetToNow()">🔄 Ora</button>
+  </div>
 </div>

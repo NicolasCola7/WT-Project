@@ -6,7 +6,7 @@ import { TimeMachineService } from '../../services/time-machine.service';
   selector: 'app-time-machine',
   imports:[CommonModule],
   templateUrl: './time-machine.component.html',
-  styleUrls: ['./time-machine.component.css']
+  styleUrls: ['./time-machine.component.css', '../../../assets/css/button.css']
 })
 export class TimeMachineComponent {
   currentDate: Date = new Date();
