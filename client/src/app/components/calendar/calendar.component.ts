@@ -1,4 +1,4 @@
-import { Component , signal, ChangeDetectorRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component , signal, ChangeDetectorRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventClickArg, EventApi, DateSelectArg, Calendar } from '@fullcalendar/core';
@@ -41,7 +41,8 @@ import { TimeMachineService } from '../../services/time-machine.service';
 ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
-  standalone: true
+  standalone: true,
+  encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent

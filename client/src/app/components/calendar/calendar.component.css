@@ -161,6 +161,11 @@ h2 {
     width: 100vw;
     max-width: 100%;
   }
+
+  .fc .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 
