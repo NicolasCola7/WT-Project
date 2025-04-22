@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent} from 'angular-gridster2';
+import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent } from 'angular-gridster2';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -16,7 +16,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class GridComponent {
   options!: GridsterConfig;
-  dashboard!: Array<GridsterItem & { name: string } & {relativeUrl: string} & {urlImg: string}>;
+  dashboard!: Array<GridsterItem & { name: string } & {relativeUrl: string} & {urlImg: string} & {isTimeMachine: boolean}>;
 
   constructor(private router: Router) {}
 
@@ -50,14 +50,14 @@ export class GridComponent {
     //componenti della dashboard
     this.dashboard = [
       // Prima riga (y: 0)
-      { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: '/calendar', urlImg: "calendar.png" },
-      { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: '/timer', urlImg: "timer.png" },
-      { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: '/note', urlImg: "note.png" },
+      { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: '/calendar', urlImg: "calendar.png", isTimeMachine: false },
+      { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: '/timer', urlImg: "timer.png", isTimeMachine: false },
+      { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: '/note', urlImg: "note.png", isTimeMachine: false },
     
       // Seconda riga (y: 3)
-      { cols: 4, rows: 6, y: 3, x: 0, name: 'Time Machine', relativeUrl: '/time-machine', urlImg: "time-machine.png" },
-      { cols: 4, rows: 6, y: 3, x: 4, name: 'AsistenteAi', relativeUrl: '/assistant', urlImg: "chatbot.png" },
-      { cols: 4, rows: 6, y: 3, x: 8, name: 'Extra 2', relativeUrl: '/extra2', urlImg: "extra.png" },
+      { cols: 4, rows: 6, y: 3, x: 0, name: 'AsistenteAi', relativeUrl: '/assistant', urlImg: "chatbot.png", isTimeMachine: false },
+      { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 2', relativeUrl: '/extra2', urlImg: "extra.png", isTimeMachine: false },
+      { cols: 4, rows: 6, y: 3, x: 8, name: 'Time Machine', relativeUrl: '/time-machine', urlImg: "time-machine.png", isTimeMachine: true },
     ];
     
   }

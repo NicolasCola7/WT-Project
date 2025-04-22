@@ -1,6 +1,6 @@
 <gridster [options]="options">
   @for (item of dashboard; track item) {
-    <gridster-item [item]="item" (dblclick)="goToPage(item.relativeUrl)">
+    <gridster-item [item]="item" (dblclick)="goToPage(item.relativeUrl)" [ngClass]="{'time-machine':item.isTimeMachine}">
       <img src="../../../assets/icon/{{item.urlImg}}">
       <p>{{item.name}}</p>
     </gridster-item>

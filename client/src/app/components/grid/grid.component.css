@@ -41,5 +41,9 @@ gridster-item img {
     max-height: 100px;
     object-fit: contain;
 }
+.time-machine{
+    background-color: #121212;
+    color: white;
+}
 
   
