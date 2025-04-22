@@ -73,6 +73,8 @@ export class CalendarComponent implements OnInit {
     selectable: false,
     selectMirror: false,
     dayMaxEvents: true,
+    //considero la data della time-machine
+    now: () => this.timeMachineService.getCurrentDate(),
     nowIndicator: true,
     locales: [ itLocale ],
     locale: 'it',
@@ -87,21 +89,8 @@ export class CalendarComponent implements OnInit {
               private timeMachineService: TimeMachineService){}
 
   ngOnInit(): void {
-    this.timeMachineService.currentDate$.subscribe(date => {
-      this.selectedDate = date;
-  
-      // Carica eventi/attività
-      this.fetchEvents();
-      this.fetchActivities();
-  
-      // Sposta il calendario sulla nuova data
-      setTimeout(() => {
-        const calendarApi = this.calendarComponent?.getApi?.();
-        if (calendarApi) {
-          calendarApi.gotoDate(date);
-        }
-      });
-    });
+    this.fetchEvents();
+    this.fetchActivities();
   }
               
 
@@ -160,7 +149,7 @@ export class CalendarComponent implements OnInit {
     const converted = activities.map(activity => ({
       id: activity._id,
       title: activity.title,
-      start: this.isOverdue(activity.dueDate!) ? new Date(Date.now()) : activity.dueDate!,
+      start: this.isOverdue(activity.dueDate!) ? new Date(this.timeMachineService.getCurrentDate()) : activity.dueDate!,
       allDay: true,
       backgroundColor: this.getActivityStatus(activity), 
       completed: activity.completed,
@@ -368,7 +357,7 @@ export class CalendarComponent implements OnInit {
   private isOverdue(date: Date) {
     const endDate = new Date(date).getTime();
 
-    return endDate < Date.now();
+    return endDate < this.timeMachineService.getCurrentDate().getTime();
   }
 
   deleteActivity(id: string, title: string) {

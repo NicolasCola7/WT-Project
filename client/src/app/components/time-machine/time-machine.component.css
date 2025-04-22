@@ -20,7 +20,7 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 64px;
+    font-size: 4vw;
     color: var(--primary-color);
     font-weight: bold;
 }
@@ -43,7 +43,7 @@ h1 {
     padding: 6px 10px;
     border: 1px solid black;
     border-radius: var(--border-radius);
-    font-size: 30px;
+    font-size: clamp(18px, 5vw, 30px);
     color: white;
     background-color: #121212;
     transition: border 0.2s ease, background-color 0.2s ease;
@@ -61,7 +61,7 @@ h1 {
     color: white;
     padding: 8px 12px;
     border-radius: var(--border-radius);
-    font-size: 30px;
+    font-size: clamp(18px, 5vw, 30px);
     cursor: pointer;
     transition: background-color 0.2s ease;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
@@ -79,10 +79,28 @@ h1 {
     margin-left: auto;
 }
 
+/*utile per invertire i colori delle icone dei tag input*/
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.8;
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .time-machine {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .time-machine button,
+    .time-machine input {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 10vw;
+    }
 }
   

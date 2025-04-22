@@ -9,23 +9,20 @@ import { TimeMachineService } from '../../services/time-machine.service';
   styleUrls: ['./time-machine.component.css', '../../../assets/css/button.css']
 })
 export class TimeMachineComponent {
-  currentDate: Date = new Date();
-  @Output() dateChanged = new EventEmitter<Date>();
+  currentDate: Date;
 
   constructor(private timeMachineService: TimeMachineService) {
-    this.timeMachineService.setDate(this.currentDate);
+    this.currentDate = this.timeMachineService.getCurrentDate();
   }
 
   goBack(): void {
     this.currentDate = new Date(this.currentDate.getTime() - 3600000); // -1 ora
     this.timeMachineService.setDate(this.currentDate);
-    this.dateChanged.emit(this.currentDate);
   }
 
   goForward(): void {
     this.currentDate = new Date(this.currentDate.getTime() + 3600000); // +1 ora
     this.timeMachineService.setDate(this.currentDate);
-    this.dateChanged.emit(this.currentDate);
   }
 
   onDateChange(event: any): void {
@@ -34,14 +31,12 @@ export class TimeMachineComponent {
     const minutes = this.currentDate.getMinutes();
     this.currentDate = new Date(year, month - 1, day, hours, minutes);
     this.timeMachineService.setDate(this.currentDate);
-    this.dateChanged.emit(this.currentDate);
   }
 
   onTimeChange(event: any): void {
     const [hours, minutes] = event.target.value.split(':').map(Number);
     this.currentDate.setHours(hours, minutes);
     this.timeMachineService.setDate(new Date(this.currentDate));
-    this.dateChanged.emit(this.currentDate);
   }
 
   formatTime(date: Date): string {
@@ -53,6 +48,5 @@ export class TimeMachineComponent {
   resetToNow(): void {
     this.currentDate = new Date();
     this.timeMachineService.setDate(this.currentDate);
-    this.dateChanged.emit(this.currentDate);
   }
 }
