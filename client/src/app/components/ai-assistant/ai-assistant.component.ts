@@ -68,21 +68,23 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
     form.resetForm();
   }
 
-  newChat(): Promise<Chat> {
-    return new Promise((resolve, reject) => {
-      this.chatService.newChat().subscribe({
-        next: (chat) => {
-          this.currentChat = chat;
-          this.selectedChatId = chat._id!
-          this.chats.set([...this.chats(), chat]);
-          resolve(chat);
-        },
-        error: (error) => {
-          console.log(error);
-          reject(error);
-        }
+  newChat(): Promise<Chat> | void {
+    if(this.currentChat?.messages?.length != 1) {
+      return new Promise((resolve, reject) => {
+        this.chatService.newChat().subscribe({
+          next: (chat) => {
+            this.currentChat = chat;
+            this.selectedChatId = chat._id!
+            this.chats.set([...this.chats(), chat]);
+            resolve(chat);
+          },
+          error: (error) => {
+            console.log(error);
+            reject(error);
+          }
+        });
       });
-    });
+    }
   }
 
   loadMyChats() {
@@ -153,6 +155,12 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
   // Metodo per annullare la modifica
   cancelEdit(chat: Chat): void {
     chat.editing = false;
+  }
+
+  clearCurrentChat() {
+    this.currentChat = undefined;
+    this.selectedChatId = null;
+    this.chatService.setChatMessages([]);
   }
   
 }
