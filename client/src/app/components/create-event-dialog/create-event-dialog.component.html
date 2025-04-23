@@ -11,7 +11,14 @@
       </mat-form-field>
   
       <div id='date-and-time'>
-        <mat-form-field class="custom-form-field" appearance="outline">
+        <mat-form-field class="custom-form-field" *ngIf="data.allday" appearance="outline">
+          <mat-label>Data di inizio</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="data.startDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="custom-form-field" appearance="outline" *ngIf="!data.allday">
           <mat-label>Data e ora di inizio </mat-label>
           <input matInput type="datetime-local" [(ngModel)]="data.startDate" required>
         </mat-form-field>
@@ -43,8 +50,8 @@
         <mat-label>Tipo di fine ripetizione</mat-label>
         <mat-select [(ngModel)]="data.repetitionEndType" required>
           <mat-option value="NEVER">Nessuna fine</mat-option>
-          <mat-option value="COUNT">Termina dopo</mat-option>
-          <mat-option value="UNTIL">Termina il</mat-option>
+          <mat-option value="COUNT">Numero di ripetizioni</mat-option>
+          <mat-option value="UNTIL">Data di fine</mat-option>
         </mat-select>
       </mat-form-field>
 

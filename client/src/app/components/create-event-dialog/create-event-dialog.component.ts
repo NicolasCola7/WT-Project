@@ -43,7 +43,13 @@ export class CreateEventDialogComponent {
     this.dateAdapter.setLocale('it');
     if(this.data.endDate)
       this.data.endDate = this.convertDate(this.data.endDate);
-    this.data.startDate = this.convertDate(this.data.startDate);
+
+    if(!this.data.allDay)
+      this.data.startDate = this.convertDate(this.data.startDate);
+    else 
+      this.data.startDate = new Date(this.data.startDate).getTime();
+    
+    
     this.data.repetitionEndType = this.data.repetitions ?
      ( 
       typeof this.data.repetitions === 'number' ?
