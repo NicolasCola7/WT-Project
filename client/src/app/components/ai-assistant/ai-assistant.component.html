@@ -3,7 +3,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   
-  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
   
   <div class="chat-sidebar" [class.open]="sidebarOpen">
     <button class="new-chat-btn" (click)="clearCurrentChat()">

@@ -45,7 +45,8 @@ import { TimeMachineService } from '../../services/time-machine.service';
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
-  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent
+  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
+  sidebarOpen: boolean = false;
   isLoading = true;
   selectedDate!: Date;
   calendarVisible = signal(true);
@@ -81,8 +82,7 @@ export class CalendarComponent implements OnInit {
     eventClick: this.handleEventClick.bind(this),
   });
 
-  constructor(private changeDetector: ChangeDetectorRef,
-              private alertService: AlertService,
+  constructor(private alertService: AlertService,
               private dialog: MatDialog,
               private calendarService: CalendarService,
               private authService: AuthService,
@@ -93,11 +93,13 @@ export class CalendarComponent implements OnInit {
     this.fetchActivities();
   }
               
-
   private loadCalendar(): void {
     this.isLoading = true;
     const calendarEvents = this.convertEvents();
-    const calendarActivities = [...this.convertActivities(this.activities), ...this.convertActivities(this.overdueActivities)];
+    const calendarActivities = [
+      ...this.convertActivities(this.activities),
+      ...this.convertActivities(this.overdueActivities)
+    ];
     const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
 
     this.calendarOptions.set({
@@ -187,7 +189,6 @@ export class CalendarComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     const eventData = clickInfo.event;
     if(!eventData.extendedProps['isActivity']) {
-      //alert(JSON.stringify(eventData));
       const event: CalendarEvent = {
         _id: eventData.id,
         title: eventData.title,
@@ -428,5 +429,9 @@ export class CalendarComponent implements OnInit {
         });
       }
     });
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }
