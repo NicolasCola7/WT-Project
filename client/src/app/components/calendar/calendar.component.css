@@ -148,6 +148,33 @@ li > div > button {
   background-color: transparent;
 }
 
+mat-checkbox {
+
+  .mat-mdc-checkbox-touch-target,
+  .mat-mdc-checkbox-ripple,
+  .mdc-checkbox__ripple {
+    display: none !important;
+  }
+
+  .mdc-checkbox__background {
+    border: solid 1.5px #f7f7f8 !important;
+    border-radius: 50% !important;
+  }
+  
+  &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: #f7f7f8;
+    color:  #1e2b37 !important;
+    border-radius: 50% !important;
+  }
+  
+  .mdc-form-field .mdc-label {
+    color: #f7f7f8;
+    font-size: 16px;
+    
+  }
+  
+}
+
 li > div > button:hover {
   background-color: #dde3ea;
 }
@@ -186,7 +213,7 @@ li:hover div button {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 850px) {
 
   .calendar-sidebar {
     position: relative;
