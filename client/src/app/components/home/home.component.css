@@ -4,8 +4,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 main {
-    width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,7 +16,8 @@ main {
 
 .header {
     background-color: lightblue;
-    position: relative; /* necessario per posizionare il logout */
+    height: 15%;
+    position: relative;
 }
 
 app-logout {
@@ -26,10 +30,20 @@ app-logout {
 .header p {
     font-size: 30px;
     text-align: center;
-    padding: 40px 0px;
+    padding: 40px 0;
     font-weight: bold;
 }
 
 .grid {
-    flex: 4;
+    height: 85%;
+    overflow: hidden;
 }
+
+@media screen and (max-width: 768px) {
+    .grid {
+        height: auto !important;
+        flex: none !important;
+        overflow-y: auto !important;
+    }
+}
+

@@ -9,13 +9,14 @@ gridster {
 }
 :host {
     display: block;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #f0f2f5;
 }
+
 gridster-item {
     display: flex;
     align-items: center;
@@ -44,6 +45,33 @@ gridster-item img {
 .time-machine{
     background-color: #121212;
     color: white;
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        display: block;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
+
+    gridster {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    gridster-item {
+        width: 100% !important;
+        min-height: 120px;
+        margin-bottom: 10px;
+    }
+
+    gridster-item img {
+        max-width: 26vw;
+        max-height: 10vh;
+    }
 }
 
   
