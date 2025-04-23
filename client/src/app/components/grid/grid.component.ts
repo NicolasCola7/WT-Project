@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent } from 'angular-gridster2';
+import { GridsterComponent, GridsterConfig, GridsterItemComponent } from 'angular-gridster2';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { DashboardItem } from '../../models/dashboard-item.model';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class GridComponent {
   options!: GridsterConfig;
-  dashboard!: Array<GridsterItem & { name: string } & {relativeUrl: string} & {urlImg: string} & {isTimeMachine: boolean}>;
+  dashboard!: Array<DashboardItem>;
 
   constructor(private router: Router) {}
 

@@ -19,7 +19,7 @@ export class SettingsTimerComponent implements OnInit{
     cicle: new FormControl(1, [Validators.min(1), Validators.max(10)])
   });
 
-  constructor(private dialogRef: MatDialogRef<SettingsTimerComponent>,) { }
+  constructor(private dialogRef: MatDialogRef<SettingsTimerComponent>) { }
 
   mode: 'manuale' | 'automatica' = 'manuale';
   totalMinutes: number | null = null;
@@ -32,7 +32,7 @@ export class SettingsTimerComponent implements OnInit{
   */
   ngOnInit(): void {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    const settings: Settings = raw ? JSON.parse(raw) : { work: 30, break: 5, cicle: 5 };
+    const settings: Settings = raw ? JSON.parse(raw) : { work: 30, break: 5, cicle: 5};
 
     if (settings) {
       this.settingsForm.setValue(settings);
@@ -57,33 +57,34 @@ export class SettingsTimerComponent implements OnInit{
   generateScenarios(): void {
     this.scenari = [];
   
-    //se il tempo è minore di 20 minuti non ha senso creare uno scenario
-    if (!this.totalMinutes || this.totalMinutes < 20) return;
+    if (!this.totalMinutes || this.totalMinutes < 40) return; 
   
     const total = this.totalMinutes;
-    const scenariTrovati: any[] = [];
+    const scenariTrovati: StudioScenario[] = [];
   
-    /*
-      viene esplorata una griglia di combinazioni possibili:
-        . work: da 15 a 60 minuti, a step di 5
-        . pause: da 3 a 20 minuti, a step di 2
-    */
-    for (let work = 15; work <= 60; work += 5) {
-      for (let pause = 3; pause <= 20; pause += 2) {
-        // scarto pause più lunghe del focus
-        if (pause >= work) continue; 
+    // Definizione dei limiti
+    const maxFocus = 50;
+    const maxBreak = 15;
+    const minFocus = 15;
+    const minBreak = 3;
   
-        //calcolo della durata di un ciclo e del numero di cicli da fare
+    for (let work = minFocus; work <= maxFocus; work += 5) {
+      for (let pause = minBreak; pause <= maxBreak; pause += 2) {
+        // Regola: pause deve essere < focus
+        if (pause >= work) continue;
+  
         const cicloTime = work + pause;
         const cicli = Math.floor(total / cicloTime);
-  
-        //se il numero di cicli è minore di 1 non ha senso proporlo
         if (cicli < 1) continue;
   
         const tempoUsato = cicli * cicloTime;
+        const efficienza = tempoUsato / total;
+  
+        // Se utilizza meno del 50% del tempo o il ciclo singolo è troppo vicino al totale, lo scartiamo
+        if (efficienza < 0.5) continue;
   
         scenariTrovati.push({
-          work: work,
+          work,
           break: pause,
           cicle: cicli,
           total: tempoUsato
@@ -91,10 +92,16 @@ export class SettingsTimerComponent implements OnInit{
       }
     }
   
-    // ordina per tempoUsato decrescente (più utilizza il tempo disponibile = meglio)
-    scenariTrovati.sort((a, b) => b.total - a.total);
-  
-    // seleziona i primi 3 scenari più "efficienti"
-    this.scenari = scenariTrovati.slice(0, 3);
-  }
+    const scenariValidi = scenariTrovati.filter(s => s.total !== undefined) as Required<StudioScenario>[];
+
+    scenariValidi.sort((a, b) => {
+      const effA = a.total / total;
+      const effB = b.total / total;
+      if (effB !== effA) return effB - effA;
+      if (b.cicle !== a.cicle) return b.cicle - a.cicle;
+      return b.total - a.total;
+    });
+
+    this.scenari = scenariValidi.slice(0, 3);
+  }  
 }
