@@ -1,49 +1,89 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 main {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
-    background-color: lightblue;
-    height: 15%;
-    position: relative;
-}
-
-app-logout {
-    position: absolute;
-    top: 20px;
-    right: 50px;
-    z-index: 10;
-}
-
-.header p {
-    font-size: 30px;
-    text-align: center;
-    padding: 40px 0;
-    font-weight: bold;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
 }
 
 .grid {
-    height: 85%;
-    overflow: hidden;
+  flex: 1;
+  overflow-y: auto;
 }
 
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  background-color: rgb(50, 50, 50);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background-color: #212121;
+  padding: 0.3rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.feature .btn {
+  background-color: #212121;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature .btn:hover {
+  background-color: #424242;
+  transform: scale(1.05);
+}
+img {
+  max-width: 4vw;
+  max-height: 4vh;
+  object-fit: contain;
+}
+h3{
+  color:#fff;
+  font-size: 2rem;
+}
+
+/* Responsive for smaller screens */
 @media screen and (max-width: 768px) {
-    .grid {
-        height: auto !important;
-        flex: none !important;
-        overflow-y: auto !important;
-    }
-}
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
+  .grid {
+    height: auto !important;
+    overflow-y: auto !important;
+  }
+
+  .feature {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .feature .btn {
+    flex: 1 1 40%;
+    min-width: 120px;
+  }
+}
+  

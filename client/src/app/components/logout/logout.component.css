@@ -1,3 +1,9 @@
 #logoutBtn{
     background-color: red;
+    padding: 0.3rem 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
 }

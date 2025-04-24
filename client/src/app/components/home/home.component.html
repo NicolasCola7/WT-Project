@@ -1,10 +1,17 @@
 <app-loading [condition]="isLoading"></app-loading>
 <main>
     <div class="header">
+        <h3>SELFIE</h3>
+        <div class="feature">
+            <button class="btn" *ngFor="let item of dashboard" 
+                    (click)="navigateTo(item.relativeUrl)">
+                    <img src="../../../assets/icon/{{item.urlImg}}">
+                    <p>{{ item.name }}</p>
+            </button>
+          </div>          
         <app-logout />
-        <p> Ciao {{user.username}}. Benvenuto/a in SELFIE</p>
     </div>
     <div class="grid">
-        <app-grid />
+        <app-grid [dashboard]="dashboard"></app-grid>
     </div>
 </main>
