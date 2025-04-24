@@ -21,16 +21,9 @@ export class GridComponent {
 
   constructor(private router: Router) {}
 
-  //queste due callback ci serviranno più avanti
-  static itemResize(item: any, itemComponent: any) {
-    console.info('itemResized', item, itemComponent);
-  }
-
   ngOnInit() {
     //imposto le opzioni della griglia
     this.options = {
-      //callback per evento ridimensionamento
-      itemResizeCallback: GridComponent.itemResize,
       //elementi con drag & drop e ridimensionabili
       draggable: {
         enabled: true,
@@ -48,8 +41,5 @@ export class GridComponent {
       displayGrid: 'none',
       scrollToNewItems: true,
     };
-  }
-  goToPage(url: string) {
-    this.router.navigate([url]);
   }
 }

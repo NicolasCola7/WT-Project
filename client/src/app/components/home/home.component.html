@@ -3,15 +3,14 @@
     <div class="header">
         <h3>SELFIE</h3>
         <div class="feature">
-            <button class="btn" *ngFor="let item of dashboard" 
-                    (click)="navigateTo(item.relativeUrl)">
+            <button class="btn" *ngFor="let item of dashboard"
+                    [routerLink]="[item.relativeUrl]"
+                    routerLinkActive="active">
                     <img src="../../../assets/icon/{{item.urlImg}}">
                     <p>{{ item.name }}</p>
             </button>
           </div>          
         <app-logout />
     </div>
-    <div class="grid">
-        <app-grid [dashboard]="dashboard"></app-grid>
-    </div>
+    <app-grid [dashboard]="dashboard"></app-grid>
 </main>

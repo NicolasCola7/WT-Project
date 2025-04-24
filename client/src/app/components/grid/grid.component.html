@@ -1,7 +1,10 @@
 <gridster [options]="options">
-  @for (item of dashboard; track item) {
-    <gridster-item [item]="item" (dblclick)="goToPage(item.relativeUrl)" [ngClass]="{'time-machine':item.isTimeMachine}">
-      <p>{{item.name}}</p>
+  <ng-container *ngFor="let item of dashboard">
+    <gridster-item *ngIf="item.isVisible"
+                   [item]="item"
+                   [routerLink]="[item.relativeUrl]"
+                   [ngClass]="{'time-machine': item.isTimeMachine}">
+      <p>{{ item.name }}</p>
     </gridster-item>
-  }
+  </ng-container>
 </gridster>

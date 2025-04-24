@@ -4,4 +4,5 @@ export interface DashboardItem extends GridsterItem {
   relativeUrl: string;
   urlImg: string;
   isTimeMachine: boolean;
+  isVisible: boolean;
 }

@@ -1,7 +1,4 @@
 <div class="dark-theme">
-  <div class="title">
-    <h1>TIME MACHINE</h1>
-  </div>
   <div class="time-machine">
     <button (click)="goBack()">⏪</button>
     <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" (change)="onDateChange($event)">
