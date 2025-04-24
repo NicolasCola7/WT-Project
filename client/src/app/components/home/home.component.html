@@ -9,8 +9,13 @@
                     <img src="../../../assets/icon/{{item.urlImg}}">
                     <p>{{ item.name }}</p>
             </button>
-          </div>          
+        </div>          
         <app-logout />
     </div>
-    <app-grid [dashboard]="dashboard"></app-grid>
+    
+    <!-- Contenuto del dashboard principale solo quando siamo esattamente sulla route /home -->
+    <app-grid *ngIf="isHomeRoute" [dashboard]="dashboard"></app-grid>
+    
+    <!-- Router outlet per caricare i componenti interni -->
+    <router-outlet></router-outlet>
 </main>

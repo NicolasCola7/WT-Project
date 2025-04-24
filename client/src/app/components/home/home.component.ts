@@ -1,13 +1,14 @@
 import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LogoutComponent } from "../logout/logout.component";
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { DashboardItem } from '../../models/dashboard-item.model';
 import { GridComponent } from "../grid/grid.component";
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -25,15 +26,16 @@ import { GridComponent } from "../grid/grid.component";
 })
 export class HomeComponent implements OnInit{ 
   user: User = new User();
+  isHomeRoute = false;
   isLoading = true;
   dashboard: Array<DashboardItem> = [
-    { cols: 0, rows: 0, y: 0, x: 0, name: 'Home', relativeUrl: '/home', urlImg: "home.png", isTimeMachine: false, isVisible: false },
-    { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: '/calendar', urlImg: "calendar.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: '/timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: '/note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 0, name: 'Assistente AI', relativeUrl: '/assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 2', relativeUrl: '/extra2', urlImg: "extra.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 8, name: 'Time Machine', relativeUrl: '/time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
+    { cols: 0, rows: 0, y: 0, x: 0, name: 'Home', relativeUrl: 'home', urlImg: "home.png", isTimeMachine: false, isVisible: false },
+    { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: 'calendar', urlImg: "calendar.png", isTimeMachine: false, isVisible: true },
+    { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
+    { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: 'note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
+    { cols: 4, rows: 6, y: 3, x: 0, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
+    { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 2', relativeUrl: 'extra2', urlImg: "extra.png", isTimeMachine: false, isVisible: true },
+    { cols: 4, rows: 6, y: 3, x: 8, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
   ];
 
   constructor(private userService: UserService,
@@ -46,6 +48,12 @@ export class HomeComponent implements OnInit{
       next: data => this.user = data,
       error: error => console.log(error),
       complete: () => this.isLoading = false
+    });
+    // Controlla se siamo nella route /home esatta
+    this.router.events.pipe(
+      filter((event: any) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.isHomeRoute = this.router.url === '/home';
     });
   }
 }

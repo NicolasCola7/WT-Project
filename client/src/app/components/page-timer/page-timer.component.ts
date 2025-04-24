@@ -92,10 +92,20 @@ export class PageTimerComponent implements OnInit {
   }
 
   loadSettings(): void {
-    //carico gli ultimi settings impostati dall'utente altrimenti imposto quelli di default
-    const raw = localStorage.getItem(SETTINGS_KEY);
-    this.settings = raw ? JSON.parse(raw) : { work: 30, break: 5 , cicle : 5};
+    try {
+      const raw = localStorage.getItem(SETTINGS_KEY);
+      // Controllo anche se il valore è la stringa "undefined"
+      if (!raw || raw === 'undefined') {
+        this.settings = { work: 30, break: 5, cicle: 5 };
+      } else {
+        this.settings = JSON.parse(raw);
+      }
+    } catch (error) {
+      console.error("Errore nel parsing delle impostazioni:", error);
+      this.settings = { work: 30, break: 5, cicle: 5 };
+    }
   }
+  
   
 
   openSettings(): void {
