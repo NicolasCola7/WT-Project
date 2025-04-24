@@ -14,7 +14,7 @@
   
 .list-content {
     padding: 16px;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.3s ease;
     overflow: hidden;
 }
   
@@ -26,5 +26,5 @@
 }
   
 .toggle-icon {
-    transition: transform 0.3s;
+    transition: 0.3s ease ;
 }

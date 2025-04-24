@@ -41,14 +41,11 @@ export class CreateEventDialogComponent {
      ) {
     this.data.allday = !this.data.endDate;
     this.dateAdapter.setLocale('it');
+    
     if(this.data.endDate)
       this.data.endDate = this.convertDate(this.data.endDate);
-
-    if(!this.data.allDay)
-      this.data.startDate = this.convertDate(this.data.startDate);
-    else 
-      this.data.startDate = new Date(this.data.startDate).getTime();
     
+    this.data.startDate = this.convertDate(this.data.startDate);
     
     this.data.repetitionEndType = this.data.repetitions ?
      ( 
@@ -62,17 +59,17 @@ export class CreateEventDialogComponent {
   }
 
   onSave(): void {
-    if(!this.data.title){
+    if(!this.data.title) {
         this.alertService.showError('Titolo obbligatoro');
         return;
     }
 
-    if(!this.data.startDate){
+    if(!this.data.startDate) {
       this.alertService.showError('Data di inizio obbligatoria');
       return;
     }
     
-    if(!this.data.endDate && !this.data.allday){
+    if(!this.data.endDate && !this.data.allday) {
       this.alertService.showError('Data di fine obbligatoria');
       return;
     }
@@ -112,7 +109,10 @@ export class CreateEventDialogComponent {
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       
-      toConvert = `${year}-${month}-${day}T${hours}:${minutes}`;
+      if(!this.data.allday)
+        toConvert = `${year}-${month}-${day}T${hours}:${minutes}`;
+      else
+        toConvert = `${year}-${month}-${day}`;
     } 
     // If it's an ISO string or timestamp, convert first
     else {
@@ -122,7 +122,7 @@ export class CreateEventDialogComponent {
       const day = String(date.getDate()).padStart(2, '0');
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
-      
+    
       toConvert = `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 

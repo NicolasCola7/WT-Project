@@ -46,6 +46,7 @@ import { TimeMachineService } from '../../services/time-machine.service';
 })
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
+  showDropdown = false;
   sidebarOpen: boolean = false;
   isLoading = true;
   selectedDate!: Date;
@@ -86,7 +87,11 @@ export class CalendarComponent implements OnInit {
               private dialog: MatDialog,
               private calendarService: CalendarService,
               private authService: AuthService,
-              private timeMachineService: TimeMachineService){}
+              private timeMachineService: TimeMachineService){
+    
+    // Add click listener to detect clicks outside the dropdown
+    document.addEventListener('click', this.onDocumentClick.bind(this));
+  }
 
   ngOnInit(): void {
     this.fetchEvents();
@@ -433,5 +438,18 @@ export class CalendarComponent implements OnInit {
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  toggleDropdown(event: Event): void {
+    event.stopPropagation();
+    this.showDropdown = !this.showDropdown;
+  }
+
+  onDocumentClick(event: MouseEvent): void {
+    // Close dropdown when clicking outside
+    const target = event.target as HTMLElement;
+    if (!target.closest('.create-button-container')) {
+      this.showDropdown = false;
+    }
   }
 }

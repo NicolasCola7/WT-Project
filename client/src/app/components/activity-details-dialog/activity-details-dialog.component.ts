@@ -2,6 +2,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
+import { TimeMachineService } from '../../services/time-machine.service';
 
 @Component({
   selector: 'app-activity-details-dialog',
@@ -15,13 +16,14 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class ActivityDetailsDialogComponent {
   dialogRef = inject(MatDialogRef);
+  timeMachineService = inject(TimeMachineService);
   data = inject(MAT_DIALOG_DATA);
   dueDate =  new Date(this.data.dueDate).toLocaleDateString('it-IT', { 
     hour12: false, 
     hour: '2-digit',
     minute: '2-digit'
   });
-  overdue =  new Date(this.data.dueDate).getTime() < Date.now();
+  overdue =  new Date(this.data.dueDate).getTime() <= this.timeMachineService.getCurrentDate().getTime();
 
 
   onDelete() {

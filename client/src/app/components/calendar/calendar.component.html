@@ -6,14 +6,14 @@
   
   <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
   <div class='calendar-sidebar' [class.open]="sidebarOpen">
-    <div class="dropdown">
-      <button class="dropbtn">
-        <mat-icon>add_circle_outline</mat-icon>
+    <div class="create-button-container">
+      <button class="create-button" (click)="toggleDropdown($event)">
+       <mat-icon>add_circle_outline</mat-icon>
         Crea
       </button>
-      <div class="dropdown-content">
-          <button (click)="newEvent()">Evento</button>
-          <button (click)="newActivity()">Attività</button>
+      <div class="dropdown-menu" [class.show]="showDropdown">
+        <a class="dropdown-item" (click)="newEvent()">Evento</a>
+        <a class="dropdown-item" (click)="newActivity()">Attività</a>
       </div>
     </div>
     <div class="activities">

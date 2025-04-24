@@ -38,11 +38,11 @@
             <span class="icon">
                 <mat-icon>repeat</mat-icon>
             </span>
-            <span>
+            <span *ngIf="data.frequency === 'NONE'">
+                Non si ripete
+            </span>
+            <span *ngIf="data.frequency !== 'NONE'">
                 @switch(data.frequency) {
-                    @case('NONE') {
-                        Non si ripete
-                    }
                     @case('DAILY') {
                         Giornaliero -
                     }
