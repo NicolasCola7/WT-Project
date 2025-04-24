@@ -148,15 +148,18 @@ li {
   flex-direction: row;
   justify-content: space-between;
   color: #f7f7f8;
+  border-radius: 0.5rem;
 }
 
 li > div > button {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease;
-  color: #f7f7f8;
+  color: rgba(0, 0, 0, 0.54);
   border: 0px;
   padding: 5px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: transparent;
 }
@@ -183,14 +186,26 @@ mat-checkbox {
   .mdc-form-field .mdc-label {
     color: #f7f7f8;
     font-size: 16px;
-    
   }
   
 }
 
-li > div > button:hover {
+li:hover > div > button:hover {
+  background-color: #dde3ea;
+}
+
+li:hover {
   background-color: #f7f7f8;
-  color: #1e2b37
+}
+
+li:hover mat-checkbox {
+  .mdc-form-field .mdc-label {
+    color: #1e2b37;
+  }
+
+  .mdc-checkbox__background {
+    border: solid 1.5px  !important;
+  }
 }
 
 li:hover div button {
