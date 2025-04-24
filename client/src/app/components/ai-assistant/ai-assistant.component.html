@@ -1,12 +1,12 @@
 <div class="assistant-container">
-  <button class="sidebar-toggle" (click)="toggleSidebar()">
+  <button class="sidebar-toggle" [class.active]="sidebarOpen" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
   
-  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
   
   <div class="chat-sidebar" [class.open]="sidebarOpen">
-    <button class="new-chat-btn" (click)="clearCurrentChat()">
+    <button class="new-chat-btn" (click)="clearCurrentChat(); closeSidebar()">
       <mat-icon>add_circle_outline</mat-icon>
       Nuova Chat
     </button>

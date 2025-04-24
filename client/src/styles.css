@@ -8,6 +8,8 @@
   body {
     font-family: 'Roboto', Arial, sans-serif;
     overflow-y: auto;
+    width: 100vw;
+    height: 100vh;
   }
 
   :root {

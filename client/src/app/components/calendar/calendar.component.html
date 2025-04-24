@@ -1,6 +1,6 @@
 <app-loading [condition]="isLoading"></app-loading>
 <div class='calendar-container'>
-  <button class="sidebar-toggle" (click)="toggleSidebar()">
+  <button class="sidebar-toggle" [class.active]="sidebarOpen" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
   
