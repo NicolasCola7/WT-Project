@@ -1,4 +1,4 @@
-#logoutBtn{
+#logoutBtn {
     background-color: red;
     padding: 0.3rem 1rem;
     border: none;
@@ -6,4 +6,35 @@
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+img {
+    max-width: 3vw;
+    max-height: 3vh;
+    object-fit: contain;
+}
+
+.btn-label {
+    display: inline;
+}
+
+/* Modalità mobile: portrait + landscape smartphone */
+@media screen and (max-width: 768px), (max-width: 1024px) and (orientation: landscape), (max-width: 1366px) and (orientation: portrait) {
+    .btn-label {
+        display: none;
+    }
+
+    #logoutBtn {
+        padding: 0.5rem;
+        justify-content: center;
+        background-color: red;
+    }
+
+    #logoutBtn img {
+        max-width: 6vw;
+        max-height: 6vh;
+    }
 }

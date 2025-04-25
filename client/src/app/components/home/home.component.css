@@ -11,12 +11,6 @@ main {
   background-color: #ffffff;
 }
 
-.grid {
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* Header styles */
 .header {
   display: flex;
   justify-content: space-between;
@@ -24,6 +18,9 @@ main {
   padding: 0.5rem 2rem;
   background-color: rgb(50, 50, 50);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .feature {
@@ -53,37 +50,69 @@ main {
   background-color: #424242;
   transform: scale(1.05);
 }
+
 img {
   max-width: 4vw;
   max-height: 4vh;
   object-fit: contain;
 }
-h3{
-  color:#fff;
+
+h3.title {
+  color: #fff;
   font-size: 2rem;
 }
 
-/* Responsive for smaller screens */
-@media screen and (max-width: 768px) {
+.btn-label {
+  display: inline;
+}
+
+.grid {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Responsive: portrait + landscape smartphone */
+@media screen and (max-width: 768px), (max-width: 1024px) and (orientation: landscape), (max-width: 1366px) and (orientation: portrait) {
   .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 1rem;
   }
 
-  .grid {
-    height: auto !important;
-    overflow-y: auto !important;
+  main {
+    padding-bottom: 70px;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .btn-label {
+    display: none;
   }
 
   .feature {
-    width: 100%;
-    justify-content: center;
+    flex: 1;
+    justify-content: space-around;
+    padding: 0.3rem 0;
+    background-color: transparent;
+    gap: 0.5rem;
   }
 
   .feature .btn {
-    flex: 1 1 40%;
-    min-width: 120px;
+    justify-content: center;
+    padding: 0.5rem;
+    flex: none;
+    background-color: transparent;
+  }
+
+  img {
+    max-width: 6vw;
+    max-height: 6vh;
   }
 }
-  

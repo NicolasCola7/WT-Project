@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit{
     { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
     { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: 'note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
     { cols: 4, rows: 6, y: 3, x: 0, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 4, name: 'Extra 2', relativeUrl: 'extra2', urlImg: "extra.png", isTimeMachine: false, isVisible: true },
     { cols: 4, rows: 6, y: 3, x: 8, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
   ];
 

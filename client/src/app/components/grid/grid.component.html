@@ -2,7 +2,6 @@
   <ng-container *ngFor="let item of dashboard">
     <gridster-item *ngIf="item.isVisible"
                    [item]="item"
-                   [routerLink]="[item.relativeUrl]"
                    [ngClass]="{'time-machine': item.isTimeMachine}">
       <p>{{ item.name }}</p>
     </gridster-item>
