@@ -2,6 +2,7 @@
   <div class="time-machine">
     <button (click)="goBack()">⏪</button>
     <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" (change)="onDateChange($event)">
+    <!-- Visualizza anche i secondi -->
     <input type="time" [value]="formatTime(currentDate)" (change)="onTimeChange($event)">
     <button (click)="goForward()">⏩</button>
     <button (click)="resetToNow()">🔄 Ora</button>
