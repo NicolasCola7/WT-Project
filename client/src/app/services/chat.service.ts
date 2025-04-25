@@ -1,6 +1,6 @@
-import { HttpClient, HttpDownloadProgressEvent, HttpEvent, HttpEventType, HttpResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable, signal } from "@angular/core";
-import { filter, map, Observable, startWith } from "rxjs";
+import { Observable } from "rxjs";
 import Chat from "../models/chat.model";
 import { AuthService } from "./auth.service";
 import { Message } from "../models/message.model";

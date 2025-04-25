@@ -133,10 +133,7 @@
 }
 
 ul {
-  margin: 0;
-  padding: 0 0 0 1.5em;
   width: 100%;
-  color: #f7f7f8;
 }
 
 li {
@@ -147,7 +144,6 @@ li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  color: #f7f7f8;
   border-radius: 0.5rem;
 }
 
@@ -186,8 +182,11 @@ mat-checkbox {
   .mdc-form-field .mdc-label {
     color: #f7f7f8;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 75px;
   }
-  
 }
 
 li:hover > div > button:hover {
@@ -260,5 +259,15 @@ li:hover div button {
     display: flex;
     flex-direction: row;
   }
+}
 
+.google-calendar-event {
+  border-bottom: 2px solid #0F9D58 !important;
+  border-left: 2px solid #4285F4 !important;
+  border-right: 2px solid #DB4437 !important;
+  border-top:  2px solid #F4B400 !important;
+  color: #4285F4 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }

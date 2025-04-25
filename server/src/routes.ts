@@ -3,6 +3,7 @@ import UserController from './controllers/user.controller';
 import ActivityController from './controllers/activity.controller';
 import CalendarEventController from './controllers/event.controller';
 import ChatController from './controllers/chat.controller';
+import ImportedCalendarController from './controllers/imported-calendar.controller';
 
 
 const setRoutes = (app: Application): void => {
@@ -13,6 +14,7 @@ const setRoutes = (app: Application): void => {
   const eventController = new CalendarEventController();
   const activityController = new ActivityController();
   const chatController = new ChatController();
+  const importedCalendarController = new ImportedCalendarController();
 
   //DEFINIZIONE ROUTES PER OGNI CONTROLLER
   // Users
@@ -41,6 +43,12 @@ const setRoutes = (app: Application): void => {
   router.route('/chats/:id').put(chatController.update);
   router.route('/chats/:id').get(chatController.get);
   router.route('/chats/:id').delete(chatController.delete);
+
+  //Imported Calendar
+  router.route('/imported-calendars').post(importedCalendarController.insert);
+  router.route('/imported-calendars/:id').get(importedCalendarController.get);
+  router.route('/imported-calendars/:id').delete(importedCalendarController.delete);
+  router.route('/imported-calendars').get(importedCalendarController.getMyImportedCalendars);
 
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);

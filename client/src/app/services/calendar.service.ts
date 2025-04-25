@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { CalendarEvent } from "../models/event.model";
 import { Activity } from "../models/activity.model";
 import { User } from "../models/user.model";
+import ImportedCalendar from "../models/imported-calendar.model";
 
 @Injectable({ providedIn: 'root' })
 export class CalendarService {
@@ -44,5 +45,11 @@ export class CalendarService {
 
   updateActivity(activity: Activity): Observable<string> {
     return this.http.put(`/api/activity/${activity._id}`, activity, { responseType: 'text' });
+  }
+
+  getMyImportedCalendars(user: User): Observable<ImportedCalendar[]> {
+    return this.http.get<ImportedCalendar[]>('/api/imported-calendars', {
+      params: {userID: user._id!}
+    });
   }
 }

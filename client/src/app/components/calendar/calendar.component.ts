@@ -25,6 +25,7 @@ import { CollapsibleListComponent } from "../../common/collapsible-list/collapsi
 import {MatListModule} from '@angular/material/list';
 import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activity-details-dialog.component';
 import { TimeMachineService } from '../../services/time-machine.service';
+import googleCalendarPlugin from '@fullcalendar/google-calendar';
 
 @Component({
   selector: 'app-calendar',
@@ -62,12 +63,17 @@ export class CalendarComponent implements OnInit {
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
-      rrulePlugin
+      rrulePlugin,
+      googleCalendarPlugin
     ],
+    googleCalendarApiKey: 'AIzaSyDT7orYSSUNvhYXdYo2jDQYVNNOF12ChXw',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+    events: {
+      googleCalendarId: 'nicolascola21@gmail.com'
     },
     initialView: 'dayGridMonth',
     weekends: true,
@@ -109,7 +115,16 @@ export class CalendarComponent implements OnInit {
 
     this.calendarOptions.set({
       ...this.calendarOptions(),
-      events: allCalendarEvents,
+      eventSources: [
+        // Google Calendar events
+        {
+          googleCalendarId: 'nicolascola21@gmail.com',
+          className: 'google-calendar-event',
+          editable: false
+        },
+        // Your custom events
+        allCalendarEvents
+      ]
     });
   }
 
@@ -193,6 +208,12 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(clickInfo: EventClickArg) {
     const eventData = clickInfo.event;
+    
+    // se si stratta di un evento importato, lo apro su google calendar
+    if (eventData.url) {
+      return;
+    }
+
     if(!eventData.extendedProps['isActivity']) {
       const event: CalendarEvent = {
         _id: eventData.id,
