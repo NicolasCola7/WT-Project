@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import { TimeMachineService } from '../../services/time-machine.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activity-details-dialog',
@@ -18,12 +19,28 @@ export class ActivityDetailsDialogComponent {
   dialogRef = inject(MatDialogRef);
   timeMachineService = inject(TimeMachineService);
   data = inject(MAT_DIALOG_DATA);
-  dueDate =  new Date(this.data.dueDate).toLocaleDateString('it-IT', { 
+
+  dueDate = new Date(this.data.dueDate).toLocaleDateString('it-IT', { 
     hour12: false, 
     hour: '2-digit',
     minute: '2-digit'
   });
-  overdue =  new Date(this.data.dueDate).getTime() <= this.timeMachineService.getCurrentDate().getTime();
+
+  overdue = false;
+  private subscription: Subscription;
+
+  constructor() {
+    this.subscription = this.timeMachineService.currentDate$.subscribe(currentDate => {
+      const dueDateTime = new Date(this.data.dueDate).getTime();
+      this.overdue = dueDateTime <= currentDate.getTime();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
 
   onDelete() {

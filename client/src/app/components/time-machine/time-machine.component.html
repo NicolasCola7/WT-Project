@@ -1,10 +1,16 @@
 <div class="dark-theme">
   <div class="time-machine">
-    <button (click)="goBack()">⏪</button>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>fast_rewind</mat-icon>
+    </button>
     <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" (change)="onDateChange($event)">
     <!-- Visualizza anche i secondi -->
     <input type="time" [value]="formatTime(currentDate)" (change)="onTimeChange($event)">
-    <button (click)="goForward()">⏩</button>
-    <button (click)="resetToNow()">🔄 Ora</button>
+    <button mat-icon-button (click)="goForward()">
+      <mat-icon>fast_forward</mat-icon>
+    </button>
+    <button mat-icon-button (click)="resetToNow()">
+      <mat-icon>autorenew</mat-icon>
+    </button>
   </div>
 </div>

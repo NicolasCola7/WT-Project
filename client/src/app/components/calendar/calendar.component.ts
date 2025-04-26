@@ -26,7 +26,7 @@ import {MatListModule} from '@angular/material/list';
 import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activity-details-dialog.component';
 import { TimeMachineService } from '../../services/time-machine.service';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-
+import { computed, effect } from '@angular/core';
 @Component({
   selector: 'app-calendar',
   imports: [
@@ -47,6 +47,8 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar';
 })
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
+  timeMachineService = inject(TimeMachineService);
+
   showDropdown = false;
   sidebarOpen: boolean = false;
   isLoading = true;
@@ -57,6 +59,10 @@ export class CalendarComponent implements OnInit {
   completedActivities: Activity[] = [];
   overdueActivities: Activity[] = [];
   currentEvents = signal<EventApi[]>([]);
+
+  // 👇 Creo un signal locale per la currentDate
+  currentDate = signal(new Date());
+
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
@@ -81,27 +87,29 @@ export class CalendarComponent implements OnInit {
     selectable: false,
     selectMirror: false,
     dayMaxEvents: true,
-    //considero la data della time-machine
-    now: () => this.timeMachineService.getCurrentDate(),
+    now: () => this.currentDate(),
     nowIndicator: true,
     locales: [ itLocale ],
     locale: 'it',
     eventClick: this.handleEventClick.bind(this),
   });
 
+  ngOnInit(): void {
+    // 👇 Quando cambia il valore della timeMachine, aggiorno il mio signal
+    this.timeMachineService.currentDate$.subscribe(date => {
+      this.currentDate.set(date);
+    });
+    this.fetchEvents();
+    this.fetchActivities();
+  }
+
   constructor(private alertService: AlertService,
               private dialog: MatDialog,
               private calendarService: CalendarService,
-              private authService: AuthService,
-              private timeMachineService: TimeMachineService){
+              private authService: AuthService){
     
     // Add click listener to detect clicks outside the dropdown
     document.addEventListener('click', this.onDocumentClick.bind(this));
-  }
-
-  ngOnInit(): void {
-    this.fetchEvents();
-    this.fetchActivities();
   }
               
   private loadCalendar(): void {
@@ -171,18 +179,26 @@ export class CalendarComponent implements OnInit {
     const converted = activities.map(activity => ({
       id: activity._id,
       title: activity.title,
-      start: this.isOverdue(activity.dueDate!) ? new Date(this.timeMachineService.getCurrentDate()) : activity.dueDate!,
+      start: this.isOverdue(activity.dueDate!) 
+              ? new Date(this.currentDate())  // 👈 USO IL SIGNAL
+              : activity.dueDate!,
       allDay: true,
-      backgroundColor: this.getActivityStatus(activity), 
+      backgroundColor: this.getActivityStatus(activity),
       completed: activity.completed,
       description: activity.description,
       isActivity: true,
       creatorId: activity.creatorId,
       borderColor: this.getActivityStatus(activity)
     }));
-
+  
     return converted;
   }
+  
+  private isOverdue(date: Date) {
+    const endDate = new Date(date).getTime();
+    return endDate < this.currentDate().getTime(); // 👈 USO IL SIGNAL
+  }
+  
 
   private getActivityStatus(activity: Activity) {
     
@@ -379,12 +395,6 @@ export class CalendarComponent implements OnInit {
       error: (error) => console.log(error),
       complete: () => this.isLoading = false
     });
-  }
-
-  private isOverdue(date: Date) {
-    const endDate = new Date(date).getTime();
-
-    return endDate < this.timeMachineService.getCurrentDate().getTime();
   }
 
   deleteActivity(id: string, title: string) {

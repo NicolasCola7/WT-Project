@@ -41,9 +41,9 @@ body {
 }
 
 .time-machine button {
-    background-color: var(--primary-color);
+    background-color: #85d700;
     border: none;
-    color: white;
+    color: black;
     padding: 8px 12px;
     border-radius: var(--border-radius);
     font-size: clamp(18px, 5vw, 30px);
@@ -53,7 +53,7 @@ body {
 }
 
 .time-machine button:hover {
-    background-color: var(--primary-hover);
+    background-color: #85d700c9;
 }
 
 .time-machine button:active {
