@@ -3,7 +3,7 @@ import { GridsterComponent, GridsterConfig, GridsterItemComponent } from 'angula
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { DashboardItem } from '../../models/dashboard-item.model';
-
+import { PreviewLoaderComponent } from '../preview-loader/preview-loader.component';
 
 @Component({
   selector: 'app-grid',
@@ -12,6 +12,7 @@ import { DashboardItem } from '../../models/dashboard-item.model';
   standalone: true,
   imports: [GridsterComponent, 
             GridsterItemComponent, 
+            PreviewLoaderComponent,
             CommonModule,
             RouterModule]
 })

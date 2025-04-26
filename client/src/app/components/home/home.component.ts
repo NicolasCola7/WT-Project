@@ -29,12 +29,84 @@ export class HomeComponent implements OnInit{
   isHomeRoute = false;
   isLoading = true;
   dashboard: Array<DashboardItem> = [
-    { cols: 0, rows: 0, y: 0, x: 0, name: 'Home', relativeUrl: 'home', urlImg: "home.png", isTimeMachine: false, isVisible: false },
-    { cols: 1, rows: 1, y: 0, x: 0, name: 'Calendario', relativeUrl: 'calendar', urlImg: "calendar.png", isTimeMachine: false, isVisible: true },
-    { cols: 1, rows: 1, y: 0, x: 1, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
-    { cols: 1, rows: 1, y: 1, x: 0, name: 'Note', relativeUrl: 'note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
-    { cols: 1, rows: 1, y: 1, x: 1, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
-    { cols: 1, rows: 1, y: 2, x: 0, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
+    { 
+      cols: 0,
+      rows: 0, 
+      y: 0, 
+      x: 0, 
+      name: 'Home', 
+      relativeUrl: 'home', 
+      urlImg: "home.png", 
+      isTimeMachine: false, 
+      isVisible: false,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+    },
+    { 
+      cols: 1, 
+      rows: 1, 
+      y: 0, 
+      x: 0, 
+      name: 'Calendario', 
+      relativeUrl: 'calendar', 
+      urlImg: "calendar.png", 
+      isTimeMachine: false, 
+      isVisible: true,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+    },
+    { 
+      cols: 1, 
+      rows: 1, 
+      y: 0, 
+      x: 1, 
+      name: 'Timer', 
+      relativeUrl: 'timer', 
+      urlImg: "timer.png", 
+      isTimeMachine: false, 
+      isVisible: true,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+    },
+    { 
+      cols: 1, 
+      rows: 1, 
+      y: 1, 
+      x: 0, 
+      name: 'Note', 
+      relativeUrl: 'note', 
+      urlImg: "note.png", 
+      isTimeMachine: false, 
+      isVisible: true,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+    },
+    { 
+      cols: 1, 
+      rows: 1, 
+      y: 1, 
+      x: 1, 
+      name: 'Assistente AI', 
+      relativeUrl: 'assistant', 
+      urlImg: "chatbot.png", 
+      isTimeMachine: false, 
+      isVisible: true,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' } 
+    },
+    { 
+      cols: 1, 
+      rows: 1, 
+      y: 2, 
+      x: 0, 
+      name: 'Time Machine', 
+      relativeUrl: 'time-machine', 
+      urlImg: "time-machine.png", 
+      isTimeMachine: true, 
+      isVisible: true,
+      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+    }
   ];
 
   constructor(private userService: UserService,
