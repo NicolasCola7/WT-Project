@@ -13,7 +13,7 @@
       ></app-timer>
 
       <div class="cicles">
-        <div>SESSIONE</div>
+        <div>CICLI</div>
 
         <div class="cicle-list">
           <div
@@ -40,8 +40,10 @@
         <mat-icon>settings</mat-icon>
       </button>
     </div>
-    <div class="session-complete-animation" *ngIf="showAnimation">
-      <p>🎉 Sessione completata! Ottimo lavoro! 🎉</p>
-    </div>    
   </main>
+
+  <!-- SPOSTATO QUI, FUORI DA <main> -->
+  <div class="session-complete-animation" *ngIf="showAnimation">
+    <p>🎉 Sessione completata! Ottimo lavoro! 🎉</p>
+  </div>    
 </div>

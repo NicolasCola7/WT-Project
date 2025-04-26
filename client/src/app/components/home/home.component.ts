@@ -30,11 +30,11 @@ export class HomeComponent implements OnInit{
   isLoading = true;
   dashboard: Array<DashboardItem> = [
     { cols: 0, rows: 0, y: 0, x: 0, name: 'Home', relativeUrl: 'home', urlImg: "home.png", isTimeMachine: false, isVisible: false },
-    { cols: 4, rows: 6, y: 0, x: 0, name: 'Calendario', relativeUrl: 'calendar', urlImg: "calendar.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 0, x: 4, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 0, x: 8, name: 'Note', relativeUrl: 'note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 0, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
-    { cols: 4, rows: 6, y: 3, x: 8, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
+    { cols: 1, rows: 1, y: 0, x: 0, name: 'Calendario', relativeUrl: 'calendar', urlImg: "calendar.png", isTimeMachine: false, isVisible: true },
+    { cols: 1, rows: 1, y: 0, x: 1, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png", isTimeMachine: false, isVisible: true },
+    { cols: 1, rows: 1, y: 1, x: 0, name: 'Note', relativeUrl: 'note', urlImg: "note.png", isTimeMachine: false, isVisible: true },
+    { cols: 1, rows: 1, y: 1, x: 1, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png", isTimeMachine: false, isVisible: true },
+    { cols: 1, rows: 1, y: 2, x: 0, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png", isTimeMachine: true, isVisible: true },
   ];
 
   constructor(private userService: UserService,

@@ -109,6 +109,10 @@ body {
 
 /* ANIMAZIONE FINE SESSIONE */
 .session-complete-animation {
+  position: fixed;
+  top: 10%;
+  left: 36%;
+  z-index: 9999;
   animation: fadeInOut 5s ease-in-out;
   background-color: var(--color-primary);
   padding: 20px;
@@ -117,7 +121,9 @@ body {
   text-align: center;
   font-weight: bold;
   color: var(--color-text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
 
 @keyframes fadeInOut {
   0% { opacity: 0; transform: scale(0.8); }
