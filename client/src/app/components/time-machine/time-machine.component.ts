@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeMachineService } from '../../services/time-machine.service';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class TimeMachineComponent implements OnInit, OnDestroy {
   currentDate!: Date;
   private subscription!: Subscription;
+  @Input() isPreviewMode = false;
 
   constructor(private timeMachineService: TimeMachineService) {}
 
