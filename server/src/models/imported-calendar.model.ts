@@ -7,7 +7,7 @@ interface ImportedCalendarI {
 
 
 const importedCalendarSchema = new Schema<ImportedCalendarI> ({
-    calendarId: { type: String, required: true, trim: true },
+    calendarId: { type: String, unique: true, required: true, lowercase: true, trim: true },
     userId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',

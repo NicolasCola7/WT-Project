@@ -35,8 +35,8 @@
 }
 
 #save-button {
-  background-color: var(--primary-color); 
-  color: white;
+  background-color: #1e2b37;
+  color: #f7f7f8;
   border: none;
   border-radius: var(--border-radius);
   padding: 8px 24px;
@@ -49,8 +49,8 @@
 }
 
 #save-button:hover {
-  background-color: var(--primary-hover);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f7f7f8;
+  color: #1e2b37;
 }
 
 #save-button:active {

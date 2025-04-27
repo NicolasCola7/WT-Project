@@ -52,4 +52,9 @@ export class CalendarService {
       params: {userID: user._id!}
     });
   }
+
+  importCalendar(importedCalendar: ImportedCalendar): Observable<ImportedCalendar> {
+    return this.http.post<ImportedCalendar>('/api/imported-calendars', importedCalendar);
+  }
+
 }

@@ -1,0 +1,27 @@
+<div class="eventDialog">
+    <div id="dialog-header">
+      <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Chiudi">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <mat-dialog-content>
+        <div class="disclaimer">
+            <p>
+                Per importare un calendario da Google Calendar questo deve essere pubblico. 
+                L'id del calendario lo puoi trovare in: <br>
+                "I miei calendari > Opzioni > Impostazioni e Condivisione > Integra calendario"
+            </p>
+        </div>
+        <div>
+            <mat-form-field class="custom-form-field" appearance="outline">
+                <mat-label>Id calendario</mat-label>
+                <input matInput [(ngModel)]="data.calendarId"  required>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions >
+        <button mat-button id='import-button' (click)="onImport()">Importa</button>
+    </mat-dialog-actions>
+</div>

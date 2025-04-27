@@ -1,0 +1,51 @@
+.custom-form-field {
+    width: 100%; 
+}
+
+
+#dialog-header {
+    display:flex;
+    justify-content: right;
+    padding: 2%;
+}
+
+.close-button {
+    color: rgba(0, 0, 0, 0.54);
+    border: 0px;
+    padding: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+}
+
+.close-button:hover {
+    background-color: #dde3ea;
+}
+
+.disclaimer {
+    margin-bottom: 20px;
+}
+
+#import-button {
+    background-color: #1e2b37;
+    color: #f7f7f8;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+    text-transform: none; 
+}
+
+#import-button:hover {
+    background-color: #f7f7f8;
+    color: #1e2b37;
+}
+
+#import-button:active {
+    transform: translateY(1px);
+}

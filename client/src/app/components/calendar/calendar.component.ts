@@ -27,6 +27,8 @@ import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activ
 import { TimeMachineService } from '../../services/time-machine.service';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import { computed, effect } from '@angular/core';
+import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-calendar-dialog.component';
+import ImportedCalendar from '../../models/imported-calendar.model';
 @Component({
   selector: 'app-calendar',
   imports: [
@@ -48,7 +50,7 @@ import { computed, effect } from '@angular/core';
 export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
   timeMachineService = inject(TimeMachineService);
-
+  importedCalendars: ImportedCalendar[] = [];
   showDropdown = false;
   sidebarOpen: boolean = false;
   isLoading = true;
@@ -91,6 +93,7 @@ export class CalendarComponent implements OnInit {
     nowIndicator: true,
     locales: [ itLocale ],
     locale: 'it',
+    displayEventTime: false,
     eventClick: this.handleEventClick.bind(this),
   });
 
@@ -101,6 +104,7 @@ export class CalendarComponent implements OnInit {
     });
     this.fetchEvents();
     this.fetchActivities();
+    this.fetchImportedCalendars();
   }
 
   constructor(private alertService: AlertService,
@@ -120,17 +124,12 @@ export class CalendarComponent implements OnInit {
       ...this.convertActivities(this.overdueActivities)
     ];
     const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
+    const importedCalendars = this.convertImportedCalendars();
 
     this.calendarOptions.set({
       ...this.calendarOptions(),
       eventSources: [
-        // Google Calendar events
-        {
-          googleCalendarId: 'nicolascola21@gmail.com',
-          className: 'google-calendar-event',
-          editable: false
-        },
-        // Your custom events
+        ...importedCalendars,
         allCalendarEvents
       ]
     });
@@ -167,6 +166,7 @@ export class CalendarComponent implements OnInit {
         duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
         allDay: event.startDate == event.endDate,
         backgroundColor: '#4c95e4',
+        className: 'event',
         frequency: Object.keys(rrule).length ? rrule.freq : 'NONE',
         repetitions: Object.keys(rrule).length ? (rrule.count ? rrule.count : rrule.until) : undefined
       }
@@ -191,6 +191,16 @@ export class CalendarComponent implements OnInit {
       borderColor: this.getActivityStatus(activity)
     }));
   
+    return converted;
+  }
+
+  convertImportedCalendars() {
+    const converted = this.importedCalendars.map(calendar => ({
+      googleCalendarId: calendar.calendarId,
+      className: 'google-calendar-event',
+      editable: false
+    }));
+
     return converted;
   }
   
@@ -482,5 +492,38 @@ export class CalendarComponent implements OnInit {
     if (!target.closest('.create-button-container')) {
       this.showDropdown = false;
     }
+  }
+
+  fetchImportedCalendars() {
+    this.calendarService.getMyImportedCalendars(this.authService.currentUser).subscribe({
+      next: (calendars) => {
+        this.importedCalendars = calendars
+        this.loadCalendar();
+      },
+      complete: () => this.isLoading = false,
+      error: (error) => console.log(error)
+    });
+  }
+
+  importCalendar() {
+    const dialogRef = this.dialog.open(ImportCalendarDialogComponent, {
+      width: '400vw',
+      height: 'auto',
+      data: {} 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        
+      if (result) {
+        const newImported: ImportedCalendar = {
+          calendarId: result.calendarId,
+          userId: this.authService.currentUser._id
+        }
+        this.calendarService.importCalendar(newImported).subscribe({
+          next: () => this.fetchImportedCalendars(),
+          error: () => this.alertService.showError('Calendario già importato!')
+        });
+      }
+    });
   }
 }
