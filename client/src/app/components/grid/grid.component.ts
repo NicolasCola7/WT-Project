@@ -41,6 +41,8 @@ export class GridComponent {
       pushItems: false,
       displayGrid: 'none',
       scrollToNewItems: true,
+      fixedRowHeight: 350,
+      fixedColWidth: 100
     };
   }
 }

@@ -104,8 +104,8 @@ export class HomeComponent implements OnInit{
       urlImg: "time-machine.png", 
       isTimeMachine: true, 
       isVisible: true,
-      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
-      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+      componentType: () => import("../../components/time-machine/time-machine.component").then(m => m.TimeMachineComponent),
+      data: { title: 'Time-machine preview', description: 'Descrizione time machine preview' }
     }
   ];
 
