@@ -1,9 +1,10 @@
 <h1>Note</h1>
-<div>
-  <button routerLink="/editor">Nuova nota</button>
-</div>
 
 <div>
+  <button routerLink="../editor">Nuova nota</button>
+</div>
+
+<div class="filters">
   <label>Ordina per:</label>
   <select [(ngModel)]="sortBy">
     <option value="title">Titolo</option>
@@ -20,10 +21,14 @@
   <input [(ngModel)]="searchText" placeholder="Cerca..." />
 </div>
 
-<div *ngFor="let note of sortedNotes()">
-  <h2>{{ note.title }}</h2>
-  <div [innerHTML]="note.content | slice:0:200"></div>
-  <button [routerLink]="['/editor', note.id]">Modifica</button>
-  <button (click)="duplicate(note.id)">Duplica</button>
-  <button (click)="delete(note.id)">Elimina</button>
+<div class="notes-list">
+  <div class="note-item" *ngFor="let note of sortedNotes()">
+    <h2>{{ note.title }}</h2>
+    <div [innerHTML]="note.content | slice:0:200"></div>
+    <div>
+      <button [routerLink]="['/editor', note.id]">Modifica</button>
+      <button (click)="duplicate(note.id)">Duplica</button>
+      <button (click)="delete(note.id)">Elimina</button>
+    </div>
+  </div>
 </div>

@@ -8,7 +8,8 @@ import { Note } from '../../models/note.model';
 @Component({
   selector: 'app-note-home',
   imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './note-home.component.html'
+  templateUrl: './note-home.component.html',
+  styleUrl: './note-home.component.css'
 })
 export class NoteHomeComponent {
   sortBy: 'title' | 'createdAt' | 'length' = 'title';

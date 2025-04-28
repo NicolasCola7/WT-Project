@@ -1,13 +1,20 @@
-<h2>{{ note.id ? 'Modifica Nota' : 'Nuova Nota' }}</h2>
+<div class="note-editor-container">
 
-<input [(ngModel)]="note.title" placeholder="Titolo" class="input" />
+  <h2>{{ note.id ? 'Modifica Nota' : 'Nuova Nota' }}</h2>
 
-<input [(ngModel)]="newCategory" placeholder="Aggiungi categoria" (keyup.enter)="addCategory()" class="input" />
-<div class="categories">
-  <span *ngFor="let c of note.categories" class="tag">{{ c }}</span>
+  <input [(ngModel)]="note.title" placeholder="Titolo" class="input" />
+
+  <input [(ngModel)]="newCategory" placeholder="Aggiungi categoria" (keyup.enter)="addCategory()" class="input" />
+
+  <div class="categories">
+    <span *ngFor="let c of note.categories" class="tag">{{ c }}</span>
+  </div>
+
+  <div class="editor-container">
+    <quill-editor [(ngModel)]="note.content"></quill-editor>
+  </div>
+
+  <button (click)="save()">Salva</button>
+  <button routerLink="../note" class="secondary">Torna</button>
+
 </div>
-
-<quill-editor [(ngModel)]="note.content" [style]="{height: '300px'}"></quill-editor>
-
-<button (click)="save()">Salva</button>
-<button routerLink="/">Torna</button>
