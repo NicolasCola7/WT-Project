@@ -1,13 +1,15 @@
 import { model, Schema, Types } from "mongoose";
 
 interface ImportedCalendarI {
-    calendarId: string;
+    calendarId?: string;
+    url?: string;
     userId: Types.ObjectId;
 }
 
 
 const importedCalendarSchema = new Schema<ImportedCalendarI> ({
-    calendarId: { type: String, unique: true, required: true, lowercase: true, trim: true },
+    calendarId: { type: String, unique: true, required: false, lowercase: true, trim: true },
+    url: { type: String, unique: true, required: false, lowercase: false, trim: true },
     userId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User',

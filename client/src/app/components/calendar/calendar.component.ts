@@ -29,6 +29,8 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import { computed, effect } from '@angular/core';
 import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-calendar-dialog.component';
 import ImportedCalendar from '../../models/imported-calendar.model';
+import iCalendarPlugin from '@fullcalendar/icalendar'
+
 @Component({
   selector: 'app-calendar',
   imports: [
@@ -72,16 +74,14 @@ export class CalendarComponent implements OnInit {
       timeGridPlugin,
       listPlugin,
       rrulePlugin,
-      googleCalendarPlugin
+      googleCalendarPlugin,
+      iCalendarPlugin
     ],
     googleCalendarApiKey: 'AIzaSyDT7orYSSUNvhYXdYo2jDQYVNNOF12ChXw',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    },
-    events: {
-      googleCalendarId: 'nicolascola21@gmail.com'
     },
     initialView: 'dayGridMonth',
     weekends: true,
@@ -195,11 +195,20 @@ export class CalendarComponent implements OnInit {
   }
 
   convertImportedCalendars() {
-    const converted = this.importedCalendars.map(calendar => ({
-      googleCalendarId: calendar.calendarId,
-      className: 'google-calendar-event',
-      editable: false
-    }));
+    const converted = this.importedCalendars.map(calendar => {
+      if(calendar.calendarId) {
+        return {
+          googleCalendarId: calendar.calendarId,
+          className: 'google-calendar-event',
+          editable: false
+        };
+      } else {
+        return {
+          url: calendar.url,
+          format: 'ics'
+        };
+      }
+    });
 
     return converted;
   }
@@ -515,10 +524,19 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
         
       if (result) {
-        const newImported: ImportedCalendar = {
-          calendarId: result.calendarId,
-          userId: this.authService.currentUser._id
+        let newImported: ImportedCalendar;
+        if(result.type === 'google') {
+           newImported = {
+            calendarId: result.calendarId,
+            userId: this.authService.currentUser._id
+          }
+        } else {
+          newImported = {
+            url: result.url,
+            userId: this.authService.currentUser._id
+          }
         }
+        
         this.calendarService.importCalendar(newImported).subscribe({
           next: () => this.fetchImportedCalendars(),
           error: () => this.alertService.showError('Calendario già importato!')
