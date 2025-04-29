@@ -29,7 +29,7 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import { computed, effect } from '@angular/core';
 import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-calendar-dialog.component';
 import ImportedCalendar from '../../models/imported-calendar.model';
-//import iCalendarPlugin from '@fullcalendar/icalendar'
+import iCalendarPlugin from '@fullcalendar/icalendar'
 
 @Component({
   selector: 'app-calendar',
@@ -75,7 +75,7 @@ export class CalendarComponent implements OnInit {
       listPlugin,
       rrulePlugin,
       googleCalendarPlugin,
-      //iCalendarPlugin
+      iCalendarPlugin
     ],
     googleCalendarApiKey: 'AIzaSyDT7orYSSUNvhYXdYo2jDQYVNNOF12ChXw',
     headerToolbar: {
