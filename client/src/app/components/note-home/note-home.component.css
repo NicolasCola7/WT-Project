@@ -1,92 +1,125 @@
 h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #333;
-  }
-  
-  div > button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.8rem 1.2rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  div > button:hover {
-    background-color: #0056b3;
-  }
-  
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .filters label {
-    font-weight: bold;
-  }
-  
-  .filters select,
-  .filters input {
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    min-width: 180px;
-  }
-  
-  .notes-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-  
-  .note-item {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s;
-  }
-  
-  .note-item:hover {
-    transform: translateY(-5px);
-  }
-  
-  .note-item h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-    color: #222;
-  }
-  
-  .note-item div {
-    margin: 1rem 0;
-    color: #555;
-    font-size: 1rem;
-    overflow: hidden;
-  }
-  
-  .note-item button {
-    margin-right: 0.5rem;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .note-item button:hover {
-    background-color: #5a6268;
-  }  
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.new-note-btn {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.new-note-btn:hover {
+  background-color: #0056b3;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.filters select, .filters input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.note-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.note-categories {
+  margin-top: 8px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #17a2b8;
+  color: white;
+  border-radius: 12px;
+  padding: 4px 10px;
+  margin-right: 6px;
+  font-size: 12px;
+}
+
+.note-preview {
+  margin: 12px 0;
+  color: #333;
+  font-size: 14px;
+  max-height: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn.edit {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.btn.edit:hover {
+  background-color: #e0a800;
+}
+
+.btn.duplicate {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn.duplicate:hover {
+  background-color: #138496;
+}
+
+.btn.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn.delete:hover {
+  background-color: #c82333;
+}

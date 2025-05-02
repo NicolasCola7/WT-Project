@@ -1,34 +1,41 @@
-<h1>Note</h1>
+<h1>Le tue note</h1>
 
-<div>
-  <button routerLink="../editor">Nuova nota</button>
+<div class="toolbar">
+  <button routerLink="../editor" class="new-note-btn">Nuova Nota</button>
+
+  <div class="filters">
+    <label>Ordina per:</label>
+    <select [(ngModel)]="sortBy">
+      <option value="title">Titolo</option>
+      <option value="createdAt">Data</option>
+      <option value="length">Lunghezza</option>
+    </select>
+
+    <label>Categoria:</label>
+    <select [(ngModel)]="selectedCategory">
+      <option value="">Tutte</option>
+      <option *ngFor="let cat of getCategories()">{{ cat }}</option>
+    </select>
+
+    <input [(ngModel)]="searchText" placeholder="Cerca per titolo o contenuto..." />
+  </div>
 </div>
 
-<div class="filters">
-  <label>Ordina per:</label>
-  <select [(ngModel)]="sortBy">
-    <option value="title">Titolo</option>
-    <option value="createdAt">Data</option>
-    <option value="length">Lunghezza</option>
-  </select>
-
-  <label>Categoria:</label>
-  <select [(ngModel)]="selectedCategory">
-    <option>Tutte</option>
-    <option *ngFor="let cat of getCategories()">{{ cat }}</option>
-  </select>
-
-  <input [(ngModel)]="searchText" placeholder="Cerca..." />
-</div>
-
-<div class="notes-list">
-  <div class="note-item" *ngFor="let note of sortedNotes()">
+<div class="note-card" *ngFor="let note of sortedNotes()">
+  <div class="note-header">
     <h2>{{ note.title }}</h2>
-    <div [innerHTML]="note.content | slice:0:200"></div>
-    <div>
-      <button [routerLink]="['/editor', note.id]">Modifica</button>
-      <button (click)="duplicate(note.id)">Duplica</button>
-      <button (click)="delete(note.id)">Elimina</button>
-    </div>
+    <small class="note-date">Ultima modifica: {{ note.updatedAt | date:'short' }}</small>
+  </div>
+
+  <div class="note-categories">
+    <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
+  </div>
+
+  <div class="note-preview" [innerHTML]="note.content | slice:0:200"></div>
+
+  <div class="note-actions">
+    <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
+    <button (click)="duplicate(note.id)" class="btn duplicate">Duplica</button>
+    <button (click)="delete(note.id)" class="btn delete">Elimina</button>
   </div>
 </div>

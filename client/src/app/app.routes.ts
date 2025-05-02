@@ -24,6 +24,7 @@ export const routes: Routes = [
       { path: 'timer', component: PageTimerComponent },
       { path: 'note', component: NoteHomeComponent },
       { path: 'editor', component: NoteEditorComponent },
+      { path: 'editor/:id', component: NoteEditorComponent },
       { path: 'assistant', component: AiAssistantComponent },
       { path: 'time-machine', component: TimeMachineComponent },
     ]
