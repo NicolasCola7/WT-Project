@@ -4,8 +4,6 @@
 
   <input [(ngModel)]="note.title" placeholder="Titolo" class="input" />
 
-  <input [(ngModel)]="newCategory" placeholder="Aggiungi categoria" (keyup.enter)="addCategory()" class="input" />
-
   <div class="categories">
     <span *ngFor="let c of note.categories" class="tag">{{ c }}</span>
   </div>

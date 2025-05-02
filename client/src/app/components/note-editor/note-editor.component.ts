@@ -12,6 +12,7 @@ import { Note } from '../../models/note.model';
   templateUrl: './note-editor.component.html',
   styleUrl: './note-editor.component.css'
 })
+
 export class NoteEditorComponent {
   note: Note = {
     id: '',
@@ -30,13 +31,6 @@ export class NoteEditorComponent {
       const found = this.noteService.getNote(id);
       if (found) this.note = { ...found };
     }
-  }
-
-  addCategory() {
-    if (this.newCategory && !this.note.categories.includes(this.newCategory)) {
-      this.note.categories.push(this.newCategory);
-    }
-    this.newCategory = '';
   }
 
   save() {

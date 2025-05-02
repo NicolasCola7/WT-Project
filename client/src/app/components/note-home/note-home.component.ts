@@ -11,6 +11,7 @@ import { Note } from '../../models/note.model';
   templateUrl: './note-home.component.html',
   styleUrl: './note-home.component.css'
 })
+
 export class NoteHomeComponent {
   sortBy: 'title' | 'createdAt' | 'length' = 'title';
   searchText: string = '';
