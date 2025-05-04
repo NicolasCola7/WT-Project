@@ -49,3 +49,7 @@
 #import-button:active {
     transform: translateY(1px);
 }
+
+.file-input {
+    display: none;
+}

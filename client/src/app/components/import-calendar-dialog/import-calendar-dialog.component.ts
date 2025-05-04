@@ -21,6 +21,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class ImportCalendarDialogComponent {
   data = inject(MAT_DIALOG_DATA);
+  fileName?: string;
+  private selectedFile?: File;
 
   constructor(
     public dialogRef: MatDialogRef<ImportCalendarDialogComponent>,
@@ -32,12 +34,35 @@ export class ImportCalendarDialogComponent {
   }
 
   onImport(): void {
-    if(!this.data.calendarId) {
+    this.data.isGoogle = this.data.calendarId;
+
+    if(!this.data.calendarId && this.data.isGoogle) {
         this.alertService.showError('Id obbligatoro');
         return;
     }
 
+    if(!this.fileName && !this.data.isGoogle) {
+      this.alertService.showError('Devi selezionare almeno un file');
+      return;
+    }
+
+    if (this.selectedFile) {
+      this.data.file = this.selectedFile;
+      this.data.fileName = this.fileName;
+    }
+
     this.dialogRef.close(this.data);
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    
+    if (input.files && input.files.length) {
+      this.selectedFile = input.files[0];
+      this.fileName = this.selectedFile.name;
+      
+      this.data.calendarId = undefined;
+    }
   }
 
 }

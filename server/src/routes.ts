@@ -4,6 +4,7 @@ import ActivityController from './controllers/activity.controller';
 import CalendarEventController from './controllers/event.controller';
 import ChatController from './controllers/chat.controller';
 import ImportedCalendarController from './controllers/imported-calendar.controller';
+import UploadedCalendarController from './controllers/uploaded-calendar.controller';
 
 
 const setRoutes = (app: Application): void => {
@@ -15,6 +16,7 @@ const setRoutes = (app: Application): void => {
   const activityController = new ActivityController();
   const chatController = new ChatController();
   const importedCalendarController = new ImportedCalendarController();
+  const uploadedCalendarController = new UploadedCalendarController();
 
   //DEFINIZIONE ROUTES PER OGNI CONTROLLER
   // Users
@@ -50,6 +52,12 @@ const setRoutes = (app: Application): void => {
   router.route('/imported-calendars/:id').delete(importedCalendarController.delete);
   router.route('/imported-calendars').get(importedCalendarController.getMyImportedCalendars);
 
+  //Uploaded calendar
+  router.route('/uploaded-calendars').post(uploadedCalendarController.insert);
+  router.route('/uploaded-calendars/:url').get(uploadedCalendarController.get);
+  router.route('/uploaded-calendars/:url').delete(uploadedCalendarController.delete);
+  router.route('/uploaded-calendars').get(uploadedCalendarController.getMyUploadedCalendars);
+ 
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);
 

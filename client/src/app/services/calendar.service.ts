@@ -1,10 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, switchMap } from "rxjs";
 import { CalendarEvent } from "../models/event.model";
 import { Activity } from "../models/activity.model";
 import { User } from "../models/user.model";
 import ImportedCalendar from "../models/imported-calendar.model";
+import UploadedCalendar from "../models/uploaded-calendar.model";
 
 @Injectable({ providedIn: 'root' })
 export class CalendarService {
@@ -53,8 +54,32 @@ export class CalendarService {
     });
   }
 
+  getMyUploadedCalendars(user: User): Observable<UploadedCalendar[]> {
+    return this.http.get<UploadedCalendar[]>('/api/uploaded-calendars', {
+      params: {userID: user._id!}
+    });
+  }
+
   importCalendar(importedCalendar: ImportedCalendar): Observable<ImportedCalendar> {
-    return this.http.post<ImportedCalendar>('/api/imported-calendars', importedCalendar);
+    alert(JSON.stringify(importedCalendar));
+      return this.http.post<ImportedCalendar>('/api/imported-calendars', importedCalendar);
+  }
+
+  uploadCalendar(uploadedCalendar: UploadedCalendar, file?: File): Observable<UploadedCalendar> {
+    const userID = uploadedCalendar.url!.split('/')[0];
+
+    return this.upload(userID, file!).pipe(
+      switchMap( () => {
+        return this.http.post<UploadedCalendar>('/api/uploaded-calendars', uploadedCalendar);
+      })
+    );
+  }
+
+  upload(destination: string, file: File): Observable<string> {
+    var formData: any = new FormData();
+    formData.append('destination', destination);
+    formData.append('calendar', file);
+    return this.http.post('/api/uploads', formData,  {responseType: 'text'});
   }
 
 }

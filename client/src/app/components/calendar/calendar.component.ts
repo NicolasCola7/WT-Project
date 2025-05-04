@@ -1,5 +1,5 @@
 import { Component , signal, ChangeDetectorRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventClickArg, EventApi, DateSelectArg, Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -30,6 +30,7 @@ import { computed, effect } from '@angular/core';
 import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-calendar-dialog.component';
 import ImportedCalendar from '../../models/imported-calendar.model';
 import iCalendarPlugin from '@fullcalendar/icalendar'
+import UploadedCalendar from '../../models/uploaded-calendar.model';
 
 @Component({
   selector: 'app-calendar',
@@ -53,6 +54,7 @@ export class CalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
   timeMachineService = inject(TimeMachineService);
   importedCalendars: ImportedCalendar[] = [];
+  uploadedCalendars: UploadedCalendar[] = [];
   showDropdown = false;
   sidebarOpen: boolean = false;
   isLoading = true;
@@ -102,9 +104,12 @@ export class CalendarComponent implements OnInit {
     this.timeMachineService.currentDate$.subscribe(date => {
       this.currentDate.set(date);
     });
-    this.fetchEvents();
-    this.fetchActivities();
-    this.fetchImportedCalendars();
+
+    this.fetchEvents(false);
+    this.fetchActivities(false);
+    this.fetchImportedCalendars(false);
+    this.fetchUploadedCalendars(true);
+
   }
 
   constructor(private alertService: AlertService,
@@ -125,11 +130,13 @@ export class CalendarComponent implements OnInit {
     ];
     const allCalendarEvents = [...calendarEvents, ...calendarActivities]; 
     const importedCalendars = this.convertImportedCalendars();
+    const uploadedCalendars = this.convertUploadedCalendars();
 
     this.calendarOptions.set({
       ...this.calendarOptions(),
       eventSources: [
         ...importedCalendars,
+        ...uploadedCalendars,
         allCalendarEvents
       ]
     });
@@ -196,18 +203,26 @@ export class CalendarComponent implements OnInit {
 
   convertImportedCalendars() {
     const converted = this.importedCalendars.map(calendar => {
-      if(calendar.calendarId) {
         return {
           googleCalendarId: calendar.calendarId,
           className: 'google-calendar-event',
           editable: false
         };
-      } else {
-        return {
-          url: calendar.url,
-          format: 'ics'
-        };
-      }
+    });
+
+    return converted;
+  }
+
+  convertUploadedCalendars() {
+    const converted = this.uploadedCalendars.map(calendar => {
+      const parts = calendar.url!.split('/');
+      const userId = parts[0];
+      const filename = parts[1];
+
+      return {
+        url: `/api/uploads/${userId}/${filename}`,
+        format: 'ics'
+      };
     });
 
     return converted;
@@ -328,7 +343,7 @@ export class CalendarComponent implements OnInit {
           };
   
           this.calendarService.addActivity(newActivity).subscribe({
-            next: () => this.fetchActivities(),
+            next: () => this.fetchActivities(true),
             error: error => console.log(error)
           });
         }
@@ -356,25 +371,27 @@ export class CalendarComponent implements OnInit {
         };
 
         this.calendarService.addEvent(newEvent).subscribe({
-          next: () => this.fetchEvents(),
+          next: () => this.fetchEvents(true),
           error: error => console.log(error)
         });
       }
     });
   }
 
-  fetchEvents() {
+  fetchEvents(reload: boolean) {
     this.calendarService.getMyEvents(this.authService.currentUser).subscribe({
       next: (data) => {
         this.events = data;
-        this.loadCalendar();
+        if(reload)
+          this.loadCalendar();
+
       },
       error: error => console.log(error),
       complete: () => this.isLoading = false
     });
   }
 
-  fetchActivities() {
+  fetchActivities(reload: boolean) {
     this.completedActivities = [];
     this.overdueActivities = [];
     
@@ -383,7 +400,8 @@ export class CalendarComponent implements OnInit {
         this.activities = data;
         this.getOverdueActivities();
         this.getCompletedActivities();
-        this.loadCalendar();
+        if(reload)
+          this.loadCalendar();
       },
       error: error => console.log(error),
       complete: () => this.isLoading = false
@@ -410,7 +428,7 @@ export class CalendarComponent implements OnInit {
     activity.completed = !activity.completed;
 
     this.calendarService.updateActivity(activity).subscribe({
-      next: () => this.fetchActivities(),
+      next: () => this.fetchActivities(true),
       error: (error) => console.log(error),
       complete: () => this.isLoading = false
     });
@@ -420,7 +438,7 @@ export class CalendarComponent implements OnInit {
     this.alertService.showQuestion(
       `Sei sicuro di voler eliminare l'attività '${title}'`,
       () => this.calendarService.deleteActivity(id).subscribe({
-        next: () => this.fetchActivities(),
+        next: () => this.fetchActivities(true),
         error: (error) => console.log(error)
       })
     );
@@ -428,7 +446,7 @@ export class CalendarComponent implements OnInit {
 
   private deleteEvent(event: CalendarEvent) {
     this.calendarService.deleteEvent(event._id!).subscribe({
-      next: () => this.fetchEvents(),
+      next: () => this.fetchEvents(true),
       error: (error) => console.log(error)
     });
   }
@@ -454,7 +472,7 @@ export class CalendarComponent implements OnInit {
         };
 
         this.calendarService.updateEvent(updatedEvent).subscribe({
-          next: () => this.fetchEvents(),
+          next: () => this.fetchEvents(true),
           error: error => console.log(error)
         });
       }
@@ -479,7 +497,7 @@ export class CalendarComponent implements OnInit {
         };
 
         this.calendarService.updateActivity(updatedActivity).subscribe({
-          next: () => this.fetchActivities(),
+          next: () => this.fetchActivities(true),
           error: error => console.log(error)
         });
       }
@@ -503,11 +521,24 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  fetchImportedCalendars() {
+  fetchImportedCalendars(reload: boolean) {
     this.calendarService.getMyImportedCalendars(this.authService.currentUser).subscribe({
       next: (calendars) => {
         this.importedCalendars = calendars
-        this.loadCalendar();
+        if(reload)
+          this.loadCalendar();
+      },
+      complete: () => this.isLoading = false,
+      error: (error) => console.log(error)
+    });
+  }
+
+  fetchUploadedCalendars(reload: boolean) {
+    this.calendarService.getMyUploadedCalendars(this.authService.currentUser).subscribe({
+      next: (calendars) => {
+        this.uploadedCalendars = calendars
+        if(reload)
+          this.loadCalendar();
       },
       complete: () => this.isLoading = false,
       error: (error) => console.log(error)
@@ -524,23 +555,28 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
         
       if (result) {
-        let newImported: ImportedCalendar;
-        if(result.type === 'google') {
-           newImported = {
+        if(result.isGoogle) {
+          const newImported: ImportedCalendar = {
             calendarId: result.calendarId,
             userId: this.authService.currentUser._id
           }
+          
+          this.calendarService.importCalendar(newImported).subscribe({
+            next: () => this.fetchImportedCalendars(true),
+            error: (error) => this.alertService.showError(JSON.stringify(error))
+          });
+
         } else {
-          newImported = {
-            url: result.url,
+          const newImported: UploadedCalendar = {
+            url: `${this.authService.currentUser._id}/${result.fileName}`,
             userId: this.authService.currentUser._id
           }
+
+          this.calendarService.uploadCalendar(newImported, result.file).subscribe({
+            next: () => this.fetchUploadedCalendars(true),
+            error: () => this.alertService.showError('Calendario già importato!')
+          });
         }
-        
-        this.calendarService.importCalendar(newImported).subscribe({
-          next: () => this.fetchImportedCalendars(),
-          error: () => this.alertService.showError('Calendario già importato!')
-        });
       }
     });
   }

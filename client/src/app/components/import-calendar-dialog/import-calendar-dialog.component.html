@@ -16,8 +16,24 @@
         <div>
             <mat-form-field class="custom-form-field" appearance="outline">
                 <mat-label>Id calendario</mat-label>
-                <input matInput [(ngModel)]="data.calendarId"  required>
+                <input matInput [(ngModel)]="data.calendarId"  required [disabled]="fileName != undefined">
             </mat-form-field>
+        </div>
+        <div class="disclaimer">
+            <p>
+                Oppure puoi importare un calendario facendo l'upload di un file nel formato .ics
+            </p>
+        </div>
+        <div>
+            <input type="file" class="file-input" name="calendar" accept="ics" (change)="onFileSelected($event)" #fileUpload required [disabled]="data.calendarId">
+
+            <div class="file-upload">
+
+                 {{fileName || "Nessun file selezionato."}}
+                <button  class="upload-btn" (click)="fileUpload.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+            </div>
         </div>
     </mat-dialog-content>
 

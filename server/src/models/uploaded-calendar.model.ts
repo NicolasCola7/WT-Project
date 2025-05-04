@@ -1,12 +1,12 @@
 import { model, Schema, Types } from "mongoose";
 
-interface ImportedCalendarI {
-    calendarId: string;
+interface UploadedCalendarI {
+    url: string;
     userId: Types.ObjectId;
 }
 
-const importedCalendarSchema = new Schema<ImportedCalendarI>({
-    calendarId: { 
+const uploadedCalendarSchema = new Schema<UploadedCalendarI>({
+    url: { 
         type: String, 
         required: true,
         unique: true,
@@ -20,7 +20,7 @@ const importedCalendarSchema = new Schema<ImportedCalendarI>({
     },
 });
 
-const ImportedCalendar = model<ImportedCalendarI>('ImportedCalendar', importedCalendarSchema);
+const UploadedCalendar = model<UploadedCalendarI>('UploadedCalendar', uploadedCalendarSchema);
 
-export default ImportedCalendar;
-export type { ImportedCalendarI };
+export default UploadedCalendar;
+export type { UploadedCalendarI as UploadedCalendarI };
