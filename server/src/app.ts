@@ -20,12 +20,7 @@ app.set('port', (process.env.PORT || 3000));
 setRoutes(app);
 
 app.post('/api/uploads', (req, res, next) => {
-  // First parse the request to get the destination
-  express.json()(req, res, (err) => {
-    if (err) {
-      return next(err);
-    }
-    
+  
     // Now process the file with the destination from the body
     upload.single('calendar')(req, res, (err) => {
       if (err) {
@@ -36,7 +31,6 @@ app.post('/api/uploads', (req, res, next) => {
       res.sendStatus(200);
     });
   });
-});
 
 app.get('/api/uploads/:userId/:filename', (req, res) => {
   const { userId, filename } = req.params;

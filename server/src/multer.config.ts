@@ -30,15 +30,17 @@ export const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilt
    
     if (!extname || !mimetype) {
         cb(new Error('Only ICS files are allowed'));
+        return;
     }
 
-    const uploadPath = req.body.destination || 'uploads/default';
+    const uploadPath = req.body.destination || 'uploads';
     const filePath = path.join(uploadPath, file.originalname);
   
     // Check if file already exists
     if (fs.existsSync(filePath)) {
         // Reject the file
         cb(new Error('File already exists'));
+        return;
     }
 
     // Accept the file

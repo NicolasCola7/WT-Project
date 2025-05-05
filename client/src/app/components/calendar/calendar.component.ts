@@ -574,7 +574,13 @@ export class CalendarComponent implements OnInit {
 
           this.calendarService.uploadCalendar(newImported, result.file).subscribe({
             next: () => this.fetchUploadedCalendars(true),
-            error: () => this.alertService.showError('Calendario già importato!')
+            error: (error) => {
+              if(error.error.error) {
+                this.alertService.showError('Calendario già importato!');
+              } else {
+                this.alertService.showError("File non valido, deve essere nel formato .ics");
+              }
+            } 
           });
         }
       }
