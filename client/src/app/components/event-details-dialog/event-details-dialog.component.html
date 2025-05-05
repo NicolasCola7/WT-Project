@@ -1,6 +1,6 @@
 <div>
     <div id="dialog-header">
-        <div>
+        <div *ngIf="!data.uploaded">
             <button mat-icon-button  (click)="onDelete()" aria-label="Elimina">
                 <mat-icon>delete_outline</mat-icon>
             </button>

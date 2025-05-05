@@ -1,8 +1,10 @@
 #dialog-header {
     display:flex;
+    flex-direction: row;
     justify-content: space-between;
     padding: 2%;
 }
+
 
 button {
     color: rgba(0, 0, 0, 0.54);

@@ -1,7 +1,7 @@
-import { Component , signal, ChangeDetectorRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { Component , signal, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg, EventApi, DateSelectArg, Calendar } from '@fullcalendar/core';
+import { CalendarOptions, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -26,7 +26,6 @@ import {MatListModule} from '@angular/material/list';
 import { ActivityDetailsDialogComponent } from '../activity-details-dialog/activity-details-dialog.component';
 import { TimeMachineService } from '../../services/time-machine.service';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-import { computed, effect } from '@angular/core';
 import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-calendar-dialog.component';
 import ImportedCalendar from '../../models/imported-calendar.model';
 import iCalendarPlugin from '@fullcalendar/icalendar'
@@ -50,7 +49,7 @@ import UploadedCalendar from '../../models/uploaded-calendar.model';
   standalone: true,
   encapsulation: ViewEncapsulation.None
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit  {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
   timeMachineService = inject(TimeMachineService);
   importedCalendars: ImportedCalendar[] = [];
@@ -99,6 +98,17 @@ export class CalendarComponent implements OnInit {
     eventClick: this.handleEventClick.bind(this),
   });
 
+
+
+  constructor(private alertService: AlertService,
+              private dialog: MatDialog,
+              private calendarService: CalendarService,
+              private authService: AuthService){
+    
+    // Add click listener to detect clicks outside the dropdown
+    document.addEventListener('click', this.onDocumentClick.bind(this));
+  }
+
   ngOnInit(): void {
     // 👇 Quando cambia il valore della timeMachine, aggiorno il mio signal
     this.timeMachineService.currentDate$.subscribe(date => {
@@ -110,15 +120,6 @@ export class CalendarComponent implements OnInit {
     this.fetchImportedCalendars(false);
     this.fetchUploadedCalendars(true);
 
-  }
-
-  constructor(private alertService: AlertService,
-              private dialog: MatDialog,
-              private calendarService: CalendarService,
-              private authService: AuthService){
-    
-    // Add click listener to detect clicks outside the dropdown
-    document.addEventListener('click', this.onDocumentClick.bind(this));
   }
               
   private loadCalendar(): void {
@@ -175,7 +176,8 @@ export class CalendarComponent implements OnInit {
         backgroundColor: '#4c95e4',
         className: 'event',
         frequency: Object.keys(rrule).length ? rrule.freq : 'NONE',
-        repetitions: Object.keys(rrule).length ? (rrule.count ? rrule.count : rrule.until) : undefined
+        repetitions: Object.keys(rrule).length ? (rrule.count ? rrule.count : rrule.until) : undefined,
+        created: true
       }
     });
 
@@ -195,7 +197,8 @@ export class CalendarComponent implements OnInit {
       description: activity.description,
       isActivity: true,
       creatorId: activity.creatorId,
-      borderColor: this.getActivityStatus(activity)
+      borderColor: this.getActivityStatus(activity),
+      className: 'event',
     }));
   
     return converted;
@@ -206,7 +209,7 @@ export class CalendarComponent implements OnInit {
         return {
           googleCalendarId: calendar.calendarId,
           className: 'google-calendar-event',
-          editable: false
+          editable: false,
         };
     });
 
@@ -221,7 +224,7 @@ export class CalendarComponent implements OnInit {
 
       return {
         url: `/api/uploads/${userId}/${filename}`,
-        format: 'ics'
+        format: 'ics',
       };
     });
 
@@ -273,7 +276,8 @@ export class CalendarComponent implements OnInit {
         location: eventData.extendedProps['place'],
         frequency: eventData.extendedProps['frequency'],
         repetitions: eventData.extendedProps['repetitions'],
-        creatorId: eventData.extendedProps['creatorId']
+        creatorId: eventData.extendedProps['creatorId'],
+        uploaded:  !eventData.extendedProps['created']
       }
       this.viewEventDetails(event);
     } else {

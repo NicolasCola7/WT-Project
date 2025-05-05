@@ -7,4 +7,5 @@ export class CalendarEvent {
     repetitions?: number | Date;
     location?: string;
     creatorId?: string;
+    uploaded?: boolean;
 }
