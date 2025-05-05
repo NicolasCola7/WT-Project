@@ -1,16 +1,21 @@
 import { model, Schema, Types } from "mongoose";
 
 interface UploadedCalendarI {
+    title?: string;
     url: string;
     userId: Types.ObjectId;
 }
 
 const uploadedCalendarSchema = new Schema<UploadedCalendarI>({
+    title: {
+        type: String, 
+        required: false, 
+        trim: true
+    },
     url: { 
         type: String, 
         required: true,
         unique: true,
-        lowercase: true, 
         trim: true
     },
     userId: { 

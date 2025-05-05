@@ -4,7 +4,7 @@ import cors from 'cors';
 import path, { join as pathJoin, resolve } from 'path';
 import { connectToMongo } from './mongo';
 import setRoutes from './routes';
-import { upload } from './multer.config';
+import { unlinkAsync, upload } from './multer.config';
 
 const envPath = resolve(__dirname, '../.env');
 dotenv.config({ path: envPath });
@@ -62,6 +62,15 @@ app.get('/api/uploads/:userId/:filename', (req, res) => {
       }
     });
   });
+});
+
+app.delete('/api/uploads/:userId/:filename', async (req, res) => {
+  const { userId, filename } = req.params;
+  const filePath = path.join(__dirname, '..', 'uploads', userId, filename);
+
+  await unlinkAsync(filePath);
+
+  res.status(200).send('File deleted successfully');
 });
 
 const main = async (): Promise<void> => {

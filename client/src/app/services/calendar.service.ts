@@ -61,8 +61,7 @@ export class CalendarService {
   }
 
   importCalendar(importedCalendar: ImportedCalendar): Observable<ImportedCalendar> {
-    alert(JSON.stringify(importedCalendar));
-      return this.http.post<ImportedCalendar>('/api/imported-calendars', importedCalendar);
+    return this.http.post<ImportedCalendar>('/api/imported-calendars', importedCalendar);
   }
 
   uploadCalendar(uploadedCalendar: UploadedCalendar, file?: File): Observable<UploadedCalendar> {
@@ -80,6 +79,24 @@ export class CalendarService {
     formData.append('destination', destination);
     formData.append('calendar', file);
     return this.http.post('/api/uploads', formData,  {responseType: 'text'});
+  }
+
+  deleteImportedCalendar(calendar: ImportedCalendar): Observable<string> {
+    return this.http.delete(`/api/imported-calendars/${calendar._id}`, { responseType: 'text' });
+  }
+
+  deleteUploadedCalendar(calendar: UploadedCalendar): Observable<string> {
+    return this.deleteFile(calendar.url!).pipe(
+      switchMap( () => {
+        return this.http.delete(`/api/uploaded-calendars/${calendar._id}`, { responseType: 'text' });
+      })
+    );
+  }
+
+  deleteFile(destination: string): Observable<string> {
+    const parts = destination.split('/');
+
+    return this.http.delete(`/api/uploads/${parts[0]}/${parts[1]}`,  { responseType: 'text' });
   }
 
 }

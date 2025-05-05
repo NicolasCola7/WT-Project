@@ -24,7 +24,7 @@
                 <mat-checkbox (change)="changeActivityStatus(overdue)">
                   {{overdue.title}}
                 </mat-checkbox>
-                <div class="activity-actions">
+                <div class="list-actions">
                   <button mat-icon-button  (click)="viewActivityDetails(overdue)" aria-label="Dettagli">
                     <mat-icon>open_in_new</mat-icon>
                   </button>
@@ -41,7 +41,7 @@
               <mat-checkbox (change)="changeActivityStatus(activity)">
                 {{activity.title}}
               </mat-checkbox>
-              <div class="activity-actions">
+              <div class="list-actions">
                 <button mat-icon-button  (click)="viewActivityDetails(activity)" aria-label="Dettagli">
                   <mat-icon>open_in_new</mat-icon>
                 </button>
@@ -58,7 +58,7 @@
               <mat-checkbox checked (change)="changeActivityStatus(completed)">
                 {{completed.title}}
               </mat-checkbox>
-              <div class="activity-actions">
+              <div class="list-actions">
                 <button mat-icon-button  (click)="viewActivityDetails(completed)" aria-label="Dettagli">
                   <mat-icon>open_in_new</mat-icon>
                 </button>
@@ -71,10 +71,39 @@
         </app-collapsible-list>
       </app-collapsible-list>
     </div>
+    <div class="imported-calendars">
+      <app-collapsible-list title="Calendari importati">
+        <ul>
+          <li *ngFor='let imported of importedCalendars'>
+            <p> {{ imported.title || imported.calendarId }}</p>
+            <div class="list-actions">
+              <button mat-icon-button (click)="deleteImportedCalendar(imported)" aria-label="Elimina">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </li>
+        </ul>
+        <ul>
+          <li *ngFor='let uploaded of uploadedCalendars'>
+            <p> {{ uploaded.title || 'Senza titolo' }}</p>
+            <div class="list-actions">
+              <button mat-icon-button (click)="deleteUploadedCalendar(uploaded)" aria-label="Elimina">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </li>
+        </ul>
+
+      </app-collapsible-list>
+    </div>
     <div class="sidebar-footer">
       <button mat-icon-button (click)="importCalendar()" aria-label="Importa calendario">
         <mat-icon>import_export</mat-icon>
         Importa calendario
+      </button>
+      <button mat-icon-button (click)="importCalendar()" aria-label="Importa calendario">
+        <mat-icon>import_export</mat-icon>
+        Esporta calendario
       </button>
     </div>
   </div>

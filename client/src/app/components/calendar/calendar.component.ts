@@ -115,9 +115,9 @@ export class CalendarComponent implements OnInit  {
       this.currentDate.set(date);
     });
 
-    this.fetchEvents(false);
-    this.fetchActivities(false);
-    this.fetchImportedCalendars(false);
+    this.fetchEvents(true);
+    this.fetchActivities(true);
+    this.fetchImportedCalendars(true);
     this.fetchUploadedCalendars(true);
 
   }
@@ -561,6 +561,7 @@ export class CalendarComponent implements OnInit  {
       if (result) {
         if(result.isGoogle) {
           const newImported: ImportedCalendar = {
+            title: result.title,
             calendarId: result.calendarId,
             userId: this.authService.currentUser._id
           }
@@ -572,6 +573,7 @@ export class CalendarComponent implements OnInit  {
 
         } else {
           const newImported: UploadedCalendar = {
+            title: result.title,
             url: `${this.authService.currentUser._id}/${result.fileName}`,
             userId: this.authService.currentUser._id
           }
@@ -589,5 +591,25 @@ export class CalendarComponent implements OnInit  {
         }
       }
     });
+  }
+
+  deleteUploadedCalendar(calendar: UploadedCalendar) {
+    this.alertService.showQuestion(
+      `Sei sicuro di voler eliminare il seguente calendario?`,
+      () => this.calendarService.deleteUploadedCalendar(calendar).subscribe({
+        next: () => this.fetchUploadedCalendars(true),
+        error: (error) => console.log(error)
+      })
+    );
+  }
+
+  deleteImportedCalendar(calendar: ImportedCalendar) {
+    this.alertService.showQuestion(
+      `Sei sicuro di voler eliminare il seguente calendario?`,
+      () => this.calendarService.deleteImportedCalendar(calendar).subscribe({
+        next: () => this.fetchImportedCalendars(true),
+        error: (error) => console.log(error)
+      })
+    );
   }
 }

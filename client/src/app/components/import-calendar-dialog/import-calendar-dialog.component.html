@@ -6,6 +6,11 @@
     </div>
 
     <mat-dialog-content>
+        <mat-form-field class="custom-form-field" appearance="outline">
+            <mat-label>Titolo calendario</mat-label>
+            <input matInput [(ngModel)]="data.title">
+        </mat-form-field>
+
         <div class="disclaimer">
             <p>
                 Per importare un calendario da Google Calendar questo deve essere pubblico. 

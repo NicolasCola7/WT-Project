@@ -147,7 +147,7 @@ li {
   border-radius: 0.5rem;
 }
 
-li > div > button {
+.list-actions > button {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease;
@@ -189,7 +189,7 @@ mat-checkbox {
   }
 }
 
-li:hover > div > button:hover {
+li:hover > .list-actions > button:hover {
   background-color: #dde3ea;
 }
 
@@ -207,15 +207,34 @@ li:hover mat-checkbox {
   }
 }
 
-li:hover div button {
+li:hover .list-actions button {
   visibility: visible;
   opacity: 1;
 }
 
-.activity-actions {
+.list-actions {
   display: flex;
   flex-direction: row;
   gap: 0px;
+}
+
+li > p {
+  color: #f7f7f8;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+li:hover > p {
+  color: #1e2b37;
+}
+
+.imported-calendars   li {
+  padding: 0 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .sidebar-footer {
@@ -223,6 +242,10 @@ li:hover div button {
   padding-top: 1rem;
   border-top: 1px solid #f7f7f8;
   padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  justify-content: space-between;
 }
 
 .sidebar-footer button {

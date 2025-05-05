@@ -54,8 +54,8 @@ const setRoutes = (app: Application): void => {
 
   //Uploaded calendar
   router.route('/uploaded-calendars').post(uploadedCalendarController.insert);
-  router.route('/uploaded-calendars/:url').get(uploadedCalendarController.get);
-  router.route('/uploaded-calendars/:url').delete(uploadedCalendarController.delete);
+  router.route('/uploaded-calendars/:id').get(uploadedCalendarController.get);
+  router.route('/uploaded-calendars/:id').delete(uploadedCalendarController.delete);
   router.route('/uploaded-calendars').get(uploadedCalendarController.getMyUploadedCalendars);
  
   // AApplica a tutte le routes il prefisso /api
