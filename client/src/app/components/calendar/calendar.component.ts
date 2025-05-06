@@ -30,6 +30,8 @@ import { ImportCalendarDialogComponent } from '../import-calendar-dialog/import-
 import ImportedCalendar from '../../models/imported-calendar.model';
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import UploadedCalendar from '../../models/uploaded-calendar.model';
+import { CalendarRecurrence, ICalendar } from 'datebook';
+import {CalendarOptions as IcsEvent} from 'datebook';
 
 @Component({
   selector: 'app-calendar',
@@ -611,5 +613,63 @@ export class CalendarComponent implements OnInit  {
         error: (error) => console.log(error)
       })
     );
+  }
+
+  exportCalendar() {
+    const icsEvents: IcsEvent[] = this.events.map( event => {
+      if (event.frequency !== 'NONE') {
+        let rrule: CalendarRecurrence;
+        if (event.repetitions instanceof Date) {
+          rrule = {
+            frequency: event.frequency,
+            end: new Date(event.repetitions)
+          };
+        } else {
+          rrule = {
+            frequency: event.frequency,
+            count: event.repetitions
+          };
+        }
+
+        const ics: IcsEvent = {
+          title: event.title!,
+          location: event.location!,
+          start: new Date(event.startDate!),
+          end: new Date(event.endDate!),
+          recurrence: rrule
+        }
+
+        return ics;
+      } else {
+        const ics: IcsEvent = {
+          title: event.title!,
+          location: event.location!,
+          start: new Date(event.startDate!),
+          end: new Date(event.endDate!)
+        };
+        return ics;
+      }
+    });
+
+    let icalendar = new ICalendar(icsEvents[0]);
+
+    for(let i=1; i<icsEvents.length; i++) {
+      icalendar.addEvent(new ICalendar(icsEvents[i]));
+    }
+
+    this.downloadCalendar(icalendar.render());
+
+  }
+
+  downloadCalendar(content: string): void {
+    const blob = new Blob([content], { type: 'text/calendar' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'myCalendar');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 }
