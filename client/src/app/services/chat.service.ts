@@ -7,7 +7,7 @@ import { Message } from "../models/message.model";
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-    SYSTEM_PROMPT = "Sei un assistente per studenti universitari di un corso di Informatica. Puoi rispondere solo a domande riguardanti l'informatica, ad ogni altra domanda o affermazione non ti è permesso rispondere. Quando l'utente ti fa una domanda o chiede la soluzione ad un problema, non dare subito la risposta, ma aiuta lo studente ad arrivarci attraverso spunti di ragionamento";
+    SYSTEM_PROMPT = "Sei un assistente per studenti universitari. Puoi rispondere a qualsiasi domanda ti viene fatta. Quando l'utente ti fa una domanda o chiede la soluzione ad un problema, fornisci la soluzione al problema e fornisci spunti per ampliare il ragionamento";
     private readonly _messages = signal<Message[]>([]);
     private readonly _chats = signal<Chat[]>([]);
     private currentChat?: Chat;
