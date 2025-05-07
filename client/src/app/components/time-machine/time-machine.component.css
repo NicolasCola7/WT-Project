@@ -1,7 +1,6 @@
 body {
     background-color: #121212;
     color: var(--text-color);
-    height: 100%;
 }
 
 .dark-theme {

@@ -19,8 +19,7 @@ import { filter } from 'rxjs';
     GridComponent,
     RouterModule,
     CommonModule,
-    LoadingComponent,
-    GridComponent
+    LoadingComponent
 ],
   standalone: true
 })
@@ -115,16 +114,21 @@ export class HomeComponent implements OnInit{
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.userService.getUser(this.authService.currentUser).subscribe({
-      next: data => this.user = data,
-      error: error => console.log(error),
-      complete: () => this.isLoading = false
-    });
-    // Controlla se siamo nella route /home esatta
-    this.router.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.isHomeRoute = this.router.url === '/home';
-    });
-  }
+  this.userService.getUser(this.authService.currentUser).subscribe({
+    next: data => this.user = data,
+    error: error => console.log(error),
+    complete: () => this.isLoading = false
+  });
+
+  // Inizializza subito isHomeRoute (utile al primo caricamento)
+  this.isHomeRoute = this.router.url === '/home';
+
+  // Aggiorna su ogni navigazione
+  this.router.events.pipe(
+    filter((event: any) => event instanceof NavigationEnd)
+  ).subscribe(() => {
+    this.isHomeRoute = this.router.url === '/home';
+  });
+}
+
 }
