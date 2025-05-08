@@ -1,0 +1,32 @@
+<div class="preview-container">
+    <div class="preview-header">
+        <div class="view-toggle">
+            <button (click)="toggle(true)">
+                <mat-icon>calendar_today</mat-icon>
+            </button>
+            <button (click)="toggle(false)">
+                <mat-icon>check_circle_outline</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="preview-content">
+        <div class='events' *ngIf="viewEvents">
+            @for (event of todayEvents(); track event._id) {
+                <div class="event">
+                    <p class="event.title"> {{ event.title }} </p>
+                </div>
+            }
+
+            <p *ngIf="!todayEvents().length"> Non ci sono eventi oggi !</p>
+        </div>
+        <div class="activities" *ngIf="!viewEvents">
+            @for (activity of todayActivities(); track activity._id) {
+                <div class="activity" >
+                    <p class="event.title"> {{ activity.title }} </p>
+                </div>
+            }
+
+            <p *ngIf="!todayActivities().length"> Non ci sono attività oggi !</p>
+        </div>
+    </div>
+</div>

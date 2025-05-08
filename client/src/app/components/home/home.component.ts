@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit{
       urlImg: "calendar.png", 
       isTimeMachine: false, 
       isVisible: true,
-      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      componentType: () => import("../../preview-components/calendar-preview/calendar-preview.component").then(m => m.CalendarPreviewComponent),
       data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
     },
     { 

@@ -7,7 +7,7 @@ import { Type } from '@angular/core';
   selector: 'app-preview-loader',
   standalone: true,
   imports: [CommonModule],
-  template: '<ng-container #previewContainer></ng-container>'
+  templateUrl: './preview-loader.component.html'
 })
 export class PreviewLoaderComponent implements OnChanges {
   @Input() componentLoader!: () => Promise<Type<any>>;

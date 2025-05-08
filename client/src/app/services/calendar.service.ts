@@ -99,4 +99,20 @@ export class CalendarService {
     return this.http.delete(`/api/uploads/${parts[0]}/${parts[1]}`,  { responseType: 'text' });
   }
 
+  getTodayEvents(user: User, currentDate: Date): Observable<CalendarEvent[]> {
+    const formattedDate = currentDate.toISOString().split('T')[0];
+
+    return this.http.get<CalendarEvent[]>('/api/events', {
+      params: {userID: user._id!, date: formattedDate}
+    });
+  }
+
+  getTodayActivities(user: User, currentDate: Date): Observable<Activity[]> {
+    const formattedDate = currentDate.toISOString().split('T')[0];
+
+    return this.http.get<Activity[]>('/api/activities', {
+      params: {userID: user._id!, date: formattedDate}
+    });
+  }
+
 }
