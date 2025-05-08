@@ -31,13 +31,11 @@
         </div>
         <div>
             <input type="file" class="file-input" name="calendar" accept="ics" (change)="onFileSelected($event)" #fileUpload required [disabled]="data.calendarId">
-
             <div class="file-upload">
-
-                 {{fileName || "Nessun file selezionato."}}
                 <button  class="upload-btn" (click)="fileUpload.click()">
                     <mat-icon>attach_file</mat-icon>
                 </button>
+                {{fileName || "Nessun file selezionato."}}
             </div>
         </div>
     </mat-dialog-content>

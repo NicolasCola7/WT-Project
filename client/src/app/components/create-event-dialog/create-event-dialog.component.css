@@ -51,6 +51,7 @@
 #save-button:hover {
   background-color: #f7f7f8;
   color: #1e2b37;
+  border: 1px solid #1e2b37;
 }
 
 #save-button:active {

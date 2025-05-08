@@ -27,7 +27,7 @@
     margin-bottom: 20px;
 }
 
-#import-button {
+#import-button, .upload-btn {
     background-color: #1e2b37;
     color: #f7f7f8;
     border: none;
@@ -41,9 +41,10 @@
     text-transform: none; 
 }
 
-#import-button:hover {
+#import-button:hover,  .upload-btn:hover {
     background-color: #f7f7f8;
     color: #1e2b37;
+    border: 1px solid #1e2b37;
 }
 
 #import-button:active {
@@ -52,4 +53,12 @@
 
 .file-input {
     display: none;
+}
+
+.file-upload {
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem;
+    align-items: center;
+    gap: 10px;
 }
