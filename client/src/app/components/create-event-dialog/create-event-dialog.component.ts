@@ -90,7 +90,12 @@ export class CreateEventDialogComponent {
     }
 
     if (this.data.allday) {
-        this.data.endDate = this.data.startDate;
+        this.data.endDate = new Date(Date.UTC(
+          this.data.startDate.getFullYear(),
+          this.data.startDate.getMonth(),
+          this.data.startDate.getDate(),
+          23, 59, 59, 0
+        ));
     }
 
     this.dialogRef.close(this.data);

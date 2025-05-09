@@ -1,0 +1,70 @@
+.preview-header {
+    flex-direction: row;
+    justify-items: flex-end;
+}
+
+.view-toggle {
+    border: 1px solid;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.view-toggle > div {
+    background-color: transparent;  
+    display: flex;
+    flex-direction: row;
+    width:50%;
+    height: 100%;
+    margin: 0;
+}
+
+.view-toggle > div.selected {
+    background-color: lightgray;
+}
+
+
+.view-toggle > div:first-child {
+    border-right: 1px solid black;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.view-toggle > div:last-child {
+     border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.view-toggle  > div:hover {
+   background-color: aqua;
+}
+
+
+.view-toggle  > div > button {
+    display: flex;
+    background-color: transparent;
+    border: 0px;
+    height: 100%;
+    width:100%;
+    padding: 0.5rem;   
+}
+
+h2 {
+    margin: 10px 0;
+}
+
+.activities, .events {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity, .event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid black;
+}
+

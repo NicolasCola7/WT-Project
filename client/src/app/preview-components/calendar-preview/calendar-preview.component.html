@@ -1,16 +1,21 @@
 <div class="preview-container">
     <div class="preview-header">
         <div class="view-toggle">
-            <button (click)="toggle(true)">
-                <mat-icon>calendar_today</mat-icon>
-            </button>
-            <button (click)="toggle(false)">
-                <mat-icon>check_circle_outline</mat-icon>
-            </button>
+            <div [class.selected]="viewEvents">
+                <button (click)="toggle(true); $event.stopPropagation()">
+                    <mat-icon>calendar_today</mat-icon>
+                </button>
+            </div>
+            <div [class.selected]="!viewEvents">
+                <button (click)="toggle(false); $event.stopPropagation()">
+                    <mat-icon>check_circle_outline</mat-icon>
+                </button>
+            </div>
         </div>
     </div>
     <div class="preview-content">
         <div class='events' *ngIf="viewEvents">
+            <h2> Eventi di oggi: </h2>
             @for (event of todayEvents(); track event._id) {
                 <div class="event">
                     <p class="event.title"> {{ event.title }} </p>
@@ -20,9 +25,12 @@
             <p *ngIf="!todayEvents().length"> Non ci sono eventi oggi !</p>
         </div>
         <div class="activities" *ngIf="!viewEvents">
+              <h2> Attività da completare: </h2>
             @for (activity of todayActivities(); track activity._id) {
                 <div class="activity" >
-                    <p class="event.title"> {{ activity.title }} </p>
+                    <p class="activity-title"> {{ activity.title }} </p>
+                    <p> Scaduta il {{ activity.dueDate}} </p>
+                     <p *ngIf="activity.dueDate! <= currentDate()"> Scade {{ activity.dueDate}} </p>
                 </div>
             }
 

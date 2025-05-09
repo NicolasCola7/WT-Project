@@ -8,18 +8,17 @@ export default class ActivityController extends BaseController<ActivityI> {
     getMyActivities =  async (req: Request, res: Response): Promise<void> => {
         try {
             const userID = req.query.userID;
-            const date = new Date(req.query.date as string);
+            const completed = req.query.completed as string;
 
              const query: any = { creatorId: userID };
             
-             if (date) {
-                 query.dueDate = { $lte: date };
-                 query.completed = false;
+             if (completed) {
+                query.completed = false; 
              }
- 
-             const myActivities = await this.model.find(query);
+
+            const myActivities = await this.model.find(query);
             res.status(200).json(myActivities);
-          } catch (err) {
+        } catch (err) {
             res.status(400).json({ error: (err as Error).message });
         }
     };

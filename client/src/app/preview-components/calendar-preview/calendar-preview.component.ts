@@ -36,7 +36,7 @@ export class CalendarPreviewComponent implements OnInit{
     });
 
     this.fetchTodayEvents();
-    this.fetchTodayActivities();
+    this.fetchTodoActivities();
 
   }
 
@@ -51,8 +51,8 @@ export class CalendarPreviewComponent implements OnInit{
     });
   }
 
-  fetchTodayActivities() {
-    this.calendarService.getTodayActivities(this.authService.currentUser, this.currentDate()).subscribe({
+  fetchTodoActivities() {
+    this.calendarService.getTodoActivities(this.authService.currentUser).subscribe({
       next: (activities) => this.todayActivities.set(activities),
       error: (error) => console.log(error)
     });

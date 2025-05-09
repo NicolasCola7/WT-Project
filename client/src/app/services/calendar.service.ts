@@ -100,18 +100,24 @@ export class CalendarService {
   }
 
   getTodayEvents(user: User, currentDate: Date): Observable<CalendarEvent[]> {
-    const formattedDate = currentDate.toISOString().split('T')[0];
+    const today = new Date(Date.UTC(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+        0, 0, 0, 0
+    ));
+
+    const formattedDate = today.toISOString();
 
     return this.http.get<CalendarEvent[]>('/api/events', {
       params: {userID: user._id!, date: formattedDate}
     });
   }
 
-  getTodayActivities(user: User, currentDate: Date): Observable<Activity[]> {
-    const formattedDate = currentDate.toISOString().split('T')[0];
+  getTodoActivities(user: User ): Observable<Activity[]> {
 
     return this.http.get<Activity[]>('/api/activities', {
-      params: {userID: user._id!, date: formattedDate}
+      params: {userID: user._id!, completed: false}
     });
   }
 
