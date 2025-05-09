@@ -2,17 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
-import { QuillModule } from 'ngx-quill';
+import { AngularEditorModule, AngularEditorConfig } from '@kolkov/angular-editor';
 import { NoteService } from '../../services/note.service';
 import { Note } from '../../models/note.model';
 
 @Component({
   selector: 'app-note-editor',
-  imports: [CommonModule, FormsModule, RouterLink, QuillModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink, AngularEditorModule],
   templateUrl: './note-editor.component.html',
   styleUrl: './note-editor.component.css'
 })
-
 export class NoteEditorComponent {
   note: Note = {
     id: '',
@@ -24,6 +24,21 @@ export class NoteEditorComponent {
   };
 
   newCategory = '';
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '300px',
+    minHeight: '200px',
+    placeholder: 'Scrivi la tua nota qui...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['subscript', 'superscript'],
+      ['insertImage', 'insertVideo']
+    ]
+  };
 
   constructor(private route: ActivatedRoute, private router: Router, private noteService: NoteService) {
     const id = this.route.snapshot.paramMap.get('id');

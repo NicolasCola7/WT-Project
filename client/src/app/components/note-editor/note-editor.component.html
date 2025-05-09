@@ -9,7 +9,7 @@
   </div>
 
   <div class="editor-container">
-    <quill-editor [(ngModel)]="note.content"></quill-editor>
+    <angular-editor [(ngModel)]="note.content" [config]="editorConfig"></angular-editor>
   </div>
 
   <button (click)="save()">Salva</button>
