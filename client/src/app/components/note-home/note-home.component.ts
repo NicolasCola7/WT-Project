@@ -7,31 +7,25 @@ import { Note } from '../../models/note.model';
 
 @Component({
   selector: 'app-note-home',
+  standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './note-home.component.html',
   styleUrl: './note-home.component.css'
 })
-
 export class NoteHomeComponent {
   sortBy: 'title' | 'createdAt' | 'length' = 'title';
   searchText: string = '';
   selectedCategory: string = 'Tutte';
 
-  constructor(public noteService: NoteService) {}
+  readonly categories: string[] = ['Lavoro ', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
 
-  getCategories(): string[] {
-    const all = this.noteService.getNotes().flatMap(n => n.categories);
-    return Array.from(new Set(all));
-  }
+  constructor(public noteService: NoteService) {}
 
   sortedNotes(): Note[] {
     let notes = this.noteService.getNotes();
 
     if (this.searchText) {
-      notes = notes.filter(note =>
-        note.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        note.content.toLowerCase().includes(this.searchText.toLowerCase())
-      );
+      notes = notes.filter(note => note.title.toLowerCase().includes(this.searchText.toLowerCase()));
     }
 
     if (this.selectedCategory !== 'Tutte') {

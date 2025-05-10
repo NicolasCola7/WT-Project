@@ -7,17 +7,17 @@
     <label>Ordina per:</label>
     <select [(ngModel)]="sortBy">
       <option value="title">Titolo</option>
-      <option value="createdAt">Data</option>
-      <option value="length">Lunghezza</option>
+      <option value="createdAt">Ultima Modifica</option>
+      <option value="length">Lunghezza (N-1)</option>
     </select>
 
     <label>Categoria:</label>
     <select [(ngModel)]="selectedCategory">
-      <option value="">Tutte</option>
-      <option *ngFor="let cat of getCategories()">{{ cat }}</option>
+      <option value="Tutte">Tutte</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
     </select>
 
-    <input [(ngModel)]="searchText" placeholder="Cerca per titolo o contenuto..." />
+    <input [(ngModel)]="searchText" placeholder="Cerca per titolo..." />
   </div>
 </div>
 
