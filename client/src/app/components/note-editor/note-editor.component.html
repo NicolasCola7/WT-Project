@@ -17,8 +17,8 @@
   <div class="form-warning" *ngIf="!note.title.trim() || !selectedCategory">
     Inserisci un <strong>titolo</strong> e seleziona una <strong>categoria</strong> prima di salvare.
   </div>  
-  
+
   <button (click)="save()" [disabled]="!note.title.trim() || !selectedCategory" [ngClass]="{ disabled: !note.title.trim() || !selectedCategory }">Salva</button>
-  <button routerLink="../note" class="secondary">Torna</button>
+  <button [routerLink]="backLink" class="secondary">Torna</button>
 
 </div>

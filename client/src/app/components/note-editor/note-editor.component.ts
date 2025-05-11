@@ -41,15 +41,25 @@ export class NoteEditorComponent {
     ]
   };
 
+  backLink = '../note';
+
   constructor(private route: ActivatedRoute, private router: Router, private noteService: NoteService) {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const found = this.noteService.getNote(id);
-      if (found) {
-        this.note = { ...found };
-        this.selectedCategory = found.categories[0] || '';
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        const found = this.noteService.getNote(id);
+        //link per modificare una nota già esistente
+        if (found) {
+          this.note = { ...found };
+          this.selectedCategory = found.categories[0] || '';
+          this.backLink = '../../note';
+        }
       }
-    }
+      //link per modificare una nuova nota non ancora esistente 
+      else {
+        this.backLink = '../note';
+      }
+    });
   }
 
   save() {
