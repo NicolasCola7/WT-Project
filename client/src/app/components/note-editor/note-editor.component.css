@@ -110,3 +110,19 @@ quill-editor {
   background: #fff;
   border-radius: 0 0 10px 10px;
 }
+
+.form-warning {
+  color: #bc0e0e;
+  background-color: #fcebea;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+button.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}

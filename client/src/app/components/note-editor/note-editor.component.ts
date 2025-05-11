@@ -23,7 +23,7 @@ export class NoteEditorComponent {
     updatedAt: new Date(),
   };
 
-  categories: string[] = ['Lavoro ', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
+  categories: string[] = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
   selectedCategory: string = '';
 
   editorConfig: AngularEditorConfig = {
@@ -53,6 +53,10 @@ export class NoteEditorComponent {
   }
 
   save() {
+    if (!this.note.title.trim() || !this.selectedCategory) {
+      return;
+    }
+
     this.note.categories = [this.selectedCategory];
 
     if (this.note.id) {
@@ -60,6 +64,7 @@ export class NoteEditorComponent {
     } else {
       this.noteService.addNote(this.note);
     }
+
     this.router.navigate(['/home/note']);
   }
 }

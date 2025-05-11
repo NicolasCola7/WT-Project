@@ -1,11 +1,11 @@
 <div class="note-editor-container">
 
   <h2>{{ note.id ? 'Modifica Nota' : 'Nuova Nota' }}</h2>
-
+  
   <input [(ngModel)]="note.title" placeholder="Titolo" class="input" />
 
   <select [(ngModel)]="selectedCategory" class="input">
-    <option value="" disabled selected>Scegli una categoria</option>
+    <option value="" disabled>Scegli una categoria</option>
     <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
   </select>
 
@@ -13,7 +13,12 @@
     <angular-editor [(ngModel)]="note.content" [config]="editorConfig"></angular-editor>
   </div>
 
-  <button (click)="save()">Salva</button>
+    <!-- Messaggio mostrato all'utente solo se manca il titolo e la categoria -->
+  <div class="form-warning" *ngIf="!note.title.trim() || !selectedCategory">
+    Inserisci un <strong>titolo</strong> e seleziona una <strong>categoria</strong> prima di salvare.
+  </div>  
+  
+  <button (click)="save()" [disabled]="!note.title.trim() || !selectedCategory" [ngClass]="{ disabled: !note.title.trim() || !selectedCategory }">Salva</button>
   <button routerLink="../note" class="secondary">Torna</button>
 
 </div>
