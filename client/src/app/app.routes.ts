@@ -10,6 +10,7 @@ import { NoteHomeComponent } from './components/note-home/note-home.component';
 import { NoteEditorComponent } from './components/note-editor/note-editor.component';
 import { AiAssistantComponent } from './components/ai-assistant/ai-assistant.component';
 import { TimeMachineComponent } from './components/time-machine/time-machine.component';
+import { CanDeactivateGuard } from './services/can-deactivate-guard.service';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,7 +22,7 @@ export const routes: Routes = [
     canActivate: [AuthGuardLogin],
     children: [
       { path: 'calendar', component: CalendarComponent },
-      { path: 'timer', component: PageTimerComponent },
+      { path: 'timer', component: PageTimerComponent, canDeactivate: [CanDeactivateGuard] },
       { path: 'note', component: NoteHomeComponent },
       { path: 'editor', component: NoteEditorComponent },
       { path: 'editor/:id', component: NoteEditorComponent },

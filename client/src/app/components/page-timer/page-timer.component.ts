@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingsTimerComponent } from '../settings-timer/settings-timer.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -6,6 +6,8 @@ import { Settings, SETTINGS_KEY, TimerMode } from '../../models/settings.model';
 import { TimerComponent } from '../timer/timer.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AlertService } from '../../services/alert.service';
+import { PomodoroState, POMODORO_STATE_KEY } from '../../models/pomodoro-state.model';
+import { CanComponentDeactivate } from '../../models/can-component-deactivate.model';
 
 @Component({
   selector: 'app-page-timer',
@@ -14,7 +16,7 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './page-timer.component.html',
   styleUrls: ['./page-timer.component.css','../../../assets/css/button.css']
 })
-export class PageTimerComponent implements OnInit {
+export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeactivate{
   @ViewChild(TimerComponent) timerComponent!: TimerComponent;
   cicles: boolean[] = [false, false, false, false, false];
   settings: Settings = { work: 30, break: 5 , cicle: 5};
@@ -31,7 +33,71 @@ export class PageTimerComponent implements OnInit {
     this.loadSettings();
     this.currentIntervalDuration = this.settings.work;
     this.cicles = Array(this.settings.cicle).fill(false);
+
+    const savedState = localStorage.getItem(POMODORO_STATE_KEY);
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.currentTimerMode = state.sessionType || 'Focus';
+      this.cicles = state.cicles || this.cicles;
+      this.isSessionActive = state.isSessionActive || false;
+
+      const now = Date.now();
+      const elapsed = Math.floor((now - state.timestamp) / 1000);
+
+      let remaining = state.remainingTime;
+
+      //TODO: if da togliere se non facciamo backgroud
+      if (state.isCounting) {
+        remaining = Math.max(state.remainingTime - elapsed, 0);
+        if (remaining > 0) {
+          // fai partire il timer con remaining
+          setTimeout(() => {
+            this.timerComponent.setRemainingTime(remaining);
+            this.timerComponent.startTimer();
+          }, 0);
+        } else {
+          this.onCicleFinish();
+        }
+      } else {
+        setTimeout(() => {
+          this.timerComponent.setRemainingTime(remaining);
+        }, 0);
+      }
+    }
   }
+
+
+  ngOnDestroy(): void {
+    this.timerComponent.pauseTimer();
+    const now = Date.now();
+
+    const state: PomodoroState = {
+      remainingTime: this.timerComponent.remainingTime ?? this.currentIntervalDuration * 60,
+      sessionType: this.currentTimerMode,
+      timestamp: now,
+      cicles: this.cicles,
+      isCounting: this.timerComponent.isCounting,
+      isSessionActive: this.isSessionActive
+    };
+
+    localStorage.setItem(POMODORO_STATE_KEY, JSON.stringify(state));
+  }
+
+  canDeactivate(): Promise<boolean> | boolean {
+    //chiedo conferma di chiusura soltanto se il timer è attivo
+    if(!this.timerComponent.isCounting){
+      return true;
+    }
+    this.timerComponent.pauseTimer();
+    return new Promise((resolve) => {
+      this.alertService.showQuestion(
+        "Vuoi davvero uscire? Il timer verrà messo in pausa",
+        () => resolve(true),  
+        () => resolve(false)
+      );
+    });
+  }
+
   
   EndSession() {
     // Ripristina completamente i cicli a "false"
@@ -45,6 +111,7 @@ export class PageTimerComponent implements OnInit {
     this.currentIntervalDuration = this.settings.work || 30;
     this.currentTimerMode = 'Focus';
     this.isSessionActive = false;
+    localStorage.removeItem(POMODORO_STATE_KEY);
   }
   forcedEndSession(){
     this.isForcedEndSession = true;

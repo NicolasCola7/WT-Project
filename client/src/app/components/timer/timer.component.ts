@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimerMode } from '../../models/settings.model';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css','../../../assets/css/button.css']
 })
-export class TimerComponent implements OnInit, OnChanges {
+export class TimerComponent implements OnInit, OnChanges{
   //Durata dell'intervallo di tempo 'focus' passato dal componente padre: PageTimerComponent
   @Input() intervalDuration = 30;
   //Modalità del timer passata dal componente padre: PageTimerComponent
@@ -64,7 +64,6 @@ export class TimerComponent implements OnInit, OnChanges {
       this.startTimer();
     }
   }
-
   calculateCircleLength(): void {
     this.circleBaseLength = this.size * Math.PI;
   }
@@ -86,8 +85,6 @@ export class TimerComponent implements OnInit, OnChanges {
   //metodo invocato quando l'utente mette in pausa il timer
   pauseTimer(): void {
     this.isCounting = false;
-    //ricalibro la posizione corretta della progress bar nel punto corretto
-    this.circleFillLength -= this.fractionsInOneSecond;
     //stoppo il timer
     clearInterval(this.countingInterval);
   }
@@ -105,9 +102,7 @@ export class TimerComponent implements OnInit, OnChanges {
     this.finishSession();
   }
 
-  /**
-   * Subtract a second from the current timer value
-   */
+  //metodo che sottrae un secondo al timer
   subtractSecond(): void {
     if (this.currentValueMinutes === 0 && this.currentValueSeconds === 1) {
       this.finishSession();
@@ -146,6 +141,27 @@ export class TimerComponent implements OnInit, OnChanges {
   toggleCounter(): void {
     this.isCounting ? this.pauseTimer() : this.startTimer();
   }
+
+  /**
+   * Espone il tempo rimanente totale in secondi
+   */
+  get remainingTime(): number {
+    return this.currentValueMinutes * 60 + this.currentValueSeconds;
+  }
+
+  /**
+   * Imposta il tempo rimanente (in secondi) e aggiorna il timer e la barra di avanzamento
+   * @param seconds - tempo rimanente in secondi
+   */
+  setRemainingTime(seconds: number): void {
+    this.pauseTimer();
+    this.currentValueMinutes = Math.floor(seconds / 60);
+    this.currentValueSeconds = seconds % 60;
+    const totalSeconds = this.intervalDuration * 60;
+    const elapsedSeconds = totalSeconds - seconds;
+    this.circleFillLength = this.fractionsInOneSecond * elapsedSeconds;
+  }
+
 
   //metodo che ascolta la tastiera che serve per stoppare/avviare il timer con il stato 'spazio'
   @HostListener('document:keyup', ['$event'])
