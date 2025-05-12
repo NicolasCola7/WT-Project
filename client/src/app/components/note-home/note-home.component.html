@@ -4,14 +4,15 @@
   <button routerLink="../editor" class="new-note-btn">Nuova Nota</button>
 
   <div class="filters">
+
     <label>Ordina per:</label>
     <select [(ngModel)]="sortBy">
       <option value="createdAt">Ultima Modifica</option>
       <option value="title">Titolo</option>
-      <option value="length">Lunghezza (1-N)</option>
-      <option value="length">Lunghezza (N-1)</option>
+      <option value="lengthAsc">Lunghezza (1-N)</option>
+      <option value="lengthDesc">Lunghezza (N-1)</option>
     </select>
-
+    
     <label>Categoria:</label>
     <select [(ngModel)]="selectedCategory">
       <option value="Tutte">Tutte</option>

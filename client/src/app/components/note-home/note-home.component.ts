@@ -13,7 +13,7 @@ import { Note } from '../../models/note.model';
   styleUrl: './note-home.component.css'
 })
 export class NoteHomeComponent {
-  sortBy: 'title' | 'createdAt' | 'length' = 'title';
+  sortBy: 'title' | 'createdAt' | 'lengthAsc' | 'lengthDesc' = 'createdAt';
   searchText: string = '';
   selectedCategory: string = 'Tutte';
 
@@ -22,24 +22,34 @@ export class NoteHomeComponent {
   constructor(public noteService: NoteService) {}
 
   sortedNotes(): Note[] {
-    let notes = this.noteService.getNotes();
+  let notes = this.noteService.getNotes();
 
-    if (this.searchText) {
-      notes = notes.filter(note => note.title.toLowerCase().includes(this.searchText.toLowerCase()));
-    }
-
-    if (this.selectedCategory !== 'Tutte') {
-      notes = notes.filter(note => note.categories.includes(this.selectedCategory));
-    }
-
-    return notes.sort((a, b) => {
-      if (this.sortBy === 'createdAt') return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-      if (this.sortBy === 'title') return a.title.localeCompare(b.title);
-      if (this.sortBy === 'length') return b.content.length - a.content.length;
-      return 0;
-    });
+  if (this.searchText) {
+    notes = notes.filter(note =>
+      note.title.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
+  if (this.selectedCategory !== 'Tutte') {
+    notes = notes.filter(note => note.categories.includes(this.selectedCategory));
+  }
+
+  return notes.sort((a, b) => {
+    switch (this.sortBy) {
+      case 'createdAt':
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      case 'title':
+        return a.title.localeCompare(b.title);
+      case 'lengthAsc':
+        return a.content.length - b.content.length;
+      case 'lengthDesc':
+        return b.content.length - a.content.length;
+      default:
+        return 0;
+      }
+    });
+  }
+  
   delete(id: string) {
     this.noteService.deleteNote(id);
   }
