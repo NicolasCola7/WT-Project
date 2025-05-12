@@ -33,8 +33,8 @@ export class NoteHomeComponent {
     }
 
     return notes.sort((a, b) => {
-      if (this.sortBy === 'title') return a.title.localeCompare(b.title);
       if (this.sortBy === 'createdAt') return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      if (this.sortBy === 'title') return a.title.localeCompare(b.title);
       if (this.sortBy === 'length') return b.content.length - a.content.length;
       return 0;
     });
