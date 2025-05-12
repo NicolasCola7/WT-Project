@@ -33,11 +33,11 @@
     <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
   </div>
 
-  <div class="note-preview" [innerHTML]="note.content | slice:0:200"></div>
+  <div class="note-preview">{{ getPreviewText(note.content) }}</div>
 
   <div class="note-actions">
     <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
-    <button (click)="duplicate(note.id)" class="btn duplicate">Duplica</button>
-    <button (click)="delete(note.id)" class="btn delete">Elimina</button>
+    <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
+    <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
   </div>
 </div>

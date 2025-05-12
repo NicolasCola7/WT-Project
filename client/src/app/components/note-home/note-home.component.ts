@@ -50,11 +50,18 @@ export class NoteHomeComponent {
     });
   }
   
-  delete(id: string) {
+  getPreviewText(html: string): string {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    const text = temp.textContent || temp.innerText || '';
+    return text.length > 200 ? text.slice(0, 200) + '…' : text;
+  }
+
+  deleteNote(id: string) {
     this.noteService.deleteNote(id);
   }
 
-  duplicate(id: string) {
+  duplicateNote(id: string) {
     this.noteService.duplicateNote(id);
   }
 }
