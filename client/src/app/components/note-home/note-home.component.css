@@ -60,10 +60,6 @@ h1 {
   color: #777;
 }
 
-.note-categories {
-  margin-top: 8px;
-}
-
 .tag {
   display: inline-block;
   background-color: #17a2b8;
@@ -74,6 +70,10 @@ h1 {
   font-size: 12px;
 }
 
+.note-categories {
+  margin-top: 8px;
+}
+
 .note-preview {
   margin: 12px 0;
   color: #333;
@@ -81,6 +81,10 @@ h1 {
   max-height: 4.5em;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.note-categories, .note-preview {
+  text-align: left;
 }
 
 .note-actions {
@@ -122,4 +126,24 @@ h1 {
 
 .btn.delete:hover {
   background-color: #c82333;
+}
+
+.note-grid {
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1500px) {
+  .note-grid {
+    max-height: 1200px;
+  }
+}
+
+@media (max-width: 500px) {
+  .note-grid {
+    max-height: 400px;
+  }
 }

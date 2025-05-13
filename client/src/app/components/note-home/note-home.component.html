@@ -25,25 +25,28 @@
   </div>
 </div>
 
-<!-- la lista note è sempre visibile -->
-<div class="note-card" *ngFor="let note of sortedNotes()">
-  <div class="note-header">
-    <h2>{{ note.title }}</h2>
-    <small class="note-date" *ngIf="!isPreviewMode">
-      Ultima modifica: {{ note.updatedAt | date:'short' }}
-    </small>
-  </div>
+<!-- se siamo in modalità preview le note sono scrollabili nella grid-->
+<div [ngClass]="{'note-grid': isPreviewMode}">
+  <!-- la lista note è visibile sia nella preview che nelle note-->
+  <div class="note-card" *ngFor="let note of sortedNotes()">
+    <div class="note-header">
+      <h2>{{ note.title }}</h2>
+      <small class="note-date" *ngIf="!isPreviewMode">
+        Ultima modifica: {{ note.updatedAt | date:'short' }}
+      </small>
+    </div>
 
-  <div class="note-categories">
-    <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
-  </div>
+    <div class="note-categories">
+      <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
+    </div>
 
-  <div class="note-preview">{{ getPreviewText(note.content) }}</div>
+    <div class="note-preview">{{ getPreviewText(note.content) }}</div>
 
-  <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
-  <div class="note-actions" *ngIf="!isPreviewMode">
-    <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
-    <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
-    <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
+    <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
+    <div class="note-actions" *ngIf="!isPreviewMode">
+      <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
+      <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
+      <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
+    </div>
   </div>
 </div>
