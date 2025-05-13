@@ -77,8 +77,8 @@ export class HomeComponent implements OnInit{
       urlImg: "note.png", 
       isTimeMachine: false, 
       isVisible: true,
-      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
-      data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
+      componentType: () => import("../../components/note-home/note-home.component").then(m => m.NoteHomeComponent),
+      data: { title: 'Preview Note', description: 'Mostra le note recenti', isPreviewMode: true}
     },
     { 
       cols: 1, 

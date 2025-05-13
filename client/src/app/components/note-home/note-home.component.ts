@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,8 @@ import { Note } from '../../models/note.model';
   styleUrl: './note-home.component.css'
 })
 export class NoteHomeComponent {
+  @Input() isPreviewMode: boolean = false;
+
   sortBy: 'title' | 'createdAt' | 'lengthAsc' | 'lengthDesc' = 'createdAt';
   searchText: string = '';
   selectedCategory: string = 'Tutte';
