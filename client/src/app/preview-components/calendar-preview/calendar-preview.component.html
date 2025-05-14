@@ -19,6 +19,9 @@
             @for (event of todayEvents(); track event._id) {
                 <div class="event">
                     <p class="event.title"> {{ event.title }} </p>
+                    <p> 
+                        {{ formatEventScheduling(event)}}
+                    </p>
                 </div>
             }
 

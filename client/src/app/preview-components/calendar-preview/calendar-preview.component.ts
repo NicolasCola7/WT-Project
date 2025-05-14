@@ -69,4 +69,23 @@ export class CalendarPreviewComponent implements OnInit{
       minute: '2-digit'
      });
   }
+
+  formatEventScheduling(event: CalendarEvent): string {
+    const startDate = new Date(event.startDate!);
+    const endDate = new Date(event.endDate!);
+
+    if(event.allDay) {
+      return  `Tutto il giorno`;
+    } else {
+      if (startDate.getDate() == this.currentDate().getDate()) {
+        if (endDate.getDate() > this.currentDate().getDate()) {
+          return `${startDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${this.convertDate(endDate)}`;
+        } else {
+           return `${startDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${endDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+        }
+      } else {
+        return `${this.convertDate(startDate)} - ${this.convertDate(endDate)}`;
+      }
+    }
+  }
 }
