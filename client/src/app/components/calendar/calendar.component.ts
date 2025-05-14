@@ -174,7 +174,7 @@ export class CalendarComponent implements OnInit  {
         place: event.location, 
         rrule: Object.keys(rrule).length ? rrule : undefined,
         duration: durationInMs > 0 ? { milliseconds: durationInMs } : undefined,
-        allDay: event.startDate == event.endDate,
+        allDay: event.allDay,
         backgroundColor: '#4c95e4',
         className: 'event',
         frequency: Object.keys(rrule).length ? rrule.freq : 'NONE',
@@ -275,6 +275,7 @@ export class CalendarComponent implements OnInit  {
         title: eventData.title,
         startDate: eventData.start!,
         endDate: eventData.end!,
+        allDay: eventData.allDay,
         location: eventData.extendedProps['place'],
         frequency: eventData.extendedProps['frequency'],
         repetitions: eventData.extendedProps['repetitions'],
@@ -364,12 +365,14 @@ export class CalendarComponent implements OnInit  {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      
+
+
     if (result) {
         const newEvent: CalendarEvent = {
           title: result.title,
           startDate: result.startDate,
           endDate: result.endDate,
+          allDay: result.allday,
           location: result.location,
           frequency: result.frequency,
           repetitions: result.repetitions,

@@ -29,8 +29,15 @@
             @for (activity of todayActivities(); track activity._id) {
                 <div class="activity" >
                     <p class="activity-title"> {{ activity.title }} </p>
-                    <p> Scaduta il {{ activity.dueDate}} </p>
-                     <p *ngIf="activity.dueDate! <= currentDate()"> Scade {{ activity.dueDate}} </p>
+                    <p> 
+                        <span *ngIf="isOverdue(activity.dueDate!)">
+                            Scaduta
+                        </span>
+                         <span *ngIf="!isOverdue(activity.dueDate!)">
+                            Scade
+                        </span>
+                         il {{ convertDate(activity.dueDate!) }}
+                    </p>
                 </div>
             }
 

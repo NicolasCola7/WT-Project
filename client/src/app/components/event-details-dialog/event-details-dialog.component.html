@@ -26,10 +26,10 @@
                 <span>
                     {{startDate}} -
                 </span>
-                <span *ngIf="data.endDate">
+                <span *ngIf="!data.allDay">
                      {{endDate}}
                 </span>
-                <span *ngIf="!data.endDate">
+                <span *ngIf="data.allDay">
                     Tutto il giorno
                 </span>
             </span>

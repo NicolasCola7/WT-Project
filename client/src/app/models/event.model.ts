@@ -3,6 +3,7 @@ export class CalendarEvent {
     title?: string;
     startDate?: Date;
     endDate?: Date;
+    allDay?: boolean;
     frequency?: 'NONE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
     repetitions?: number | Date;
     location?: string;

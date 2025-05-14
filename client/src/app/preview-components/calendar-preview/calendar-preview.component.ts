@@ -57,4 +57,16 @@ export class CalendarPreviewComponent implements OnInit{
       error: (error) => console.log(error)
     });
   }
+
+  isOverdue(date: Date) {
+    return new Date(date) < this.currentDate();
+  }
+
+  convertDate(date: Date) {
+    return  new Date(date).toLocaleDateString('it-IT', { 
+      hour12: false, 
+      hour: '2-digit',
+      minute: '2-digit'
+     });
+  }
 }

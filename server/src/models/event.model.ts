@@ -6,6 +6,7 @@ interface CalendarEventI {
     title: string;
     startDate: Date;
     endDate: Date;
+    allDay: boolean;
     frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
     repetitions?:  number | Date;
     location?: string;
@@ -16,6 +17,7 @@ const calendarEventSchema = new Schema<CalendarEventI>({
     title: { type: String, required: true, trim: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    allDay: { type: Boolean, required: true},
     frequency: { 
         type: String, 
         required: false, 
