@@ -143,8 +143,10 @@ body {
   max-width: 400px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', sans-serif;
+  font-size: 1rem;
 }
 
+/* Titolo */
 .preview-title {
   display: flex;
   align-items: center;
@@ -153,16 +155,66 @@ body {
   color: var(--color-text);
 }
 
+/* Riga con icona e valore */
 .preview-item {
   display: flex;
   align-items: center;
   margin: 8px 0;
   color: #444;
+  font-size: 1rem;
 }
 
 .preview-icon {
   margin-right: 8px;
+  font-size: 1.4rem;
   color: var(--color-text);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .preview-info {
+    padding: 14px;
+    max-width: 340px;
+    font-size: 0.95rem;
+  }
+
+  .preview-title {
+    font-size: 1.1rem;
+  }
+
+  .preview-item {
+    font-size: 0.95rem;
+  }
+
+  .preview-icon {
+    font-size: 1.3rem;
+  }
+}
+
+/* Smartphone */
+@media (max-width: 768px) {
+  .preview-info {
+    padding: 12px;
+    max-width: 90%;
+    font-size: 0.4rem;
+  }
+
+  .preview-title {
+    font-size: 0.8rem;
+  }
+
+  .preview-item {
+    font-size: 0.8rem;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 0;
+    max-height: 20px;
+  }
+
+  .preview-icon {
+    font-size: 1.0rem;
+    margin-bottom: 4px;
+  }
 }
 
 

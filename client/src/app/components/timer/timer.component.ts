@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimerMode } from '../../models/settings.model';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +23,7 @@ export class TimerComponent implements OnInit, OnChanges{
   //evento emesso quando cambia lo stato del timer
   @Output() countingStatusChanged = new EventEmitter<boolean>();
   @Input() isPreviewMode = false;
+  @Input() isWidgetMode = false;
 
   //flag che mi dice se il timer è accesso
   isCounting = false;
@@ -43,7 +44,7 @@ export class TimerComponent implements OnInit, OnChanges{
   
   audio!: HTMLAudioElement;
 
-  constructor() { }
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.calculateCircleLength();
@@ -150,13 +151,31 @@ export class TimerComponent implements OnInit, OnChanges{
     return this.currentValueMinutes * 60 + this.currentValueSeconds;
   }
 
-  get sizeCircle(): number{
-    if(!this.isPreviewMode){
-      return 350;
-    }else{
-      return 300;
+  get sizeCircle(): number {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+
+    if (this.isPreviewMode) {
+      // Modalità widget -> dimensioni più contenute
+      if (isMobile) {
+        return 180;
+      } else {
+        return 300;
+      }
+    } else {
+      // Modalità schermo intero
+      if (isMobile) {
+        return 260;
+      } else if (isTablet) {
+        return 300;
+      } else {
+        return 350;
+      }
     }
   }
+
+
+
 
   /**
    * Imposta il tempo rimanente (in secondi) e aggiorna il timer e la barra di avanzamento
@@ -178,5 +197,9 @@ export class TimerComponent implements OnInit, OnChanges{
     if (event.code === 'Space') {
       this.toggleCounter();
     }
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.cdRef.detectChanges(); // forza il ricalcolo dei getter
   }
 }
