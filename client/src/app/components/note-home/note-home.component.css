@@ -3,6 +3,10 @@ h1 {
   margin-bottom: 20px;
 }
 
+.mainContainer{
+  padding: 1rem;
+}
+
 .toolbar {
   display: flex;
   flex-direction: column;

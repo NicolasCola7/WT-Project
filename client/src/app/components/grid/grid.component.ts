@@ -32,7 +32,6 @@ export class GridComponent {
       resizable: {
         enabled: false,
       },
-      //griglia 12x12
       minCols: 2,
       minRows: 3,
       maxCols: 2,

@@ -26,3 +26,23 @@
   a{
     text-decoration: none;
   }
+  gridster-item:hover {
+    transform: scale(1.03);
+    cursor: move;
+}
+
+/* Scrollbar personalizzata */
+gridster-item ::-webkit-scrollbar {
+    width: 8px;
+}
+gridster-item ::-webkit-scrollbar-track {
+    background: transparent;
+}
+gridster-item ::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+}
+gridster-item ::-webkit-scrollbar-thumb:hover {
+    background: #aaaaaa;
+}
+

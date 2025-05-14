@@ -1,52 +1,54 @@
-<!-- questo titolo viene mostrato solo se non siamo nella preview -->
-<h1 *ngIf="!isPreviewMode">Le tue note</h1>
+<div class="mainContainer">
+  <!-- questo titolo viene mostrato solo se non siamo nella preview -->
+  <h1 *ngIf="!isPreviewMode">Le tue note</h1>
 
-<!-- il bottone viene mostrato solo se non siamo nella preview -->
-<div class="toolbar">
-  <button routerLink="../editor" class="new-note-btn" *ngIf="!isPreviewMode">Nuova Nota</button>
+  <!-- il bottone viene mostrato solo se non siamo nella preview -->
+  <div class="toolbar">
+    <button routerLink="../editor" class="new-note-btn" *ngIf="!isPreviewMode">Nuova Nota</button>
 
-  <!-- vengono mostrati i filtri solo se non siamo nella preview -->
-  <div class="filters" *ngIf="!isPreviewMode">
-    <label>Ordina per:</label>
-    <select [(ngModel)]="sortBy">
-      <option value="createdAt">Ultima Modifica</option>
-      <option value="title">Titolo</option>
-      <option value="lengthAsc">Lunghezza (1-N)</option>
-      <option value="lengthDesc">Lunghezza (N-1)</option>
-    </select>
+    <!-- vengono mostrati i filtri solo se non siamo nella preview -->
+    <div class="filters" *ngIf="!isPreviewMode">
+      <label>Ordina per:</label>
+      <select [(ngModel)]="sortBy">
+        <option value="createdAt">Ultima Modifica</option>
+        <option value="title">Titolo</option>
+        <option value="lengthAsc">Lunghezza (1-N)</option>
+        <option value="lengthDesc">Lunghezza (N-1)</option>
+      </select>
 
-    <label>Categoria:</label>
-    <select [(ngModel)]="selectedCategory">
-      <option value="Tutte">Tutte</option>
-      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-    </select>
+      <label>Categoria:</label>
+      <select [(ngModel)]="selectedCategory">
+        <option value="Tutte">Tutte</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
 
-    <input [(ngModel)]="searchText" placeholder="Cerca per titolo..." />
+      <input [(ngModel)]="searchText" placeholder="Cerca per titolo..." />
+    </div>
   </div>
-</div>
 
-<!-- se siamo in modalità preview le note sono scrollabili nella grid-->
-<div [ngClass]="{'note-grid': isPreviewMode}">
-  <!-- la lista note è visibile sia nella preview che nelle note-->
-  <div class="note-card" *ngFor="let note of sortedNotes()">
-    <div class="note-header">
-      <h2>{{ note.title }}</h2>
-      <small class="note-date" *ngIf="!isPreviewMode">
-        Ultima modifica: {{ note.updatedAt | date:'short' }}
-      </small>
-    </div>
+  <!-- se siamo in modalità preview le note sono scrollabili nella grid-->
+  <div [ngClass]="{'note-grid': isPreviewMode}">
+    <!-- la lista note è visibile sia nella preview che nelle note-->
+    <div class="note-card" *ngFor="let note of sortedNotes()">
+      <div class="note-header">
+        <h2>{{ note.title }}</h2>
+        <small class="note-date" *ngIf="!isPreviewMode">
+          Ultima modifica: {{ note.updatedAt | date:'short' }}
+        </small>
+      </div>
 
-    <div class="note-categories">
-      <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
-    </div>
+      <div class="note-categories">
+        <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
+      </div>
 
-    <div class="note-preview">{{ getPreviewText(note.content) }}</div>
+      <div class="note-preview">{{ getPreviewText(note.content) }}</div>
 
-    <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
-    <div class="note-actions" *ngIf="!isPreviewMode">
-      <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
-      <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
-      <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
+      <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
+      <div class="note-actions" *ngIf="!isPreviewMode">
+        <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
+        <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
+        <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
+      </div>
     </div>
   </div>
 </div>
