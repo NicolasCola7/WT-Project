@@ -1,6 +1,8 @@
 <div class="page-timer" [ngClass]="{
-  'focus-mode': currentTimerMode === 'Focus',
-  'rest-mode': currentTimerMode === 'Riposo'
+  'focus-mode': currentTimerMode === 'Focus' && !isPreviewMode,
+  'rest-mode': currentTimerMode === 'Riposo' && !isPreviewMode,
+  'focus-mode-preview': currentTimerMode === 'Focus' && isPreviewMode,
+  'rest-mode-preview': currentTimerMode === 'Riposo' && isPreviewMode
 }">
   <main>
     <div class="contenuto">
@@ -8,11 +10,12 @@
         [intervalDuration]="currentIntervalDuration"
         [timerMode]="currentTimerMode"
         [isForcedEndSession]="isForcedEndSession"
+        [isPreviewMode]="isPreviewMode"
         (sessionFinish)="onCicleFinish()"
         (countingStatusChanged)="isSessionActive = $event"
       ></app-timer>
 
-      <div class="cicles">
+      <div class="cicles" *ngIf="!isPreviewMode">
         <div>CICLI</div>
 
         <div class="cicle-list">
@@ -31,8 +34,32 @@
           </button>
         </div>
       </div>
+      <div *ngIf="isPreviewMode" class="preview-info">
+        <h3 class="preview-title">
+          IMPOSTAZIONI SESSIONE ATTUALE
+        </h3>
+
+        <div class="preview-item">
+          <mat-icon class="preview-icon">check_circle</mat-icon>
+          <span>Cicli terminati:</span>
+          <strong>{{ cicleFinished }}/{{ cicles.length }}</strong>
+        </div>
+
+        <div class="preview-item">
+          <mat-icon class="preview-icon">timer</mat-icon>
+          <span>Tempo di focus: </span>
+          <strong>{{ settings.work }} min</strong>
+        </div>
+
+        <div class="preview-item">
+          <mat-icon class="preview-icon">coffee</mat-icon>
+          <span>Tempo di break: </span>
+          <strong>{{ settings.break }} min</strong>
+        </div>
+      </div>
 
       <button
+        *ngIf="!isPreviewMode"
         class="btn btn--secondary"
         (click)="openSettings()"
         [disabled]="isSessionActive"

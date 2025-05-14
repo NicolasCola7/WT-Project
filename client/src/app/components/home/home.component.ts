@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit{
       urlImg: "timer.png", 
       isTimeMachine: false, 
       isVisible: true,
-      componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+      componentType: () => import("../../components/page-timer/page-timer.component").then(m => m.PageTimerComponent),
       data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
     },
     { 

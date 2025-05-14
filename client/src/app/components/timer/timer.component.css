@@ -129,14 +129,3 @@ button {
   stroke: #002f27;
   fill: #b2dfdb;
 }
-
-/* 🔁 Media query per schermi molto piccoli */
-@media (max-height: 500px), (max-width: 400px) {
-  .timer-numbers {
-    font-size: 4rem;
-  }
-
-  .timer-mode {
-    font-size: 1rem;
-  }
-}

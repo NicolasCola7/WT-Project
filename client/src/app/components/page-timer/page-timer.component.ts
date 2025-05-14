@@ -25,6 +25,7 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
   isSessionActive: boolean = false;
   showAnimation = false;
   isForcedEndSession!: boolean;
+  @Input() isPreviewMode = false;
 
   constructor(private dialog: MatDialog, private alertService: AlertService) {}
 
@@ -45,27 +46,20 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
       const elapsed = Math.floor((now - state.timestamp) / 1000);
 
       let remaining = state.remainingTime;
-
-      //TODO: if da togliere se non facciamo backgroud
-      if (state.isCounting) {
-        remaining = Math.max(state.remainingTime - elapsed, 0);
-        if (remaining > 0) {
-          // fai partire il timer con remaining
-          setTimeout(() => {
-            this.timerComponent.setRemainingTime(remaining);
-            this.timerComponent.startTimer();
-          }, 0);
-        } else {
-          this.onCicleFinish();
-        }
-      } else {
-        setTimeout(() => {
+      setTimeout(() => {
           this.timerComponent.setRemainingTime(remaining);
-        }, 0);
-      }
+      }, 0);
     }
   }
 
+  //metodo che ritorna true 
+  get isNotFinishedSession(){
+    return this.cicles.includes(false);
+  }
+
+  get cicleFinished(): Number{
+    return this.cicles.filter(c => c).length;
+  }
 
   ngOnDestroy(): void {
     this.timerComponent.pauseTimer();

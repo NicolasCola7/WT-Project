@@ -1,35 +1,35 @@
 <div class="timer-shadow-container"
      [ngClass]="timerMode === 'Focus' ? 'focus-mode' : 'rest-mode'"
      [ngStyle]="{
-        height: size + 'px',
-        width: size + 'px',
-        'border-radius': size + 'px'
+        height: sizeCircle + 'px',
+        width: sizeCircle + 'px',
+        'border-radius': sizeCircle + 'px'
      }">
 
   <svg
     class="circle"
-    [attr.height]="size"
-    [attr.width]="size"
-    [attr.viewBox]="'0 0 ' + size + ' ' + size"
+    [attr.height]="sizeCircle"
+    [attr.width]="sizeCircle"
+    [attr.viewBox]="'0 0 ' + sizeCircle + ' ' + sizeCircle"
   >
     <circle
       [ngClass]="{resetting: !isCounting}"
-      [attr.r]="(size / 2) - 2"
-      [attr.cx]="size / 2"
-      [attr.cy]="size / 2"
+      [attr.r]="(sizeCircle / 2) - 2"
+      [attr.cx]="sizeCircle / 2"
+      [attr.cy]="sizeCircle / 2"
       [ngStyle]="{
         'stroke-dasharray': circleBaseLength + circleFillLength,
         'stroke-dashoffset': circleBaseLength,
-        'transform-origin': (size / 2) + 'px'
+        'transform-origin': (sizeCircle / 2) + 'px'
       }"
     />
   </svg>
 
   <div class="timer-inner-container"
        [ngStyle]="{
-          height: size - (size * 0.1) + 'px',
-          width: size - (size * 0.1) + 'px',
-          'border-radius': size + 'px'
+          height: sizeCircle - (sizeCircle * 0.1) + 'px',
+          width: sizeCircle - (sizeCircle * 0.1) + 'px',
+          'border-radius': sizeCircle + 'px'
      }"
   >
     <div class="timer-mode">{{ timerMode | titlecase }}</div>
@@ -41,22 +41,22 @@
 
     <div class="timer-actions">
       <button 
-        *ngIf="!isCounting; else pauseButton" class="btn btn--primary" (click)="startTimer()">
+        *ngIf="!isCounting; else pauseButton" class="btn btn--primary" (click)="startTimer()" [disabled]="isPreviewMode">
         <mat-icon>
           {{ currentValueMinutes === intervalDuration && currentValueSeconds === 0 ? 'play_arrow' : 'play_circle' }}
         </mat-icon>
       </button>
 
-      <button *ngIf="isCounting" class="btn btn--danger" (click)="resetTimer()">
+      <button *ngIf="isCounting" class="btn btn--danger" (click)="resetTimer()" [disabled]="isPreviewMode">
         <mat-icon>restart_alt</mat-icon>
       </button>
 
-      <button *ngIf="isCounting" class="btn btn--danger" (click)="next()">
+      <button *ngIf="isCounting" class="btn btn--danger" (click)="next()" [disabled]="isPreviewMode">
         <mat-icon>skip_next</mat-icon>
       </button>
 
       <ng-template #pauseButton>
-        <button class="btn btn--secondary" (click)="pauseTimer()">
+        <button class="btn btn--secondary" (click)="pauseTimer()" [disabled]="isPreviewMode">
           <mat-icon>pause</mat-icon>
         </button>
       </ng-template>

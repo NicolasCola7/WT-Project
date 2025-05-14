@@ -22,6 +22,7 @@ export class TimerComponent implements OnInit, OnChanges{
   @Output() sessionFinish = new EventEmitter<void>();
   //evento emesso quando cambia lo stato del timer
   @Output() countingStatusChanged = new EventEmitter<boolean>();
+  @Input() isPreviewMode = false;
 
   //flag che mi dice se il timer è accesso
   isCounting = false;
@@ -147,6 +148,14 @@ export class TimerComponent implements OnInit, OnChanges{
    */
   get remainingTime(): number {
     return this.currentValueMinutes * 60 + this.currentValueSeconds;
+  }
+
+  get sizeCircle(): number{
+    if(!this.isPreviewMode){
+      return 350;
+    }else{
+      return 300;
+    }
   }
 
   /**
