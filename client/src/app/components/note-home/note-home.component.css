@@ -3,7 +3,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-.mainContainer{
+.mainContainer {
   padding: 1rem;
 }
 
@@ -50,7 +50,7 @@ h1 {
   padding: 16px;
   margin-bottom: 16px;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .note-header {
@@ -133,21 +133,13 @@ h1 {
 }
 
 .note-grid {
-  max-height: 500px;
-  overflow-y: auto;
   width: 100%;
-  padding-right: 8px;
   box-sizing: border-box;
 }
 
-@media (max-width: 1500px) {
-  .note-grid {
-    max-height: 1200px;
-  }
-}
-
-@media (max-width: 500px) {
-  .note-grid {
-    max-height: 400px;
-  }
+.no-notes-message {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  padding: 24px 0;
 }

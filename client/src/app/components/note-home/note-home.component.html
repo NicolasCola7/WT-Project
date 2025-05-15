@@ -29,6 +29,10 @@
   <!-- se siamo in modalità preview le note sono scrollabili nella grid-->
   <div [ngClass]="{'note-grid': isPreviewMode}">
     <!-- la lista note è visibile sia nella preview che nelle note-->
+    <div *ngIf="sortedNotes().length === 0" class="no-notes-message">
+      Nessuna nota disponibile.
+    </div>
+
     <div class="note-card" *ngFor="let note of sortedNotes()">
       <div class="note-header">
         <h2>{{ note.title }}</h2>

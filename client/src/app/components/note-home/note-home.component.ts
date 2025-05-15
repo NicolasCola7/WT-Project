@@ -19,39 +19,42 @@ export class NoteHomeComponent {
   searchText: string = '';
   selectedCategory: string = 'Tutte';
 
-  readonly categories: string[] = ['Lavoro ', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
+  readonly categories: string[] = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
 
   constructor(public noteService: NoteService) {}
 
   sortedNotes(): Note[] {
-  let notes = this.noteService.getNotes();
+    let notes = this.noteService.getNotes();
 
-  if (this.searchText) {
-    notes = notes.filter(note =>
-      note.title.toLowerCase().includes(this.searchText.toLowerCase())
-    );
-  }
+    if (this.searchText) {
+      notes = notes.filter(note =>
+        note.title.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    }
 
-  if (this.selectedCategory !== 'Tutte') {
-    notes = notes.filter(note => note.categories.includes(this.selectedCategory));
-  }
+    if (this.selectedCategory !== 'Tutte') {
+      notes = notes.filter(note => note.categories.includes(this.selectedCategory));
+    }
 
-  return notes.sort((a, b) => {
-    switch (this.sortBy) {
-      case 'createdAt':
-        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-      case 'title':
-        return a.title.localeCompare(b.title);
-      case 'lengthAsc':
-        return a.content.length - b.content.length;
-      case 'lengthDesc':
-        return b.content.length - a.content.length;
-      default:
-        return 0;
+    notes = notes.sort((a, b) => {
+      switch (this.sortBy) {
+        case 'createdAt':
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+        case 'title':
+          return a.title.localeCompare(b.title);
+        case 'lengthAsc':
+          return a.content.length - b.content.length;
+        case 'lengthDesc':
+          return b.content.length - a.content.length;
+        default:
+          return 0;
       }
     });
+
+    //mostro solo le utlime due note nella preview (se presente una sola ne mostro una sola altrimenti mostro la scritta che non ci sono note disponibili)
+    return this.isPreviewMode ? notes.slice(0, 2) : notes;
   }
-  
+
   getPreviewText(html: string): string {
     const temp = document.createElement('div');
     temp.innerHTML = html;
