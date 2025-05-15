@@ -1,8 +1,7 @@
 <gridster [options]="options">
   <ng-container *ngFor="let item of dashboard">
     <gridster-item *ngIf="item.isVisible"
-                  [item]="item"
-                  [ngClass]="{'time-machine': item.isTimeMachine}">
+                  [item]="item">
       <div class="preview-header">
         <p>{{ item.name }}</p>
       </div>

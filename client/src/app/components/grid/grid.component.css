@@ -1,7 +1,7 @@
 gridster {
     box-sizing: border-box;
     background: rgb(255, 255, 255);
-    height: 260vh !important;
+    height: 180vh !important;
     width: 100% !important;
     user-select: none;
     display: block;
@@ -36,15 +36,6 @@ gridster-item:hover {
     transform: scale(1.03);
     cursor: move;
 }
-gridster-item img {
-    max-width: 10vw;
-    max-height: 10vh;
-    object-fit: contain;
-}
-.time-machine{
-    background-color: #121212;
-    color: white;
-}
 .preview-header{
     font-size: 1.5rem;
 }
@@ -68,11 +59,6 @@ gridster-item img {
         width: 100% !important;
         min-height: 120px;
         margin-bottom: 10px;
-    }
-
-    gridster-item img {
-        max-width: 26vw;
-        max-height: 10vh;
     }
 }
 

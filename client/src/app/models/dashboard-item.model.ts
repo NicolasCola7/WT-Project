@@ -4,7 +4,6 @@ export interface DashboardItem extends GridsterItem {
   name: string;
   relativeUrl: string;
   urlImg: string;
-  isTimeMachine: boolean;
   isVisible: boolean;
   componentType: () => Promise<Type<any>>;
   data: any;

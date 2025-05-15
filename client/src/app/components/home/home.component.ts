@@ -49,7 +49,6 @@ export class HomeComponent implements OnInit{
       name: 'Calendario', 
       relativeUrl: 'calendar', 
       urlImg: "calendar.png", 
-      isTimeMachine: false, 
       isVisible: true,
       componentType: () => import("../../preview-components/calendar-preview/calendar-preview.component").then(m => m.CalendarPreviewComponent),
       data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
@@ -62,7 +61,6 @@ export class HomeComponent implements OnInit{
       name: 'Timer', 
       relativeUrl: 'timer', 
       urlImg: "timer.png", 
-      isTimeMachine: false, 
       isVisible: true,
       componentType: () => import("../../components/page-timer/page-timer.component").then(m => m.PageTimerComponent),
       data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
@@ -75,7 +73,6 @@ export class HomeComponent implements OnInit{
       name: 'Note', 
       relativeUrl: 'note', 
       urlImg: "note.png", 
-      isTimeMachine: false, 
       isVisible: true,
       componentType: () => import("../../components/note-home/note-home.component").then(m => m.NoteHomeComponent),
       data: { title: 'Preview Note', description: 'Mostra le note recenti', isPreviewMode: true}
@@ -88,21 +85,19 @@ export class HomeComponent implements OnInit{
       name: 'Assistente AI', 
       relativeUrl: 'assistant', 
       urlImg: "chatbot.png", 
-      isTimeMachine: false, 
       isVisible: true,
       componentType: () => import("../../preview-components/prova/prova.component").then(m => m.ProvaComponent),
       data: { title: 'Prima Preview', description: 'Descrizione della prima preview' } 
     },
     { 
-      cols: 1, 
-      rows: 1, 
-      y: 2, 
+      cols: 0, 
+      rows: 0, 
+      y: 0, 
       x: 0, 
       name: 'Time Machine', 
       relativeUrl: 'time-machine', 
-      urlImg: "time-machine.png", 
-      isTimeMachine: true, 
-      isVisible: true,
+      urlImg: "time-machine.png",
+      isVisible: false,
       componentType: () => import("../../components/time-machine/time-machine.component").then(m => m.TimeMachineComponent),
       data: { title: 'Time-machine preview', description: 'Descrizione time machine preview' }
     }

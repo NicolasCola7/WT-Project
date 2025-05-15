@@ -5,8 +5,7 @@
         <div class="feature">
           <button class="btn" *ngFor="let item of dashboard"
                   [routerLink]="[item.relativeUrl]"
-                  routerLinkActive="active" 
-                  [ngClass]="{'time-machine': item.isTimeMachine}">
+                  routerLinkActive="active">
             <img src="../../../assets/icon/{{item.urlImg}}">
             <p class="btn-label">{{ item.name }}</p>
           </button>
