@@ -16,34 +16,36 @@
     <div class="preview-content">
         <div class='events' *ngIf="viewEvents">
             <h2> Eventi di oggi: </h2>
-            @for (event of todayEvents(); track event._id) {
-                <div class="event">
-                    <p class="event.title"> {{ event.title }} </p>
-                    <p> 
-                        {{ formatEventScheduling(event)}}
-                    </p>
-                </div>
-            }
-
+            <div class="event" *ngFor="let event of todayEvents() | slice:0:4;">
+                <p class="event-title"> {{ event.title }} </p>
+                <p> 
+                    {{ formatEventScheduling(event)}}
+                </p>
+            </div>
+    
+            <div class="view-all-link" *ngIf="todayEvents().length >= 4">
+                <a [routerLink]="['/home/calendar']" (click)="$event.stopPropagation()">Vedi tutti gli eventi</a>
+            </div>
             <p *ngIf="!todayEvents().length"> Non ci sono eventi oggi !</p>
         </div>
         <div class="activities" *ngIf="!viewEvents">
-              <h2> Attività da completare: </h2>
-            @for (activity of todayActivities(); track activity._id) {
-                <div class="activity" >
-                    <p class="activity-title"> {{ activity.title }} </p>
-                    <p> 
-                        <span *ngIf="isOverdue(activity.dueDate!)">
-                            Scaduta
-                        </span>
-                         <span *ngIf="!isOverdue(activity.dueDate!)">
-                            Scade
-                        </span>
-                         il {{ convertDate(activity.dueDate!) }}
-                    </p>
-                </div>
-            }
-
+            <h2> Attività da completare: </h2>
+            <div class="activity" *ngFor="let activity of todayActivities() | slice:0:4;">
+                <p class="activity-title"> {{ activity.title }} </p>
+                <p> 
+                    <span *ngIf="isOverdue(activity.dueDate!)">
+                        Scaduta
+                    </span>
+                        <span *ngIf="!isOverdue(activity.dueDate!)">
+                        Scade
+                    </span>
+                        il {{ convertDate(activity.dueDate!) }}
+                </p>
+            </div>
+            
+            <div class="view-all-link" *ngIf="todayActivities().length >= 4">
+                <a [routerLink]="['/home/calendar']" (click)="$event.stopPropagation()">Vedi tutte le attività</a>
+            </div>
             <p *ngIf="!todayActivities().length"> Non ci sono attività oggi !</p>
         </div>
     </div>

@@ -6,12 +6,14 @@ import { Activity } from '../../models/activity.model';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-calendar-preview',
   imports: [
     CommonModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ],
   templateUrl: './calendar-preview.component.html',
   styleUrl: './calendar-preview.component.css'
@@ -26,7 +28,7 @@ export class CalendarPreviewComponent implements OnInit{
   constructor(
     private calendarService: CalendarService,
     private timeMachineService: TimeMachineService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
   }
 

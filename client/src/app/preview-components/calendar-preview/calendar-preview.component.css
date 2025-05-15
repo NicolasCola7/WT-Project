@@ -68,3 +68,11 @@ h2 {
     border: 1px solid black;
 }
 
+.activity-title, .event-title {
+    font-weight: bold;
+}
+
+.view-all-link {
+    margin-top: 10px;
+}
+
