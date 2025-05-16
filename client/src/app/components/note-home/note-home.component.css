@@ -137,9 +137,22 @@ h1 {
   box-sizing: border-box;
 }
 
+.preview-label {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
 .no-notes-message {
   text-align: center;
-  color: #888;
-  font-size: 16px;
-  padding: 24px 0;
+  color: #555;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
 }

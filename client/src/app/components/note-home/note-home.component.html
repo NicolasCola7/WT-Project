@@ -2,6 +2,9 @@
   <!-- questo titolo viene mostrato solo se non siamo nella preview -->
   <h1 *ngIf="!isPreviewMode">Le tue note</h1>
 
+  <!-- etichetta visibile solo se siamo nella preview -->
+  <div *ngIf="isPreviewMode" class="preview-label">Ultime 2 note</div>
+
   <!-- il bottone viene mostrato solo se non siamo nella preview -->
   <div class="toolbar">
     <button routerLink="../editor" class="new-note-btn" *ngIf="!isPreviewMode">Nuova Nota</button>
@@ -30,7 +33,7 @@
   <div [ngClass]="{'note-grid': isPreviewMode}">
     <!-- la lista note è visibile sia nella preview che nelle note-->
     <div *ngIf="sortedNotes().length === 0" class="no-notes-message">
-      Nessuna nota disponibile.
+      <p>Nessuna nota disponibile.</p>
     </div>
 
     <div class="note-card" *ngFor="let note of sortedNotes()">
