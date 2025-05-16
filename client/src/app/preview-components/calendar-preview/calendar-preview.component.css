@@ -1,62 +1,101 @@
 .preview-header {
+    display: flex;
     flex-direction: row;
-    justify-items: flex-end;
+    justify-content: flex-end;
+    padding: 1rem;
+    background: #f5f7fa;
+    border-bottom: 2px solid #e0e0e0;
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .view-toggle {
-    border: 1px solid;
+    border: 1px solid #ccc;
     border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    background: white;
+    transition: box-shadow 0.3s ease;
+}
+
+.view-toggle:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .view-toggle > div {
     background-color: transparent;  
     display: flex;
     flex-direction: row;
-    width:50%;
+    width: 50%;
     height: 100%;
     margin: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    color: #555;
+    font-weight: 600;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
 }
 
 .view-toggle > div.selected {
-    background-color: lightgray;
+    background-color: #007BFF;
+    color: white;
+    box-shadow: inset 0 -3px 0 #0056b3;
 }
 
-
 .view-toggle > div:first-child {
-    border-right: 1px solid black;
+    border-right: 1px solid #ccc;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
 }
 
 .view-toggle > div:last-child {
-     border-top-right-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
 
-.view-toggle  > div:hover {
-   background-color: aqua;
+.view-toggle > div:hover:not(.selected) {
+    background-color: #e6f0ff;
+    color: #0056b3;
 }
 
-
-.view-toggle  > div > button {
-    display: flex;
-    background-color: transparent;
-    border: 0px;
+.view-toggle > div > button {
+    all: unset;
+    cursor: pointer;
+    width: 100%;
     height: 100%;
-    width:100%;
-    padding: 0.5rem;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.view-toggle > div:focus-within {
+    outline: 2px solid #0056b3;
+    outline-offset: 2px;
 }
 
 h2 {
-    margin: 10px 0;
+    margin: 15px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
 }
 
 .activities, .events {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .activity, .event {
@@ -64,15 +103,36 @@ h2 {
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid black;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+    color: #444;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    cursor: default;
+}
+
+.activity:hover, .event:hover {
+    background-color: #e0f0ff;
+    border-color: #007BFF;
 }
 
 .activity-title, .event-title {
-    font-weight: bold;
+    font-weight: 700;
+    color: #007BFF;
+    margin-bottom: 0.2rem;
 }
 
 .view-all-link {
-    margin-top: 10px;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #007BFF;
+    cursor: pointer;
+    align-self: flex-start;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
+.view-all-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
