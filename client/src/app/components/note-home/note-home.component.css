@@ -138,11 +138,11 @@ h1 {
 }
 
 .preview-label {
-  text-align: center;
+  text-align: left;
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 20px;
-  color: #007bff;
+  margin-bottom: 16px;
+  color: #000;
 }
 
 .no-notes-message {
