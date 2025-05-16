@@ -1,6 +1,5 @@
 .preview-header {
     display: flex;
-    flex-direction: row;
     justify-content: flex-end;
     padding: 1rem;
     background: #f5f7fa;
@@ -9,13 +8,12 @@
 }
 
 .view-toggle {
+    display: flex;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
-    display: flex;
-    flex-direction: row;
+    background: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     overflow: hidden;
-    background: white;
     transition: box-shadow 0.3s ease;
 }
 
@@ -24,38 +22,32 @@
 }
 
 .view-toggle > div {
-    background-color: transparent;  
+    flex: 1;
     display: flex;
-    flex-direction: row;
-    width: 50%;
-    height: 100%;
-    margin: 0;
-    cursor: pointer;
     align-items: center;
     justify-content: center;
-    padding: 0.6rem 1.2rem;
+    cursor: pointer;
     color: #555;
     font-weight: 600;
     user-select: none;
     transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0;
     position: relative;
 }
 
 .view-toggle > div.selected {
     background-color: #007BFF;
-    color: white;
+    color: #fff;
     box-shadow: inset 0 -3px 0 #0056b3;
 }
 
 .view-toggle > div:first-child {
     border-right: 1px solid #ccc;
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
+    border-radius: 0.5rem 0 0 0.5rem;
 }
 
 .view-toggle > div:last-child {
-    border-top-right-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
 }
 
 .view-toggle > div:hover:not(.selected) {
@@ -65,15 +57,17 @@
 
 .view-toggle > div > button {
     all: unset;
-    cursor: pointer;
     width: 100%;
     height: 100%;
+    padding: 0.6rem 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     font-size: 1.05rem;
-    padding: 0;
+    color: inherit;
+    font-weight: 600;
+    cursor: pointer;
     box-sizing: border-box;
 }
 
