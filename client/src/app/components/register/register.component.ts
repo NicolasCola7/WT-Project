@@ -19,7 +19,6 @@ import { CalendarEvent } from '../../models/event.model';
   standalone: true
 })
 export class RegisterComponent {
-
   registerForm: UntypedFormGroup;
   username = new UntypedFormControl('', [
     Validators.required,

@@ -11,7 +11,7 @@
           <input type="password" name="password" formControlName="password" placeholder="La tua password" required>
         </div>
         <div>
-          <a [routerLink]="['/register']"> Non sei ancora registrato? Registrati</a>
+          <i><a [routerLink]="['/register']"> Non sei ancora registrato? Registrati</a></i>
         </div>
         <button type="submit" [disabled]="!loginForm.valid">
             Login

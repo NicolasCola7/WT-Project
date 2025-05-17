@@ -1,30 +1,29 @@
-
 <div id="register-container">
     <h4>Registrati</h4>
     <div id="form-container">
         <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group">
-                <label for="email">Email <span> *</span></label>
+                <label for="email">Email<span>*</span></label>
                 <input type="email" name="email" formControlName="email" placeholder="mario.rossi@email.com" required>
             </div>
             <div class="form-group">
-                <label for="ame">Nome <span> *</span></label>
+                <label for="ame">Nome<span>*</span></label>
                 <input type="text" name="name" formControlName="name" placeholder="Mario" required>
             </div>
             <div class="form-group">
-                <label for="surname">Cognome <span> *</span></label>
+                <label for="surname">Cognome<span>*</span></label>
                 <input type="text" name="surname" formControlName="surname" placeholder="Rossi" required>
             </div>
             <div class="form-group">
-                <label for="username">Username <span> *</span></label>
+                <label for="username">Username<span>*</span></label>
                 <input type="text" name="username" formControlName="username" placeholder="mario123" required>
             </div>
             <div class="form-group">
-                <label for="password">Password <span> *</span></label>
+                <label for="password">Password<span>*</span></label>
                 <input type="password" name="password" formControlName="password" placeholder="Scegli una password sicura" required>
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Conferma password <span> *</span></label>
+                <label for="confirmPassword">Conferma password<span>*</span></label>
                 <input type="password" name="confirmPassword" formControlName="confirmPassword" placeholder="Reinserisci la password" required>
             </div>
             <div class="form-group">
@@ -32,11 +31,9 @@
                 <input type="date" name="birthday" formControlName="birthday">
             </div>
             <div>
-                <a [routerLink]="['/login']"> Hai già un account? Accedi </a>
+                <i><a [routerLink]="['/login']">Hai già un account? Accedi</a></i>
             </div>
-            <button type="submit" [disabled]="!registerForm.valid">
-                Registrati
-            </button>
+            <button type="submit" [disabled]="!registerForm.valid">Registrati</button>
         </form>
     </div>
 </div>
