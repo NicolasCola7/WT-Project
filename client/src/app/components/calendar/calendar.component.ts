@@ -112,7 +112,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   ngOnInit(): void {
-    // 👇 Quando cambia il valore della timeMachine, aggiorno il mio signal
+    //Quando cambia il valore della timeMachine, aggiorno il mio signal
     this.timeMachineService.currentDate$.subscribe(date => {
       this.currentDate.set(date);
     });
