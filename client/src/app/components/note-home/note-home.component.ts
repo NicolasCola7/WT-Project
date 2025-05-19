@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NoteService } from '../../services/note.service';
-import { Note } from '../../models/note.model';
+import { AuthService } from '../../services/auth.service';
+import Note from '../../models/note.model';
 
 @Component({
   selector: 'app-note-home',
@@ -12,47 +13,63 @@ import { Note } from '../../models/note.model';
   templateUrl: './note-home.component.html',
   styleUrl: './note-home.component.css'
 })
-export class NoteHomeComponent {
+export class NoteHomeComponent implements OnInit{
   @Input() isPreviewMode: boolean = false;
 
+  notes: Note[] = [];
   sortBy: 'title' | 'createdAt' | 'lengthAsc' | 'lengthDesc' = 'createdAt';
   searchText: string = '';
   selectedCategory: string = 'Tutte';
 
   readonly categories: string[] = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
 
-  constructor(public noteService: NoteService) {}
+  constructor(
+    private noteService: NoteService,
+    private authService: AuthService
+  ) {
+
+  }
+
+  ngOnInit() {
+    this.fetchMyNotes();
+  }
+
+  fetchMyNotes() {
+    this.noteService.getMyNotes(this.authService.currentUser).subscribe({
+      next: (myNotes) => this.notes = [...myNotes],
+      error: (error) => console.log(error)
+    });
+  }
 
   sortedNotes(): Note[] {
-    let notes = this.noteService.getNotes();
-
+  
     if (this.searchText) {
-      notes = notes.filter(note =>
-        note.title.toLowerCase().includes(this.searchText.toLowerCase())
+      this.notes = this.notes.filter(note =>
+        note.title!.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
 
     if (this.selectedCategory !== 'Tutte') {
-      notes = notes.filter(note => note.categories.includes(this.selectedCategory));
+      this.notes = this.notes.filter(note => note.category!.includes(this.selectedCategory));
     }
 
-    notes = notes.sort((a, b) => {
+    this.notes = this.notes.sort((a, b) => {
       switch (this.sortBy) {
         case 'createdAt':
-          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+          return new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime();
         case 'title':
-          return a.title.localeCompare(b.title);
+          return a.title!.localeCompare(b.title!);
         case 'lengthAsc':
-          return a.content.length - b.content.length;
+          return a.content!.length - b.content!.length;
         case 'lengthDesc':
-          return b.content.length - a.content.length;
+          return b.content!.length - a.content!.length;
         default:
           return 0;
       }
     });
 
     //mostro solo le utlime due note nella preview (se presente una sola ne mostro una sola altrimenti mostro la scritta che non ci sono note disponibili)
-    return this.isPreviewMode ? notes.slice(0, 2) : notes;
+    return this.isPreviewMode ? this.notes.slice(0, 2) : this.notes;
   }
 
   getPreviewText(html: string): string {
@@ -63,10 +80,25 @@ export class NoteHomeComponent {
   }
 
   deleteNote(id: string) {
-    this.noteService.deleteNote(id);
+    this.noteService.deleteNote(id).subscribe({
+      next: () => this.fetchMyNotes(),
+      error: (error) => console.log(error)
+    });
   }
 
-  duplicateNote(id: string) {
-    this.noteService.duplicateNote(id);
+  duplicateNote(note: Note) {
+    const duplicated: Note = {
+      title: note.title + ' (Copia)',
+      content: note.content,
+      category: note.category,
+      createdAt: note.createdAt,
+      updatedAt: note.updatedAt,
+      creatorId: note.creatorId
+    };
+
+    this.noteService.addNote(duplicated).subscribe({
+      next: () => this.fetchMyNotes(),
+      error: (error) => console.log(error)
+    });
   }
 }

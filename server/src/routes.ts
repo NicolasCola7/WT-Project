@@ -5,7 +5,7 @@ import CalendarEventController from './controllers/event.controller';
 import ChatController from './controllers/chat.controller';
 import ImportedCalendarController from './controllers/imported-calendar.controller';
 import UploadedCalendarController from './controllers/uploaded-calendar.controller';
-import SettingsController from './controllers/settings-pomodoro.controller';
+import NoteController from './controllers/note.controller';
 import SettingsPomodoroController from './controllers/settings-pomodoro.controller';
 import PomodoroStateController from './controllers/pomodoro-state.controller';
 
@@ -22,6 +22,7 @@ const setRoutes = (app: Application): void => {
   const uploadedCalendarController = new UploadedCalendarController();
   const settingsPomodoroController = new SettingsPomodoroController();
   const pomodoroStateController = new PomodoroStateController();
+  const noteController = new NoteController();
 
   //DEFINIZIONE ROUTES PER OGNI CONTROLLER
   // Users
@@ -62,7 +63,7 @@ const setRoutes = (app: Application): void => {
   router.route('/uploaded-calendars/:id').get(uploadedCalendarController.get);
   router.route('/uploaded-calendars/:id').delete(uploadedCalendarController.delete);
   router.route('/uploaded-calendars').get(uploadedCalendarController.getMyUploadedCalendars);
- 
+
   //pomodoro-state
   router.route('/pomodoro/user/:userId').get(pomodoroStateController.getByUserId);
   router.route('/pomodoro/user').post(pomodoroStateController.saveOrUpdateByUserId);
@@ -71,6 +72,13 @@ const setRoutes = (app: Application): void => {
   router.route('/settings/user/:userId').get(settingsPomodoroController.getByUserId);
   router.route('/settings/user').post(settingsPomodoroController.saveOrUpdateByUserId);
 
+  //Notes
+  router.route('/notes').post(noteController.insert);
+  router.route('/notes/:id').get(noteController.get);
+  router.route('/notes/:id').delete(noteController.delete);
+  router.route('/notes').get(noteController.getMyNotes);
+  router.route('/activity/:id').put(noteController.update);
+ 
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);
 

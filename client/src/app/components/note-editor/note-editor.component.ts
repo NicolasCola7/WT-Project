@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { AngularEditorModule, AngularEditorConfig } from '@kolkov/angular-editor';
 import { NoteService } from '../../services/note.service';
-import { Note } from '../../models/note.model';
+import Note from '../../models/note.model';
 
 @Component({
   selector: 'app-note-editor',
@@ -14,17 +14,10 @@ import { Note } from '../../models/note.model';
   styleUrl: './note-editor.component.css'
 })
 export class NoteEditorComponent {
-  note: Note = {
-    id: '',
-    title: '',
-    content: '',
-    categories: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  note: Note = {}
 
-  categories: string[] = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
-  selectedCategory: string = '';
+  categories = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
+  selectedCategory?: 'Lavoro' |'Attività' | 'Studio' | 'Idee' | 'Personale' | 'Lettura' | 'Creatività';
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -47,13 +40,14 @@ export class NoteEditorComponent {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        const found = this.noteService.getNote(id);
-        //link per modificare una nota già esistente
-        if (found) {
-          this.note = { ...found };
-          this.selectedCategory = found.categories[0] || '';
-          this.backLink = '../../note';
-        }
+        this.noteService.getNote(id).subscribe({
+          next: (found) => {
+            this.note = found;
+            this.selectedCategory = found.category!
+            this.backLink = '../../note';
+          },
+          error: (error) => console.log(error)
+        });
       }
       //link per modificare una nuova nota non ancora esistente 
       else {
@@ -63,16 +57,18 @@ export class NoteEditorComponent {
   }
 
   save() {
-    if (!this.note.title.trim() || !this.selectedCategory) {
+    if (!this.note.title!.trim() || !this.selectedCategory) {
       return;
     }
 
-    this.note.categories = [this.selectedCategory];
+    this.note.category = this.selectedCategory;
+    this.note.updatedAt = new Date(); // nuova data di modifica
 
-    if (this.note.id) {
-      this.noteService.updateNote(this.note.id, this.note);
+    if (this.note._id) {
+      this.noteService.updateNote(this.note).subscribe();
     } else {
-      this.noteService.addNote(this.note);
+      this.note.createdAt = new Date();
+      this.noteService.addNote(this.note).subscribe();
     }
 
     this.router.navigate(['/home/note']);

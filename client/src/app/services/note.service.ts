@@ -1,72 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Note } from '../models/note.model';
 import { v4 as uuidv4 } from 'uuid';
+import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import Note from '../models/note.model';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
-  private notes: Note[] = [];
 
-  constructor() {
-    const saved = localStorage.getItem('notes');
-    if (saved) {
-      this.notes = JSON.parse(saved).map((n: any) => ({
-        ...n,
-        createdAt: new Date(n.createdAt),
-        updatedAt: new Date(n.updatedAt),
-      }));
-    }
+  constructor(private http: HttpClient) {
   }
 
-  private saveToStorage() {
-    localStorage.setItem('notes', JSON.stringify(this.notes));
+  getMyNotes(user: User): Observable<Note[]> {
+    return this.http.get<Note[]>('/api/notes', {
+      params: {userID: user._id!}
+    });
   }
 
-  getNotes(): Note[] {
-    return [...this.notes];
+  getNote(noteId: string): Observable<Note> {
+    return this.http.get<Note>(`/api/notes/${noteId}`);
+  }
+  
+  addNote(note: Note): Observable<Note> {
+    return this.http.post<Note>('/api/notes', note);
   }
 
-  getNote(id: string): Note | undefined {
-    return this.notes.find(n => n.id === id);
+  deleteNote(noteId: string): Observable<string> {
+    return this.http.delete(`/api/notes/${noteId}`, { responseType: 'text' });
   }
 
-  addNote(note: Partial<Note>) {
-    const newNote: Note = {
-      id: uuidv4(),
-      title: note.title || '',
-      content: note.content || '',
-      categories: note.categories || [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.notes.push(newNote);
-    this.saveToStorage();
-  }
-
-  updateNote(id: string, updated: Partial<Note>) {
-    const index = this.notes.findIndex(n => n.id === id);
-    if (index !== -1) {
-      this.notes[index] = {
-        ...this.notes[index],
-        ...updated,
-        updatedAt: new Date(),
-      };
-      this.saveToStorage();
-    }
-  }
-
-  deleteNote(id: string) {
-    this.notes = this.notes.filter(n => n.id !== id);
-    this.saveToStorage();
-  }
-
-  duplicateNote(id: string) {
-    const original = this.getNote(id);
-    if (original) {
-      this.addNote({
-        title: original.title + ' (Copia)',
-        content: original.content,
-        categories: [...original.categories],
-      });
-    }
+  updateNote(note: Note): Observable<string> {
+    return this.http.put(`/api/notes/${note._id}`, note, { responseType: 'text' });
   }
 }

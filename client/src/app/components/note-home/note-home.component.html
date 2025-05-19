@@ -45,16 +45,16 @@
       </div>
 
       <div class="note-categories">
-        <span *ngFor="let cat of note.categories" class="tag">{{ cat }}</span>
+        <span  class="tag">{{ note.category }}</span>
       </div>
 
-      <div class="note-preview">{{ getPreviewText(note.content) }}</div>
+      <div class="note-preview">{{ getPreviewText(note.content!) }}</div>
 
       <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
       <div class="note-actions" *ngIf="!isPreviewMode">
-        <button [routerLink]="['/home/editor', note.id]" class="btn edit">Modifica</button>
-        <button (click)="duplicateNote(note.id)" class="btn duplicate">Duplica</button>
-        <button (click)="deleteNote(note.id)" class="btn delete">Elimina</button>
+        <button [routerLink]="['/home/editor', note._id]" class="btn edit">Modifica</button>
+        <button (click)="duplicateNote(note)" class="btn duplicate">Duplica</button>
+        <button (click)="deleteNote(note._id!)" class="btn delete">Elimina</button>
       </div>
     </div>
   </div>
