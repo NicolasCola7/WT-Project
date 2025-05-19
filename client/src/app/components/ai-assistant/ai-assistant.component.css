@@ -1,4 +1,4 @@
-/* Stile base - Mobile first */
+/*stile base - mobile first*/
 .assistant-container {
   display: flex;
   width: 100%;
@@ -6,7 +6,7 @@
   position: relative;
 }
 
-/* Stile per il pulsante toggle */
+/*stile per il pulsante toggle*/
 .sidebar-toggle {
   position: absolute;
   top: 1rem;
@@ -25,7 +25,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Sidebar */
+/*sidebar*/
 .chat-sidebar {
   position: fixed;
   top: 0;
@@ -42,7 +42,7 @@
   overflow-y: auto;
 }
 
-/* Quando la sidebar è aperta */
+/*quando la sidebar è aperta*/
 .chat-sidebar.open {
   left: 0;
 }
@@ -117,7 +117,7 @@
   color: #1e2b37;
 }
 
-/* Stile per la chat selezionata */
+/*stile per la chat selezionata*/
 .chat.selected {
   background-color: #2a3f55;
   border-left: 3px solid #4eb5f1;
@@ -154,7 +154,7 @@
   background-color: #dde3ea;
 }
 
-/* Stile per l'input di modifica del titolo */
+/*stile per l'input di modifica del titolo*/
 .chat-title-edit {
   max-width: 70%;
   background-color: transparent;
@@ -171,13 +171,13 @@
   border-bottom: 1px solid #1e2b37;
 }
 
-/* Per la chat selezionata */
+/*per la chat selezionata*/
 .chat.selected .chat-title-edit {
   color: #f7f7f8;
   border-bottom: 1px solid #f7f7f8;
 }
 
-/* Contenuto chat */
+/*contenuto chat ed impedisco lo scroll orizzontale*/
 .chat-content {
   flex: 1;
   display: flex;
@@ -185,16 +185,16 @@
   background: #f7f7f8;
   width: 100%;
   height: 100vh;
-  padding-top: 3.5rem; /* Spazio per il pulsante toggle */
-  min-width: 0; /* Previene l'espansione oltre il container */
-  overflow-x: hidden; /* Impedisce lo scroll orizzontale */
+  padding-top: 3.5rem;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .messages {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
-  overflow-x: hidden; /* Impedisce lo scroll orizzontale */
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -205,13 +205,13 @@
   margin: 0.5rem 0;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  white-space: normal; /* Permette il wrap del testo */
+  white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  word-break: break-word; /* Gestisce meglio le parole lunghe */
+  word-break: break-word;
   line-height: 1.4;
   box-sizing: border-box;
-  hyphens: auto; /* Aggiunge trattini quando necessario */
+  hyphens: auto;
 }
 
 .message p {
@@ -220,14 +220,14 @@
   overflow-wrap: break-word;
 }
 
-/* Messaggi dell'utente (allineati a destra) */
+/*messaggi dell'utente (allineati a destra)*/
 .message.from-user {
   align-self: flex-end;
   background: #1e2b37;
   color: white;
 }
 
-/* Messaggi dell'assistente (allineati a sinistra) */
+/*messaggi dell'assistente (allineati a sinistra)*/
 .message:not(.from-user) {
   align-self: flex-start;
   background: #e5e5ea;
@@ -235,7 +235,7 @@
   color: #000;
 }
 
-/* Animazione per messaggi in generazione */
+/*animazione per messaggi in generazione*/
 @keyframes pulse {
   0% { opacity: 0.6; }
   50% { opacity: 1; }
@@ -254,7 +254,7 @@
   100% { width: 3em; }
 }
 
-/* Messaggio in fase di generazione */
+/*messaggio in fase di generazione*/
 .message.generating {
   position: relative;
   animation: pulse 1.5s infinite ease-in-out;
@@ -262,7 +262,7 @@
   animation: pulse 1.5s infinite ease-in-out, blink 1.5s infinite ease-in-out;
 }
 
-/* Indicatore "sta scrivendo" */
+/*indicatore "sta scrivendo"*/
 .message.generating::after {
   content: "";
   position: absolute;
@@ -285,7 +285,7 @@
   width: 100%;
 }
 
-/* Indicatore di generazione nel form dei messaggi */
+/*indicatore di generazione nel form dei messaggi*/
 .message-form.generating::before {
   content: "Generazione in corso...";
   position: absolute;
@@ -305,7 +305,7 @@ form {
   width: 100%;
 }
 
-/* Stile per il textarea che si espande automaticamente */
+/*stile per il textarea che si espande automaticamente*/
 .message-form textarea[name="message"] {
   flex: 1;
   padding: 0.5rem 0.75rem;
@@ -319,17 +319,17 @@ form {
   
   line-height: 1.4;
   font-family: inherit;
-  min-width: 0; /* Previene l'espansione oltre il container */
+  min-width: 0;
 }
 
-/* Aggiusta il form per gestire meglio l'altezza variabile */
+/*aggiusta il form per gestire meglio l'altezza variabile*/
 .message-form form {
   display: flex;
   width: 100%;
-  align-items: flex-start; /* Allinea gli elementi all'inizio */
+  align-items: flex-start;
 }
 
-/* Migliora l'allineamento del pulsante di invio */
+/*migliora l'allineamento del pulsante di invio*/
 .message-form button {
   margin-left: 0.5rem;
   padding: 0.5rem 1rem;
@@ -344,8 +344,8 @@ form {
   color: white;
   flex-shrink: 0;
   transition: background-color 0.3s ease;
-  height: 38px; /* Altezza fissa per il pulsante */
-  align-self: flex-start; /* Allinea il pulsante all'inizio */
+  height: 38px;
+  align-self: flex-start;
 }
 
 .message-form button:hover:not(:disabled) {
@@ -359,7 +359,7 @@ form {
 }
 
 
-/* Responsive per tablet e desktop */
+/*responsive per tablet e desktop */
 @media (min-width: 768px) {
   .chat-content {
     padding-top: 1rem;
@@ -380,17 +380,18 @@ form {
     left: 0;
     width: 25%;
     max-width: 350px;
-    flex-shrink: 0; /* Impedisce alla sidebar di restringersi */
+    flex-shrink: 0;
   }
   
   .sidebar-toggle {
     display: none;
   }
   
+   /*assicura che il contenuto si adatti senza espandersi*/
   .chat-content {
     padding-top: 1rem;
     flex: 1;
-    min-width: 0; /* Assicura che il contenuto si adatti senza espandersi */
+    min-width: 0;
   }
   
   .new-chat-btn {
@@ -398,6 +399,6 @@ form {
   }
   
   .assistant-container {
-    overflow-x: hidden; /* Impedisce lo scroll orizzontale */
+    overflow-x: hidden;
   }
 }

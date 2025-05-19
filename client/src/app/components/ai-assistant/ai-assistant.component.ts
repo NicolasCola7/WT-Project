@@ -162,5 +162,4 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
     this.selectedChatId = null;
     this.chatService.setChatMessages([]);
   }
-  
 }
