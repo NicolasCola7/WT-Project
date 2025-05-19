@@ -244,13 +244,3 @@ body {
     height: 1rem;
   }
 }
-
-/* NUOVA MEDIA QUERY: modalità landscape su smartphone */
-@media screen and (max-width: 932px) and (orientation: landscape) {
-  .page-timer .contenuto {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }
-}

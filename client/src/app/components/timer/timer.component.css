@@ -129,3 +129,13 @@ button {
   stroke: #002f27;
   fill: #b2dfdb;
 }
+
+@media screen and (max-width: 600px) {
+  .timer-actions .btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+}

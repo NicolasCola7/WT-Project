@@ -33,13 +33,8 @@ export class TimerComponent implements OnInit, OnChanges{
   currentValueSeconds = 0;
   //numero di intervalli presi dalla funzion setInterval
   countingInterval!: number;
-
-  //circonferenza del cerchio del timer
-  circleBaseLength!: number;
   //lunghezza della parte 'avanzata' del cerchio del timer
   circleFillLength = 0; 
-  //parte del circonferenza riempita in un secondo
-  fractionsInOneSecond!: number;
 
   
   audio!: HTMLAudioElement;
@@ -47,17 +42,21 @@ export class TimerComponent implements OnInit, OnChanges{
   constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.calculateCircleLength();
-    this.calculateFractionsInOneSecond();
+    this.circleBaseLength;
+    this.fractionsInOneSecond;
     this.loadNotificationSound();
   }
 
   //metodo richiamato ogni qualvolta che il componente timer subisce un cambiamento
   ngOnChanges(changes: SimpleChanges): void {
     //controllo se esiste un cambiamento per la variabile intervalDuration
-    if (!!changes['intervalDuration']) {
+    if (changes['intervalDuration']) {
       this.currentValueMinutes = changes['intervalDuration'].currentValue;
-      this.calculateFractionsInOneSecond();
+      this.fractionsInOneSecond;
+    }
+    if (changes['size']) {
+      this.circleBaseLength;
+      this.fractionsInOneSecond;
     }
     //se ci sono stati cambiamenti, ma non è il primo cambiamento 
     //(ovvero quello che avviene all'inizializzazione) e non è stato premuto il tasto di reset di sessione
@@ -66,12 +65,9 @@ export class TimerComponent implements OnInit, OnChanges{
       this.startTimer();
     }
   }
-  calculateCircleLength(): void {
-    this.circleBaseLength = this.size * Math.PI;
-  }
 
-  calculateFractionsInOneSecond(): void {
-    this.fractionsInOneSecond = this.circleBaseLength / (this.intervalDuration * 60);
+  ngOnDestroy(): void {
+    this.pauseTimer();
   }
 
   //metodo invocato quando l'utente clicca play
@@ -79,6 +75,7 @@ export class TimerComponent implements OnInit, OnChanges{
     this.isCounting = true;
     //notifico PageTimerComponent che lo stato del timer è cambiato
     this.countingStatusChanged.emit(this.isCounting);
+
     this.countingInterval = window.setInterval(() => {
       this.subtractSecond();
     }, 1000);
@@ -130,13 +127,14 @@ export class TimerComponent implements OnInit, OnChanges{
   }
   
   loadNotificationSound(): void {
-    this.audio = new Audio();
-    this.audio.src = 'assets/goes-without-saying-608.mp3';
+    this.audio = new Audio('assets/goes-without-saying-608.mp3');
     this.audio.load();
   }
   
   playNotificationSound(): void {
-    this.audio.play();
+    this.audio?.play().catch(() => {
+      console.warn('Impossibile riprodurre il suono.');
+    });
   }
 
   //Cambia lo stato del contatore nell'opposto: avvio/pausa
@@ -150,6 +148,17 @@ export class TimerComponent implements OnInit, OnChanges{
   get remainingTime(): number {
     return this.currentValueMinutes * 60 + this.currentValueSeconds;
   }
+
+  //circonferenza del cerchio del timer
+  get circleBaseLength(): number {
+    return this.sizeCircle * Math.PI;
+  }
+
+  //parte del circonferenza riempita in un secondo
+  get fractionsInOneSecond(): number {
+    return this.circleBaseLength / (this.intervalDuration * 60);
+  }
+
 
   get sizeCircle(): number {
     const isMobile = window.innerWidth <= 768;
@@ -200,6 +209,9 @@ export class TimerComponent implements OnInit, OnChanges{
   }
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.cdRef.detectChanges(); // forza il ricalcolo dei getter
+    // ricalcola il progresso con la nuova sizeCircle
+    this.setRemainingTime(this.currentValueSeconds); 
+    // forza Angular ad aggiornare il DOM
+    this.cdRef.detectChanges(); 
   }
 }
