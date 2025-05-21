@@ -25,7 +25,6 @@
     "@fullcalendar/google-calendar": "^6.1.17",
     "@fullcalendar/icalendar": "^6.1.17",
     "@fullcalendar/rrule": "^6.1.17",
-    "@rollup/rollup-win32-x64-msvc": "^4.38.0",
     "angular-gridster2": "^19.0.0",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
