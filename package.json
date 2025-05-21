@@ -20,7 +20,7 @@
         "start": "concurrently \"npm run start:client\" \"npm run start:server\""
     },
     "devDependencies": {
-        "concurrently": "^7.0.0"
+        "concurrently": "^7.6.0"
     },
     "dependencies": {
         "@angular/forms": "^19.2.8",
