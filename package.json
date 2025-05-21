@@ -20,10 +20,10 @@
         "start": "concurrently \"npm run start:client\" \"npm run start:server\""
     },
     "devDependencies": {
-        "concurrently": "^7.6.0"
     },
     "dependencies": {
         "@angular/forms": "^19.2.8",
+        "concurrently": "^7.6.0",
         "@kolkov/angular-editor": "^3.0.0-beta.2",
         "ngx-editor": "^19.0.0-beta.1"
     }
