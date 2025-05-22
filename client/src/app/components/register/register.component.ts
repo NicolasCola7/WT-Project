@@ -85,12 +85,15 @@ export class RegisterComponent {
             creatorId: user._id
           }
           this.calendarService.addEvent(birthday).subscribe({
-            next: () => this.router.navigate(['/login']),
+            next: () => {
+              this.router.navigate(['/login'])
+            },
             error: (error) => console.log(error)
-          })
+          });
         } else {
           this.router.navigate(['/login']);
         }
+        this.alertService.showSuccess('Registrazione avvenuta con successo!');
       },
       error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
     });
