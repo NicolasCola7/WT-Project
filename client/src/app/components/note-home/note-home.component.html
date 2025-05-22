@@ -38,7 +38,7 @@
 
     <div class="note-card" *ngFor="let note of sortedNotes()">
       <div class="note-header">
-        <h2>{{ note.title }}</h2>
+        <h2 class="note-title">{{ note.title }}</h2>
         <small class="note-date" *ngIf="!isPreviewMode">
           Ultima modifica: {{ note.updatedAt | date:'short' }}
         </small>

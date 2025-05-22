@@ -26,9 +26,7 @@ export class NoteHomeComponent implements OnInit{
   constructor(
     private noteService: NoteService,
     private authService: AuthService
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
     this.fetchMyNotes();

@@ -77,7 +77,7 @@ const setRoutes = (app: Application): void => {
   router.route('/notes/:id').get(noteController.get);
   router.route('/notes/:id').delete(noteController.delete);
   router.route('/notes').get(noteController.getMyNotes);
-  router.route('/activity/:id').put(noteController.update);
+  router.route('/notes/:id').put(noteController.update);
  
   // AApplica a tutte le routes il prefisso /api
   app.use('/api', router);

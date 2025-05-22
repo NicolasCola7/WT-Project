@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { AngularEditorModule, AngularEditorConfig } from '@kolkov/angular-editor';
 import { NoteService } from '../../services/note.service';
 import Note from '../../models/note.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-note-editor',
@@ -36,7 +37,12 @@ export class NoteEditorComponent {
 
   backLink = '../note';
 
-  constructor(private route: ActivatedRoute, private router: Router, private noteService: NoteService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private noteService: NoteService,
+    private authService: AuthService
+  ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -68,6 +74,7 @@ export class NoteEditorComponent {
       this.noteService.updateNote(this.note).subscribe();
     } else {
       this.note.createdAt = new Date();
+      this.note.creatorId = this.authService.currentUser._id;
       this.noteService.addNote(this.note).subscribe();
     }
 

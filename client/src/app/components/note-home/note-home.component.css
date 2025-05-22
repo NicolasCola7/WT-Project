@@ -156,3 +156,9 @@ h1 {
   background-color: #f5f5f5;
   border: 1px solid #ddd;
 }
+
+.note-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
