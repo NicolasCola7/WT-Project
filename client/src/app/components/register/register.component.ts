@@ -76,14 +76,17 @@ export class RegisterComponent {
 
     this.userService.register(this.registerForm.value).subscribe({
       next: (user) => {
+        this.alertService.showSuccess('Registrazione avvenuta con successo!');
         if(this.birthday.value) {
           const birthday: CalendarEvent = {
             title: 'Il tuo compleanno',
             startDate: this.birthday.value,
             endDate:  this.birthday.value,
+            allDay: false,
             frequency: 'YEARLY',
             creatorId: user._id
           }
+
           this.calendarService.addEvent(birthday).subscribe({
             next: () => {
               this.router.navigate(['/login'])
@@ -93,7 +96,6 @@ export class RegisterComponent {
         } else {
           this.router.navigate(['/login']);
         }
-        this.alertService.showSuccess('Registrazione avvenuta con successo!');
       },
       error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
     });
