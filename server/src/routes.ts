@@ -6,8 +6,6 @@ import ChatController from './controllers/chat.controller';
 import ImportedCalendarController from './controllers/imported-calendar.controller';
 import UploadedCalendarController from './controllers/uploaded-calendar.controller';
 import NoteController from './controllers/note.controller';
-import SettingsPomodoroController from './controllers/settings-pomodoro.controller';
-import PomodoroStateController from './controllers/pomodoro-state.controller';
 
 
 const setRoutes = (app: Application): void => {
@@ -20,8 +18,6 @@ const setRoutes = (app: Application): void => {
   const chatController = new ChatController();
   const importedCalendarController = new ImportedCalendarController();
   const uploadedCalendarController = new UploadedCalendarController();
-  const settingsPomodoroController = new SettingsPomodoroController();
-  const pomodoroStateController = new PomodoroStateController();
   const noteController = new NoteController();
 
   //DEFINIZIONE ROUTES PER OGNI CONTROLLER
@@ -63,14 +59,6 @@ const setRoutes = (app: Application): void => {
   router.route('/uploaded-calendars/:id').get(uploadedCalendarController.get);
   router.route('/uploaded-calendars/:id').delete(uploadedCalendarController.delete);
   router.route('/uploaded-calendars').get(uploadedCalendarController.getMyUploadedCalendars);
-
-  //pomodoro-state
-  router.route('/pomodoro/user/:userId').get(pomodoroStateController.getByUserId);
-  router.route('/pomodoro/user').post(pomodoroStateController.saveOrUpdateByUserId);
-
-  //settings-pomodoro
-  router.route('/settings/user/:userId').get(settingsPomodoroController.getByUserId);
-  router.route('/settings/user').post(settingsPomodoroController.saveOrUpdateByUserId);
 
   //Notes
   router.route('/notes').post(noteController.insert);

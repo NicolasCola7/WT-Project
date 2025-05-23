@@ -6,7 +6,6 @@ import { Settings, SETTINGS_KEY, TimerMode } from '../../models/settings.model';
 import { TimerComponent } from '../timer/timer.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AlertService } from '../../services/alert.service';
-import { PomodoroService } from '../../services/pomodoro.service';
 import { PomodoroState, POMODORO_STATE_KEY } from '../../models/pomodoro-state.model';
 import { CanComponentDeactivate } from '../../models/can-component-deactivate.model';
 
@@ -28,8 +27,7 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
   isForcedEndSession!: boolean;
   @Input() isPreviewMode = false;
 
-  //TODO: fare refactoring del componente per utilizzare il servizio pomodoro
-  constructor(private dialog: MatDialog, private alertService: AlertService, private pomodoroService: PomodoroService) {}
+  constructor(private dialog: MatDialog, private alertService: AlertService) {}
 
   //quando il componente viene inizializzato carico i settings iniziali
   ngOnInit(): void {
