@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { AlertService } from '../../services/alert.service';
@@ -48,7 +48,6 @@ export class RegisterComponent {
   ]);
   confirmPassword = new UntypedFormControl('', [
     Validators.required,
-    Validators.minLength(6)
   ]);
   birthday = new UntypedFormControl('');
 
@@ -65,15 +64,10 @@ export class RegisterComponent {
       password: this.password,
       confirmPassword: this.confirmPassword,
       birthday: this.birthday
-    });
+    }, { validators: this.passwordMatchValidator });
   }
 
   register(): void {
-    if(this.password.value != this.confirmPassword.value){
-      this.alertService.showError("Le due password non coincidono!")
-      return;
-    }
-
     this.userService.register(this.registerForm.value).subscribe({
       next: (user) => {
         this.alertService.showSuccess('Registrazione avvenuta con successo!');
@@ -99,5 +93,16 @@ export class RegisterComponent {
       },
       error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
     });
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordMismatch: true };
+    }
+    
+    return null;
   }
 }

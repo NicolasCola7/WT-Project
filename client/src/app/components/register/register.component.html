@@ -5,33 +5,63 @@
             <div class="form-group">
                 <label for="email">Email<span>*</span></label>
                 <input type="email" name="email" formControlName="email" placeholder="mario.rossi@email.com" required>
+                <div *ngIf="email.invalid && email.touched" class="error">
+                    <span *ngIf="email.errors?.['required']">Email obbligatoria</span>
+                    <span *ngIf="email.errors?.['email']">Inserisci un email valida</span>
+                </div>
             </div>
             <div class="form-group">
-                <label for="ame">Nome<span>*</span></label>
+                <label for="name">Nome<span>*</span></label>
                 <input type="text" name="name" formControlName="name" placeholder="Mario" required>
+                <div *ngIf="name.invalid && name.touched" class="error">
+                    <span *ngIf="name.errors?.['required']">Nome  obbligatorio</span>
+                    <span *ngIf="name.errors?.['minlength']">Nome deve avere almeno 3 caratteri</span>
+                    <span *ngIf="name.errors?.['maxlength']">Nome non può superare i 50 caratteri</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="surname">Cognome<span>*</span></label>
                 <input type="text" name="surname" formControlName="surname" placeholder="Rossi" required>
+                <div *ngIf="surname.invalid && surname.touched" class="error">
+                    <span *ngIf="surname.errors?.['required']">Cognome obbligatorio</span>
+                    <span *ngIf="surname.errors?.['minlength']">Cognome deve avere almeno 3 caratteri</span>
+                    <span *ngIf="surname.errors?.['maxlength']">Cognome non può superare i 50 caratteri</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="username">Username<span>*</span></label>
                 <input type="text" name="username" formControlName="username" placeholder="mario123" required>
+                <div *ngIf="username.invalid && username.touched" class="error">
+                    <span *ngIf="username.errors?.['required']">Username  obbligatorio</span>
+                    <span *ngIf="username.errors?.['minlength']">Username deve avere almeno 2 caratteri</span>
+                    <span *ngIf="username.errors?.['maxlength']">Username non può superare i 30 caratteri</span>
+                    <span *ngIf="username.errors?.['pattern']">Username può contenere solo lettere, numeri, trattini e underscore</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="password">Password<span>*</span></label>
                 <input type="password" name="password" formControlName="password" placeholder="Scegli una password sicura" required>
+                <div *ngIf="password.invalid && password.touched" class="error">
+                    <span *ngIf="password.errors?.['required']">Password è obbligatoria</span>
+                    <span *ngIf="password.errors?.['minlength']">Password deve avere almeno 6 caratteri</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Conferma password<span>*</span></label>
                 <input type="password" name="confirmPassword" formControlName="confirmPassword" placeholder="Reinserisci la password" required>
+                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="error">
+                    <span *ngIf="confirmPassword.errors?.['required']">Conferma password è obbligatoria</span>
+                </div>
+                <div *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword.touched" class="error">
+                    <span>Le password non coincidono</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="birthday">Data di nascita</label>
                 <input type="date" name="birthday" formControlName="birthday">
             </div>
             <div>
-                <i><a [routerLink]="['/login']">Hai già un account? Accedi</a></i>
+                <a [routerLink]="['/login']">Hai già un account? Accedi</a>
             </div>
             <button type="submit" [disabled]="!registerForm.valid">Registrati</button>
         </form>

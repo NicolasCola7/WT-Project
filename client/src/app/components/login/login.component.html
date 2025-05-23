@@ -5,15 +5,22 @@
         <div class="form-group">
             <label for="email">Email <span> *</span></label>
             <input type="email" name="email" formControlName="email" placeholder="nome@dominio.com" required>
+            <div *ngIf="email.invalid && email.touched" class="error">
+              <span *ngIf="email.errors?.['required']">Inserisci email </span>
+              <span *ngIf="email.errors?.['email']">Inserisci un email valida</span>
+            </div>
         </div>
         <div class="form-group">
           <label for="password">Password <span> *</span></label>
           <input type="password" name="password" formControlName="password" placeholder="La tua password" required>
+          <div *ngIf="password.invalid && password.touched" class="error">
+            <span *ngIf="password.errors?.['required']">Inserisci password</span>
+          </div>
         </div>
         <div>
-          <i><a [routerLink]="['/register']"> Non sei ancora registrato? Registrati</a></i>
+          <a [routerLink]="['/register']"> Non sei ancora registrato? Registrati</a>
         </div>
-        <button type="submit" [disabled]="!loginForm.valid">
+        <button type="submit" [disabled]="loginForm.invalid">
             Login
         </button>
       </form>

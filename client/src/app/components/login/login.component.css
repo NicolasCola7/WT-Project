@@ -8,6 +8,12 @@
   margin: 5vh auto;
 }
 
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 @media (min-width: 768px) {
   #login-container {
     width: 400px;
