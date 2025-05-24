@@ -12,6 +12,7 @@ main {
 
 .header {
   display: flex;
+  gap: 20px;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 2rem;

@@ -209,9 +209,9 @@ export class TimerComponent implements OnInit, OnChanges{
   }
   @HostListener('window:resize', ['$event'])
   onResize() {
-    // ricalcola il progresso con la nuova sizeCircle
-    this.setRemainingTime(this.currentValueSeconds); 
-    // forza Angular ad aggiornare il DOM
-    this.cdRef.detectChanges(); 
+    if (this.isCounting && this.currentValueSeconds > 0) {
+      this.setRemainingTime(this.currentValueSeconds);
+      this.cdRef.detectChanges();
+    }
   }
 }

@@ -31,23 +31,29 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
 
   //quando il componente viene inizializzato carico i settings iniziali
   ngOnInit(): void {
-    this.loadSettings();
-    this.currentIntervalDuration = this.settings.work;
-    this.cicles = Array(this.settings.cicle).fill(false);
-
     const savedState = localStorage.getItem(POMODORO_STATE_KEY);
     if (savedState) {
-      const state = JSON.parse(savedState);
-      this.currentTimerMode = state.sessionType || 'Focus';
-      this.cicles = state.cicles || this.cicles;
-      this.isSessionActive = state.isSessionActive || false;
+      this.loadSettings();
+      this.currentIntervalDuration = this.settings.work;
+      this.cicles = Array(this.settings.cicle).fill(false);
+      if (savedState) {
+        const state = JSON.parse(savedState);
+        this.currentTimerMode = state.sessionType || 'Focus';
+        this.cicles = state.cicles || this.cicles;
+        this.isSessionActive = state.isSessionActive || false;
 
-      const now = Date.now();
-      const elapsed = Math.floor((now - state.timestamp) / 1000);
+        const now = Date.now();
+        const elapsed = Math.floor((now - state.timestamp) / 1000);
 
-      let remaining = state.remainingTime;
+        let remaining = state.remainingTime;
+        setTimeout(() => {
+            this.timerComponent.setRemainingTime(remaining);
+        }, 0);
+      }
+    } else {
+      // se non c'è stato salvato, imposta il timer correttamente
       setTimeout(() => {
-          this.timerComponent.setRemainingTime(remaining);
+        this.timerComponent.setRemainingTime(this.currentIntervalDuration * 60);
       }, 0);
     }
   }

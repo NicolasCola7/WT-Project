@@ -54,7 +54,6 @@ export class GridComponent implements OnInit {
 
   onItemChange(item: GridsterItem, itemComponent: any): void {
     this.dashboardService.saveLayout(this.userId, this.dashboard).subscribe({
-      next: () => console.log('Layout salvato'),
       error: err => console.error('Errore nel salvataggio layout:', err)
     });
   }

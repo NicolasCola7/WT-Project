@@ -8,6 +8,14 @@
   margin: 5vh auto;
 }
 
+.title{
+  margin-top: 3vh;
+  text-align: center;
+}
+.title h1{
+  font-size: 3rem;
+}
+
 .error {
   color: red;
   font-size: 12px;
