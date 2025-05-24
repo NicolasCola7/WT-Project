@@ -2,7 +2,24 @@ import { Schema, model } from 'mongoose';
 import bcrypt, { compare } from 'bcryptjs';
 
 
-// Interface for creating a new user
+interface GridItem {
+  id: string;
+  x: number;
+  y: number;
+  cols: number;
+  rows: number;
+  name: string;
+  relativeUrl: string;
+  urlImg: string;
+  isTimeMachine: boolean;
+  isVisible: boolean;
+  data: {
+    title: string;
+    description: string;
+  };
+}
+
+
 interface UserI {
   username: string;
   email: string;
@@ -10,17 +27,37 @@ interface UserI {
   surname: string;
   password: string;
   birthday?: Date;
+  gridLayout?: GridItem[];
   comparePassword(password: string, callback: (err: any, isMatch: boolean) => void): boolean;
 }
 
 const userSchema = new Schema<UserI>({
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    name: { type: String, required: true, trim: true },
-    surname: { type: String, required: true, trim: true },
-    username: { type: String, required: true, trim: true },
-    password: { type: String, required: true, trim: true },
-    birthday: { type: Date, required: false}
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  name: { type: String, required: true, trim: true },
+  surname: { type: String, required: true, trim: true },
+  username: { type: String, required: true, trim: true },
+  password: { type: String, required: true, trim: true },
+  birthday: { type: Date, required: false },
+  gridLayout: [
+    {
+      id: { type: String, required: true },
+      x: { type: Number, required: true },
+      y: { type: Number, required: true },
+      cols: { type: Number, required: true },
+      rows: { type: Number, required: true },
+      name: { type: String, required: true },
+      relativeUrl: { type: String, required: true },
+      urlImg: { type: String, required: true },
+      isTimeMachine: { type: Boolean, default: false },
+      isVisible: { type: Boolean, default: false },
+      data: {
+        title: { type: String },
+        description: { type: String }
+      }
+    }
+  ]
 });
+
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {

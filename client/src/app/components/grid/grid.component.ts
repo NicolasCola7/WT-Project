@@ -1,37 +1,39 @@
-import { Component, Input } from '@angular/core';
-import { GridsterComponent, GridsterConfig, GridsterItemComponent } from 'angular-gridster2';
+import { Component, Input, OnInit } from '@angular/core';
+import { GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponent } from 'angular-gridster2';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { DashboardItem } from '../../models/dashboard-item.model';
 import { PreviewLoaderComponent } from '../preview-loader/preview-loader.component';
+import { AuthService } from '../../services/auth.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css',
   standalone: true,
-  imports: [GridsterComponent, 
-            GridsterItemComponent, 
-            PreviewLoaderComponent,
-            CommonModule,
-            RouterModule]
+  imports: [
+    GridsterComponent,
+    GridsterItemComponent,
+    PreviewLoaderComponent,
+    CommonModule,
+    RouterModule
+  ]
 })
-export class GridComponent {
+export class GridComponent implements OnInit {
   options!: GridsterConfig;
-  @Input() dashboard: Array<DashboardItem> = [];
+  @Input() dashboard: DashboardItem[] = [];
+  userId: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private dashboardService: DashboardService) {
+    this.userId = this.authService.currentUser._id!;
+  }
 
-  ngOnInit() {
-    //imposto le opzioni della griglia
+  ngOnInit(): void {
     this.options = {
-      //elementi con drag & drop e ridimensionabili
-      draggable: {
-        enabled: true,
-      },
-      resizable: {
-        enabled: false,
-      },
+      itemChangeCallback: this.onItemChange.bind(this),
+      draggable: { enabled: true },
+      resizable: { enabled: false },
       minCols: 2,
       minRows: 2,
       maxCols: 2,
@@ -43,5 +45,17 @@ export class GridComponent {
       fixedRowHeight: 350,
       fixedColWidth: 100
     };
+
+    //sottoscrivo il componente al suo servizio dedicato
+    this.dashboardService.getLayout(this.userId).subscribe(layout => {
+      this.dashboard = layout;
+    });
+  }
+
+  onItemChange(item: GridsterItem, itemComponent: any): void {
+    this.dashboardService.saveLayout(this.userId, this.dashboard).subscribe({
+      next: () => console.log('Layout salvato'),
+      error: err => console.error('Errore nel salvataggio layout:', err)
+    });
   }
 }

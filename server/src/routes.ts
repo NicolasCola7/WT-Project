@@ -25,6 +25,8 @@ const setRoutes = (app: Application): void => {
   router.route('/login').post(userController.login);
   router.route('/user').post(userController.insert);
   router.route('/user/:id').get(userController.get);
+  router.route('/users/layout').put(userController.updateLayout);
+  router.route('/users/:userId/layout').get(userController.getLayout);
 
   //Events
   router.route('/event').post(eventController.insert);
