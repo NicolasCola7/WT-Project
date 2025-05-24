@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AlertService } from '../../services/alert.service';
 import { CalendarService } from '../../services/calendar.service';
 import { CalendarEvent } from '../../models/event.model';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-register',
@@ -55,7 +56,8 @@ export class RegisterComponent {
               private router: Router,
               private userService: UserService,
               private alertService: AlertService,
-              private calendarService: CalendarService) {
+              private calendarService: CalendarService,
+              private dashboardService: DashboardService) {
     this.registerForm = this.formBuilder.group({
       username: this.username,
       email: this.email,
@@ -68,32 +70,41 @@ export class RegisterComponent {
   }
 
   register(): void {
-    this.userService.register(this.registerForm.value).subscribe({
+    const dashboardDefaultLayout = this.dashboardService.getDefaultLayout();
+    
+    const user = {
+      ...this.registerForm.value,
+      dashboardLayout: dashboardDefaultLayout
+    };
+
+    this.userService.register(user).subscribe({
       next: (user) => {
         this.alertService.showSuccess('Registrazione avvenuta con successo!');
-        if(this.birthday.value) {
+        if (this.birthday.value) {
           const birthday: CalendarEvent = {
             title: 'Il tuo compleanno',
             startDate: this.birthday.value,
-            endDate:  this.birthday.value,
+            endDate: this.birthday.value,
             allDay: false,
             frequency: 'YEARLY',
             creatorId: user._id
-          }
+          };
 
           this.calendarService.addEvent(birthday).subscribe({
-            next: () => {
-              this.router.navigate(['/login'])
-            },
+            next: () => this.router.navigate(['/login']),
             error: (error) => console.log(error)
           });
         } else {
           this.router.navigate(['/login']);
         }
       },
-      error: () => this.alertService.showError("Questa email è già associata ad un account, usane una diversa!")
+      error: () =>
+        this.alertService.showError(
+          'Questa email è già associata ad un account, usane una diversa!'
+        )
     });
   }
+
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');

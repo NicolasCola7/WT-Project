@@ -19,16 +19,23 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
-  //richiama l'api get per leggere le informazioni sul db
   getLayout(userId: string): Observable<DashboardItem[]> {
     return this.http.get<DashboardItem[]>(`/api/users/${userId}/layout`).pipe(
-      map(layout => layout.map(item => ({
-        ...item,
-        componentType: this.componentMap[item.relativeUrl] || undefined
-      }))),
+      map(layout => {
+        // Se l'array è vuoto, usa il layout di default
+        if (!layout || layout.length === 0) {
+          return this.getDefaultLayout();
+        }
+
+        // Mappa il layout normalmente se non è vuoto
+        return layout.map(item => ({
+          ...item,
+          componentType: this.componentMap[item.relativeUrl] || undefined
+        }));
+      }),
       catchError(error => {
         console.error('Errore nel caricamento layout:', error);
-        return of(this.getDefaultLayout()); // fallback
+        return of(this.getDefaultLayout()); // fallback in caso di errore HTTP
       })
     );
   }
@@ -49,31 +56,31 @@ export class DashboardService {
       },
       {
         cols: 1, rows: 1, y: 0, x: 0, name: 'Calendario', relativeUrl: 'calendar', urlImg: "calendar.png",
-        isVisible: true,
+        isTimeMachine: false, isVisible: true,
         componentType: this.componentMap['calendar'],
         data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
       },
       {
         cols: 1, rows: 1, y: 0, x: 1, name: 'Timer', relativeUrl: 'timer', urlImg: "timer.png",
-        isVisible: true,
+        isTimeMachine: false, isVisible: true,
         componentType: this.componentMap['timer'],
         data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
       },
       {
         cols: 1, rows: 1, y: 1, x: 0, name: 'Note', relativeUrl: 'note', urlImg: "note.png",
-        isVisible: true,
+        isTimeMachine: false, isVisible: true,
         componentType: this.componentMap['note'],
         data: { title: 'Preview Note', description: 'Mostra le note recenti', isPreviewMode: true }
       },
       {
         cols: 1, rows: 1, y: 1, x: 1, name: 'Assistente AI', relativeUrl: 'assistant', urlImg: "chatbot.png",
-        isVisible: true,
+        isTimeMachine: false, isVisible: true,
         componentType: this.componentMap['assistant'],
         data: { title: 'Prima Preview', description: 'Descrizione della prima preview' }
       },
       {
         cols: 0, rows: 0, y: 0, x: 0, name: 'Time Machine', relativeUrl: 'time-machine', urlImg: "time-machine.png",
-        isVisible: false,
+        isTimeMachine: true, isVisible: false,
         componentType: this.componentMap['time-machine'],
         data: { title: 'Time-machine preview', description: 'Descrizione time machine preview' }
       }
