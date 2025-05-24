@@ -18,7 +18,7 @@ import Chat from '../../models/chat.model';
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css'
 })
-export class AiAssistantComponent implements OnInit, AfterViewChecked{
+export class AiAssistantComponent implements OnInit {
   private readonly chatService = inject(ChatService);
   readonly generatingInProgress = this.chatService.generatingInProgress;
   readonly messages = this.chatService.messages;
@@ -29,9 +29,11 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
   @ViewChildren('titleInput') titleInputs!: QueryList<ElementRef>;
   @ViewChild('chatContent') private chatContainer!: ElementRef<HTMLDivElement>;
 
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
+  constructor() {
+    effect(() => {
+      this.messages();
+      setTimeout(() => this.scrollToBottom(), 0);
+    });
   }
 
   private scrollToBottom() {
@@ -100,9 +102,11 @@ export class AiAssistantComponent implements OnInit, AfterViewChecked{
         this.currentChat = chat
         this.selectedChatId = chat._id!
         this.chatService.setChatMessages(chat.messages!);
+        this.scrollToBottom();
       },
-      error: (error) => console.log(error)
-    })
+      error: (error) => console.log(error),
+      complete: () =>  this.scrollToBottom()
+    });
   }
 
   deleteChat(chat: Chat) {
