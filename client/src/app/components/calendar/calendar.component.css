@@ -59,7 +59,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  z-index: 900;
+  z-index: 1100;
   transition: left 0.3s ease;
   overflow-y: auto;
 }
@@ -297,6 +297,7 @@ li:hover > p {
     left: 0;
     width: 25%;
     max-width: 350px;
+    z-index: 900;
     flex-shrink: 0; /* Impedisce alla sidebar di restringersi */
   }
   
