@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NoteEditorComponent {
   note: Note = {}
+  isViewMode: boolean = false;
 
   categories = ['Lavoro', 'Attività', 'Studio', 'Idee', 'Personale', 'Lettura', 'Creatività'];
   selectedCategory?: 'Lavoro' |'Attività' | 'Studio' | 'Idee' | 'Personale' | 'Lettura' | 'Creatività';
@@ -45,18 +46,21 @@ export class NoteEditorComponent {
   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
+      const mode = this.route.snapshot.queryParamMap.get('mode');
+      this.isViewMode = mode === 'view';
+      //se siamo in mododalità visualizzazione, disattivo l’editor di testo
+      this.editorConfig.editable = !this.isViewMode;
+
       if (id) {
         this.noteService.getNote(id).subscribe({
           next: (found) => {
             this.note = found;
-            this.selectedCategory = found.category!
+            this.selectedCategory = found.category!;
             this.backLink = '../../note';
           },
           error: (error) => console.log(error)
         });
-      }
-      //link per modificare una nuova nota non ancora esistente 
-      else {
+      } else {
         this.backLink = '../note';
       }
     });

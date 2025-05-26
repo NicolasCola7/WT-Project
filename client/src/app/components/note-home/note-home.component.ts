@@ -99,4 +99,9 @@ export class NoteHomeComponent implements OnInit{
       error: (error) => console.log(error)
     });
   }
+
+  viewNote(noteId: string) {
+    // Naviga con una query param per la modalità di visualizzazione
+    window.location.href = `/home/editor/${noteId}?mode=view`;
+  }
 }

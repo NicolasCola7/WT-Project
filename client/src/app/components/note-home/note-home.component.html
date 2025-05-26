@@ -52,6 +52,7 @@
 
       <!-- i bottoni modifica, duplica ed elimina sono visibili solo se non siamo nella preview -->
       <div class="note-actions" *ngIf="!isPreviewMode">
+        <button (click)="viewNote(note._id!)" class="btn view">Visualizza</button>
         <button [routerLink]="['/home/editor', note._id]" class="btn edit">Modifica</button>
         <button (click)="duplicateNote(note)" class="btn duplicate">Duplica</button>
         <button (click)="deleteNote(note._id!)" class="btn delete">Elimina</button>

@@ -105,6 +105,15 @@ h1 {
   transition: background 0.3s;
 }
 
+.btn.view {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.btn.view:hover {
+  background-color: #5548d9;
+}
+
 .btn.edit {
   background-color: #ffc107;
   color: #212529;
