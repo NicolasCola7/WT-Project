@@ -6,6 +6,7 @@ gridster {
     user-select: none;
     display: block;
 }
+
 :host {
     height: 100%;
     width: 100%;
@@ -36,6 +37,7 @@ gridster-item:hover {
     transform: scale(1.03);
     cursor: move;
 }
+
 .preview-header{
     font-size: 1.5rem;
 }
