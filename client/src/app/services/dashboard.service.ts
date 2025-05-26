@@ -13,7 +13,7 @@ export class DashboardService {
     'calendar': () => import("../preview-components/calendar-preview/calendar-preview.component").then(m => m.CalendarPreviewComponent),
     'timer': () => import("../components/page-timer/page-timer.component").then(m => m.PageTimerComponent),
     'note': () => import("../components/note-home/note-home.component").then(m => m.NoteHomeComponent),
-    'assistant': () => import("../preview-components/prova/prova.component").then(m => m.ProvaComponent),
+    'assistant': () => import("../preview-components/ai-assistant-preview/ai-assistant-preview.component").then(m => m.AiAssistantPreviewComponent),
     'time-machine': () => import("../components/time-machine/time-machine.component").then(m => m.TimeMachineComponent),
   };
 
