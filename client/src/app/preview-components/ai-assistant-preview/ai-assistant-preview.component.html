@@ -1,11 +1,6 @@
 <div class="ai-preview-container">
-  <h2>Parla con l'assistente</h2>
+  <h2>Fai una domanda all'AI</h2>
   <div class="question-buttons">
-    <button 
-      *ngFor="let question of predefinedQuestions"
-      (click)="sendToAssistant(question)"
-    >
-      {{ question }}
-    </button>
+    <button *ngFor="let question of predefinedQuestions" (click)="sendToAssistant(question)"> {{ question }}</button>
   </div>
 </div>
