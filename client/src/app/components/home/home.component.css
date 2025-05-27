@@ -57,6 +57,7 @@ img {
   object-fit: contain;
 }
 
+
 h3.title {
   color: #fff;
   font-size: 2rem;
@@ -65,7 +66,7 @@ h3.title {
 .btn-label {
   display: inline;
 }
-
+  
 .grid {
   flex: 1;
   overflow-y: auto;
@@ -115,8 +116,9 @@ h3.title {
     background-color: transparent;
   }
 
+
   img {
-    max-width: 6vw;
-    max-height: 6vh;
+    max-width: 5vw;
+    max-height: 5vh;
   }
 }
