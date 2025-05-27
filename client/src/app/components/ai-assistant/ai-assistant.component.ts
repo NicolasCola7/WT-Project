@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, effect, ElementRef, inject, OnInit, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MarkdownComponent } from 'ngx-markdown';
@@ -8,13 +9,7 @@ import Chat from '../../models/chat.model';
 
 @Component({
   selector: 'app-ai-assistant',
-  imports: [
-    FormsModule,
-    NgClass,
-    MatIconModule,
-    MarkdownComponent,
-    CommonModule
-  ],
+  imports: [FormsModule, NgClass, MatIconModule, MarkdownComponent, CommonModule],
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css'
 })
@@ -23,13 +18,17 @@ export class AiAssistantComponent implements OnInit {
   readonly generatingInProgress = this.chatService.generatingInProgress;
   readonly messages = this.chatService.messages;
   chats = signal<Chat[]>([]);
-  currentChat?: Chat;
+  currentChat: any = null;
+  inputText: string = '';
   sidebarOpen = false;
   selectedChatId: string | null = null;
   @ViewChildren('titleInput') titleInputs!: QueryList<ElementRef>;
   @ViewChild('chatContent') private chatContainer!: ElementRef<HTMLDivElement>;
 
-  constructor() {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     effect(() => {
       this.messages();
       setTimeout(() => this.scrollToBottom(), 0);
@@ -54,6 +53,22 @@ export class AiAssistantComponent implements OnInit {
   
   ngOnInit(): void {
     this.loadMyChats();
+
+    //ricevo il parametro "q" dalla query nell'URL
+    this.route.queryParams.subscribe(async (params) => {
+      const question = params['q'];
+      if (question) {
+        //invio il messaggio predefinito in una nuova chat
+        await this.sendPredefinedMessage(question);
+
+        //rimuovo il parametro "q" dall’URL
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true
+        });
+      }
+    });
   }
 
   async sendMessage(form: NgForm, messageText: string): Promise<void> {
@@ -70,6 +85,22 @@ export class AiAssistantComponent implements OnInit {
     form.resetForm();
   }
 
+  async sendPredefinedMessage(messageText: string): Promise<void> {
+    if (!this.currentChat) {
+      //se non esiste una chat, creo una nuova chat
+      await this.newChat();
+    }
+
+    //inserisce il messaggio dell'utente cliccato dal bottone nella chat
+    this.currentChat.messages.push({
+      role: 'user',
+      content: messageText
+    });
+
+    //invia la chat aggiornata al modello AI per ricevere la risposta
+    this.chatService.sendMessage(this.currentChat);
+  }
+  
   newChat(): Promise<Chat> | void {
     if(this.currentChat?.messages?.length != 1) {
       return new Promise((resolve, reject) => {
