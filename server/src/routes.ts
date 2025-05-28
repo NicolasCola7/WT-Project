@@ -27,6 +27,8 @@ const setRoutes = (app: Application): void => {
   router.route('/user/:id').get(userController.get);
   router.route('/users/layout').put(userController.updateLayout);
   router.route('/users/:userId/layout').get(userController.getLayout);
+  router.route('/users/:userId/time-machine').get(userController.getTimeMachine);
+  router.route('/users/:userId/time-machine').put(userController.putTimeMachine);
 
   //Events
   router.route('/event').post(eventController.insert);

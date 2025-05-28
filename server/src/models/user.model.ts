@@ -19,6 +19,11 @@ interface GridItem {
   };
 }
 
+interface TimeMachine {
+  isRealTime: boolean;
+  selectedDateTime: Date;
+  timestamp: Date;
+}
 
 interface UserI {
   username: string;
@@ -28,6 +33,7 @@ interface UserI {
   password: string;
   birthday?: Date;
   gridLayout?: GridItem[];
+  timeMachine?: TimeMachine;
   comparePassword(password: string, callback: (err: any, isMatch: boolean) => void): boolean;
 }
 
@@ -55,7 +61,21 @@ const userSchema = new Schema<UserI>({
         description: { type: String }
       }
     }
-  ]
+  ],
+  timeMachine: {
+    isRealTime: { 
+      type: Boolean, 
+      default: true 
+    },
+    selectedDateTime: { 
+      type: Date, 
+      default: Date.now 
+    },
+    timestamp: { 
+      type: Date, 
+      default: Date.now 
+    }
+  }
 });
 
 
