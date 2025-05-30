@@ -6,6 +6,7 @@ import { CommonModule, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MarkdownComponent } from 'ngx-markdown';
 import Chat from '../../models/chat.model';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-ai-assistant',
@@ -28,6 +29,7 @@ export class AiAssistantComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private alertService: AlertService
   ) {
     effect(() => {
       this.messages();
@@ -112,7 +114,7 @@ export class AiAssistantComponent implements OnInit {
             resolve(chat);
           },
           error: (error) => {
-            console.log(error);
+            this.alertService.showError("Si è verificato un errore imprevisto nella creazione della nuova chat, riprova.");
             reject(error);
           }
         });
@@ -123,7 +125,7 @@ export class AiAssistantComponent implements OnInit {
   loadMyChats() {
     this.chatService.getMyChats().subscribe({
       next: (chats) =>this.chats.set([...chats]),
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel caricamento delle chat, riprova.")
     });
   }
 
@@ -135,7 +137,7 @@ export class AiAssistantComponent implements OnInit {
         this.chatService.setChatMessages(chat.messages!);
         this.scrollToBottom();
       },
-      error: (error) => console.log(error),
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel caricamento dei messaggi, riprova."),
       complete: () =>  this.scrollToBottom()
     });
   }
@@ -143,7 +145,7 @@ export class AiAssistantComponent implements OnInit {
   deleteChat(chat: Chat) {
     this.chatService.deleteChat(chat).subscribe({
       next: () => this.loadMyChats(),
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione della chat, riprova.")
     })
   }
 
@@ -179,7 +181,7 @@ export class AiAssistantComponent implements OnInit {
       chat.title = chat.editTitle.trim();
       
       this.chatService.updateChat(chat).subscribe({
-        error: (error) => console.log(error)
+        error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nella modifica del titolo della chat, riprova.")
       });
     }
     

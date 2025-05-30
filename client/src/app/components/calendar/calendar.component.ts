@@ -347,7 +347,7 @@ export class CalendarComponent implements OnInit  {
   
           this.calendarService.addActivity(newActivity).subscribe({
             next: () => this.fetchActivities(true),
-            error: error => console.log(error)
+            error: error => this.alertService.showError("Si è verificato un errore imprevisto nella creazione dell'attività, riprova.")
           });
         }
       });
@@ -377,7 +377,7 @@ export class CalendarComponent implements OnInit  {
 
         this.calendarService.addEvent(newEvent).subscribe({
           next: () => this.fetchEvents(true),
-          error: error => console.log(error)
+          error: error => this.alertService.showError("Si è verificato un errore imprevisto nella creazione dell'evento, riprova.")
         });
       }
     });
@@ -391,7 +391,7 @@ export class CalendarComponent implements OnInit  {
           this.loadCalendar();
 
       },
-      error: error => console.log(error)
+      error: error => this.alertService.showError("Si è verificato un'errore nel caricamento degli eventi, ricarica la pagina.")
     });
   }
 
@@ -407,7 +407,7 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      error: error => console.log(error)
+      error: error => this.alertService.showError("Si è verificato un errore nel caricamento delle attività, ricarica la pagina.")
     });
   }
 
@@ -432,7 +432,7 @@ export class CalendarComponent implements OnInit  {
 
     this.calendarService.updateActivity(activity).subscribe({
       next: () => this.fetchActivities(true),
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nella modifica dello stato dell'attività, riprova.")
     });
   }
 
@@ -441,7 +441,7 @@ export class CalendarComponent implements OnInit  {
       `Sei sicuro di voler eliminare l'attività '${title}'`,
       () => this.calendarService.deleteActivity(id).subscribe({
         next: () => this.fetchActivities(true),
-        error: (error) => console.log(error)
+        error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione dell'attività, riprova.")
       })
     );
   } 
@@ -449,7 +449,7 @@ export class CalendarComponent implements OnInit  {
   private deleteEvent(event: CalendarEvent) {
     this.calendarService.deleteEvent(event._id!).subscribe({
       next: () => this.fetchEvents(true),
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione dell'evento, riprova.")
     });
   }
 
@@ -475,7 +475,7 @@ export class CalendarComponent implements OnInit  {
 
         this.calendarService.updateEvent(updatedEvent).subscribe({
           next: () => this.fetchEvents(true),
-          error: error => console.log(error)
+          error: error => this.alertService.showError("Si è verificato un errore imprevisto nella modifica dell'evento, riprova")
         });
       }
     });
@@ -500,7 +500,7 @@ export class CalendarComponent implements OnInit  {
 
         this.calendarService.updateActivity(updatedActivity).subscribe({
           next: () => this.fetchActivities(true),
-          error: error => console.log(error)
+          error: error => this.alertService.showError("Si è verificato un errore imprevisto nella modifica dell'attività, riprova")
         });
       }
     });
@@ -530,7 +530,7 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel caricamento dei calendari importati, riprova.")
     });
   }
 
@@ -541,7 +541,7 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      error: (error) => console.log(error)
+      error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel caricamento dei calendari caricati, riprova.")
     });
   }
 
@@ -564,7 +564,7 @@ export class CalendarComponent implements OnInit  {
           
           this.calendarService.importCalendar(newImported).subscribe({
             next: () => this.fetchImportedCalendars(true),
-            error: (error) => this.alertService.showError(JSON.stringify(error))
+            error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel importazione del calendario, riprova.")
           });
 
         } else {
@@ -594,7 +594,7 @@ export class CalendarComponent implements OnInit  {
       `Sei sicuro di voler eliminare il seguente calendario?`,
       () => this.calendarService.deleteUploadedCalendar(calendar).subscribe({
         next: () => this.fetchUploadedCalendars(true),
-        error: (error) => console.log(error)
+        error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione del calendario caricato, riprova")
       })
     );
   }
@@ -604,7 +604,7 @@ export class CalendarComponent implements OnInit  {
       `Sei sicuro di voler eliminare il seguente calendario?`,
       () => this.calendarService.deleteImportedCalendar(calendar).subscribe({
         next: () => this.fetchImportedCalendars(true),
-        error: (error) => console.log(error)
+        error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione del calendario importato, riprova.")
       })
     );
   }
