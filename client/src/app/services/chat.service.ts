@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import Chat from "../models/chat.model";
 import { AuthService } from "./auth.service";
 import { Message } from "../models/message.model";
+import { AlertService } from "./alert.service";
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
@@ -18,7 +19,8 @@ export class ChatService {
     readonly chats = this._chats.asReadonly();
 
     constructor(private http: HttpClient,
-                private authService: AuthService) {}
+                private authService: AuthService,
+                private alertService: AlertService) {}
 
     newChat(): Observable<Chat> {
       this._messages.set([]);
@@ -52,11 +54,11 @@ export class ChatService {
               this._messages.set([...chat.messages!])
             },
             complete: () => this._generatingInProgress.set(false),
-            error: (error) => console.log(error)
+            error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel salvataggio dei nuovi messagi, riprova.")
           })
         },
 
-        error: (error) => console.log(error),
+        error: (error) => this.alertService.showError("Chiave API OpenAI non valida!"),
       });
     }
 
