@@ -5,7 +5,6 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from '../../common/loading/loading.component';
 import { DashboardItem } from '../../models/dashboard-item.model';
 import { GridComponent } from "../grid/grid.component";
 import { filter } from 'rxjs';
@@ -20,14 +19,12 @@ import { DashboardService } from '../../services/dashboard.service';
     GridComponent,
     RouterModule,
     CommonModule,
-    LoadingComponent
 ],
   standalone: true
 })
 export class HomeComponent implements OnInit{ 
   user: User = new User();
   isHomeRoute = false;
-  isLoading = true;
   dashboard: Array<DashboardItem>;
   constructor(private userService: UserService,
               private authService: AuthService,
@@ -39,8 +36,7 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.userService.getUser(this.authService.currentUser).subscribe({
       next: data => this.user = data,
-      error: error => console.log(error),
-      complete: () => this.isLoading = false
+      error: error => console.log(error)
     });
 
     // Inizializza subito isHomeRoute (utile al primo caricamento)

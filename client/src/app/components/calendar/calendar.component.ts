@@ -17,7 +17,6 @@ import { CreateActivityDialogComponent } from '../create-activity-dialog/create-
 import { CalendarEvent } from '../../models/event.model';
 import { CalendarService } from '../../services/calendar.service';
 import { AuthService } from '../../services/auth.service';
-import { LoadingComponent } from '../../common/loading/loading.component';
 import { Activity } from '../../models/activity.model';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
@@ -40,7 +39,6 @@ import {CalendarOptions as IcsEvent} from 'datebook';
     FullCalendarModule,
     DialogModule,
     CommonModule,
-    LoadingComponent,
     MatCheckboxModule,
     MatIconModule,
     CollapsibleListComponent,
@@ -58,7 +56,6 @@ export class CalendarComponent implements OnInit  {
   uploadedCalendars: UploadedCalendar[] = [];
   showDropdown = false;
   sidebarOpen: boolean = false;
-  isLoading = true;
   selectedDate!: Date;
   calendarVisible = signal(true);
   events: CalendarEvent[] = [];
@@ -125,7 +122,6 @@ export class CalendarComponent implements OnInit  {
   }
               
   private loadCalendar(): void {
-    this.isLoading = true;
     const calendarEvents = this.convertEvents();
     const calendarActivities = [
       ...this.convertActivities(this.activities),
@@ -395,8 +391,7 @@ export class CalendarComponent implements OnInit  {
           this.loadCalendar();
 
       },
-      error: error => console.log(error),
-      complete: () => this.isLoading = false
+      error: error => console.log(error)
     });
   }
 
@@ -412,8 +407,7 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      error: error => console.log(error),
-      complete: () => this.isLoading = false
+      error: error => console.log(error)
     });
   }
 
@@ -438,8 +432,7 @@ export class CalendarComponent implements OnInit  {
 
     this.calendarService.updateActivity(activity).subscribe({
       next: () => this.fetchActivities(true),
-      error: (error) => console.log(error),
-      complete: () => this.isLoading = false
+      error: (error) => console.log(error)
     });
   }
 
@@ -537,7 +530,6 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      complete: () => this.isLoading = false,
       error: (error) => console.log(error)
     });
   }
@@ -549,7 +541,6 @@ export class CalendarComponent implements OnInit  {
         if(reload)
           this.loadCalendar();
       },
-      complete: () => this.isLoading = false,
       error: (error) => console.log(error)
     });
   }
