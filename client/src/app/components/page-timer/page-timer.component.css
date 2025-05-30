@@ -118,11 +118,17 @@ body {
 }
 
 /* ANIMAZIONE FINE SESSIONE */
-.session-complete-animation {
+.center-wrapper {
   position: fixed;
   top: 10%;
-  left: 36%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   z-index: 9999;
+}
+
+.session-complete-animation {
   animation: fadeInOut 5s ease-in-out;
   background-color: var(--color-primary);
   padding: 20px;
@@ -133,6 +139,7 @@ body {
   color: var(--color-text);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
+
 
 .preview-info {
   background: #f8f9fa;
