@@ -149,22 +149,22 @@ export class AiAssistantComponent implements OnInit {
     })
   }
 
-  // Metodo per avviare la modifica del titolo
+  //metodo per avviare la modifica del titolo
   startEditChat(chat: Chat, event: MouseEvent): void {
     event.stopPropagation();
     
-    // Prima imposta tutte le chat in modalità non modifica
+    //prima imposta tutte le chat in modalità non modifica
     this.chats().forEach(c => c.editing = false);
     
-    // Imposta questa chat in modalità modifica
+    //imposta questa chat in modalità modifica
     chat.editing = true;
     chat.editTitle = chat.title;
     
-    // Dopo il rendering, cerca l'input giusto
+    //dopo il rendering, cerca l'input giusto
     setTimeout(() => {
       const inputs = this.titleInputs.toArray();
       if (inputs.length > 0) {
-        // Trova l'input corrispondente alla chat corrente
+        //trova l'input corrispondente alla chat corrente
         const index = this.chats().findIndex(c => c._id === chat._id);
         if (index >= 0 && index < inputs.length) {
           const inputElement = inputs[index].nativeElement;
@@ -175,7 +175,7 @@ export class AiAssistantComponent implements OnInit {
     });
   }
 
-  // Metodo per salvare il titolo modificato
+  //metodo per salvare il titolo modificato
   saveEditedTitle(chat: Chat): void {
     if (chat.editTitle && chat.editTitle.trim() !== '') {
       chat.title = chat.editTitle.trim();
@@ -185,11 +185,11 @@ export class AiAssistantComponent implements OnInit {
       });
     }
     
-    // Esci dalla modalità modifica
+    //esci dalla modalità modifica
     chat.editing = false;
   }
 
-  // Metodo per annullare la modifica
+  //metodo per annullare la modifica
   cancelEdit(chat: Chat): void {
     chat.editing = false;
   }

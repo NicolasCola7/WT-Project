@@ -13,7 +13,7 @@
     <angular-editor [(ngModel)]="note.content" [config]="editorConfig" [disabled]="isViewMode"></angular-editor>
   </div>
 
-  <!-- Messaggio mostrato all'utente solo se manca il titolo e la categoria -->
+  <!-- messaggio mostrato all'utente solo se manca da inserire il titolo e la categoria -->
   <div class="form-warning" *ngIf="!note.title || !selectedCategory && !isViewMode">
     Inserisci un <strong>titolo</strong> e seleziona una <strong>categoria</strong> prima di salvare.
   </div>
