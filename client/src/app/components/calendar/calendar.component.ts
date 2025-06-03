@@ -293,6 +293,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   viewEventDetails(event: CalendarEvent) {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
       width: '80vw',
       data: event,
@@ -312,6 +313,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   viewActivityDetails(activity: Activity) {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(ActivityDetailsDialogComponent, {
       width: '80vw',
       data: activity,
@@ -328,7 +330,8 @@ export class CalendarComponent implements OnInit  {
     });
   }
 
-  newActivity(){
+  newActivity() {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(CreateActivityDialogComponent, {
       width: '400vw',
       height: 'auto',
@@ -354,6 +357,7 @@ export class CalendarComponent implements OnInit  {
     }
 
   newEvent(){
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '400vw',
       height: 'auto',
@@ -437,6 +441,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   deleteActivity(id: string, title: string) {
+    this.sidebarOpen = false;
     this.alertService.showQuestion(
       `Sei sicuro di voler eliminare l'attività '${title}'`,
       () => this.calendarService.deleteActivity(id).subscribe({
@@ -447,6 +452,7 @@ export class CalendarComponent implements OnInit  {
   } 
 
   private deleteEvent(event: CalendarEvent) {
+    this.sidebarOpen = false;
     this.calendarService.deleteEvent(event._id!).subscribe({
       next: () => this.fetchEvents(true),
       error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione dell'evento, riprova.")
@@ -454,6 +460,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   editEvent(event: CalendarEvent) {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(CreateEventDialogComponent, {
       width: '400vw',
       height: 'auto',
@@ -482,6 +489,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   editActivity(activity: Activity) {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(CreateActivityDialogComponent, {
       width: '400vw',
       height: 'auto',
@@ -546,6 +554,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   importCalendar() {
+    this.sidebarOpen = false;
     const dialogRef = this.dialog.open(ImportCalendarDialogComponent, {
       width: '400vw',
       height: 'auto',
@@ -597,6 +606,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   deleteUploadedCalendar(calendar: UploadedCalendar) {
+    this.sidebarOpen = false;
     this.alertService.showQuestion(
       `Sei sicuro di voler eliminare il seguente calendario?`,
       () => this.calendarService.deleteUploadedCalendar(calendar).subscribe({
@@ -607,6 +617,7 @@ export class CalendarComponent implements OnInit  {
   }
 
   deleteImportedCalendar(calendar: ImportedCalendar) {
+    this.sidebarOpen = false;
     this.alertService.showQuestion(
       `Sei sicuro di voler eliminare il seguente calendario?`,
       () => this.calendarService.deleteImportedCalendar(calendar).subscribe({

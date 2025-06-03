@@ -234,24 +234,6 @@
   color: #000;
 }
 
-/*animazione per messaggi in generazione*/
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-@keyframes blink {
-  0%, 100% { border-color: transparent; }
-  50% { border-color: #4eb5f1; }
-}
-
-@keyframes typing {
-  0% { width: 0; }
-  33% { width: 1em; }
-  66% { width: 2em; }
-  100% { width: 3em; }
-}
 
 /*messaggio in fase di generazione*/
 .message.generating {
