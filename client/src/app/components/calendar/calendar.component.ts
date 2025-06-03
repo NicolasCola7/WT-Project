@@ -564,7 +564,14 @@ export class CalendarComponent implements OnInit  {
           
           this.calendarService.importCalendar(newImported).subscribe({
             next: () => this.fetchImportedCalendars(true),
-            error: (error) => this.alertService.showError("Si è verificato un errore imprevisto nel importazione del calendario, riprova.")
+            error: (error) => {
+              if(error.error.error) {
+                this.alertService.showError('Calendario già importato!');
+              } else {
+                this.alertService.showError("Si è verificato un errore imprevisto nell'eliminazione del calendario caricato, riprova")
+              }
+              
+            }
           });
 
         } else {

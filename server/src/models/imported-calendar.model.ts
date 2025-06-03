@@ -15,7 +15,6 @@ const importedCalendarSchema = new Schema<ImportedCalendarI>({
     calendarId: { 
         type: String, 
         required: true,
-        unique: true,
         lowercase: true, 
         trim: true
     },
@@ -25,6 +24,9 @@ const importedCalendarSchema = new Schema<ImportedCalendarI>({
         required: true
     },
 });
+
+// prevents duplicate calendarId for the same userId
+importedCalendarSchema.index({ calendarId: 1, userId: 1 }, { unique: true });
 
 const ImportedCalendar = model<ImportedCalendarI>('ImportedCalendar', importedCalendarSchema);
 
