@@ -36,6 +36,10 @@ export class CalendarService {
     });
   }
 
+  getActivity(id: string): Observable<Activity> {
+    return this.http.get<Activity>(`/api/activity/${id}`);
+  }
+
   addActivity(activity: Activity): Observable<Activity> {
     return this.http.post<Activity>('/api/activity', activity);
   }

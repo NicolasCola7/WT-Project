@@ -31,7 +31,7 @@ export class ActivityDetailsDialogComponent {
 
   constructor() {
     this.subscription = this.timeMachineService.currentDate$.subscribe(currentDate => {
-      const dueDateTime = new Date(this.data.dueDate).getTime();
+      const dueDateTime = this.data.dueDate.getTime();
       this.overdue = dueDateTime <= currentDate.getTime();
     });
   }

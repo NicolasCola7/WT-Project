@@ -280,15 +280,11 @@ export class CalendarComponent implements OnInit  {
       }
       this.viewEventDetails(event);
     } else {
-      const activity: Activity = {
-        _id: eventData.id,
-        title: eventData.title,
-        dueDate: eventData.start!,
-        completed: eventData.extendedProps['completed'],
-        description: eventData.extendedProps['description'],
-        creatorId: eventData.extendedProps['creatorId']
-      };
-      this.viewActivityDetails(activity);
+
+      this.calendarService.getActivity(eventData.id).subscribe({
+        next: activity => this.viewActivityDetails(activity),
+        error: (error) => this.alertService.showError("Si è verificato un errore imprevisto, riprova.")
+      });
     }
   }
 
@@ -318,6 +314,7 @@ export class CalendarComponent implements OnInit  {
       width: '80vw',
       data: activity,
     });
+
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'delete') {
