@@ -1,17 +1,16 @@
-<!-- time-machine.component.html -->
 <div class="dark-theme">
   <div class="time-machine">
-    <button mat-icon-button (click)="goBack()" *ngIf="!isPreviewMode">
+    <button mat-icon-button (click)="goBack()">
       <mat-icon>fast_rewind</mat-icon>
     </button>
     <input type="date" [value]="currentDate | date:'yyyy-MM-dd'" 
-           (change)="onDateChange($event)" [readonly]="isPreviewMode">
+           (change)="onDateChange($event)">
     <input type="time" [value]="formatTime(currentDate)" 
-           (change)="onTimeChange($event)" [readonly]="isPreviewMode">
-    <button mat-icon-button (click)="goForward()" *ngIf="!isPreviewMode">
+           (change)="onTimeChange($event)">
+    <button mat-icon-button (click)="goForward()">
       <mat-icon>fast_forward</mat-icon>
     </button>
-    <button mat-icon-button (click)="resetToNow()" *ngIf="!isPreviewMode">
+    <button mat-icon-button (click)="resetToNow()">
       <mat-icon>autorenew</mat-icon>
     </button>
   </div>

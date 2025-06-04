@@ -14,8 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SettingsTimerComponent implements OnInit{
   settingsForm = new FormGroup({
-    work: new FormControl(30, Validators.min(1)),
-    break: new FormControl(5, Validators.min(1)),
+    work: new FormControl(30, [Validators.min(1), Validators.max(999)]),
+    break: new FormControl(5, [Validators.min(1), Validators.max(999)]),
     cicle: new FormControl(1, [Validators.min(1), Validators.max(10)])
   });
 
@@ -68,11 +68,13 @@ export class SettingsTimerComponent implements OnInit{
     const minFocus = 15;
     const minBreak = 3;
   
+    //loop per generare combinazioni
     for (let work = minFocus; work <= maxFocus; work += 5) {
       for (let pause = minBreak; pause <= maxBreak; pause += 2) {
         // Regola: pause deve essere < focus
         if (pause >= work) continue;
   
+        //Calcola quanti cicli completi entrano nel tempo totale. Se ne entra meno di uno, scarta lo scenario.
         const cicloTime = work + pause;
         const cicli = Math.floor(total / cicloTime);
         if (cicli < 1) continue;
@@ -92,15 +94,16 @@ export class SettingsTimerComponent implements OnInit{
       }
     }
   
+    //Filtra gli scenari validi e li tipizza come Required
     const scenariValidi = scenariTrovati.filter(s => s.total !== undefined) as Required<StudioScenario>[];
 
     scenariValidi.sort((a, b) => {
-      const effA = a.total / total;
-      const effB = b.total / total;
-      if (effB !== effA) return effB - effA;
-      if (b.cicle !== a.cicle) return b.cicle - a.cicle;
-      return b.total - a.total;
-    });
+    const effA = a.total / total;
+    const effB = b.total / total;
+    if (effB !== effA) return effB - effA;           // Priorità: efficienza
+    if (b.cicle !== a.cicle) return b.cicle - a.cicle; // Secondo criterio: più cicli
+    return b.total - a.total;                        // Terzo: più tempo usato
+  });
 
     this.scenari = scenariValidi.slice(0, 3);
   }  

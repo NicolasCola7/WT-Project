@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class TimeMachineComponent implements OnInit, OnDestroy {
   currentDate!: Date;
   private subscription!: Subscription;
-  @Input() isPreviewMode = false;
 
   constructor(private timeMachineService: TimeMachineService) {}
 

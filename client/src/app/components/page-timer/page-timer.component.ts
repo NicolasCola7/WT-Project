@@ -82,8 +82,7 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
       this.timerComponent.setRemainingTime(this.currentIntervalDuration * 60);
     }, 0);
   }
-
-  //metodo che ritorna true 
+   
   get isNotFinishedSession(){
     return this.cicles.includes(false);
   }
