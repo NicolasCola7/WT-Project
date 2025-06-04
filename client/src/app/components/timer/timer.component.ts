@@ -35,9 +35,12 @@ export class TimerComponent implements OnInit, OnChanges{
   countingInterval!: number;
   //lunghezza della parte 'avanzata' del cerchio del timer
   circleFillLength = 0; 
-
   
   audio!: HTMLAudioElement;
+
+  private _cachedCircleBaseLength: number = 0;
+  private _cachedSizeCircle: number = 0;
+  private _lastWindowWidth: number = 0;
 
   constructor(private cdRef: ChangeDetectorRef) { }
 
@@ -55,8 +58,8 @@ export class TimerComponent implements OnInit, OnChanges{
       this.syncProgressBar();
     }
     
-    if (changes['size']) {
-      // Ricalcola la progress bar quando cambia la dimensione
+    if (changes['size'] || changes['isPreviewMode'] || changes['isWidgetMode']) {
+      // Ricalcola la progress bar quando cambiano le dimensioni o modalità
       this.syncProgressBar();
     }
     
@@ -94,7 +97,7 @@ export class TimerComponent implements OnInit, OnChanges{
     this.pauseTimer();
     this.currentValueMinutes = this.intervalDuration;
     this.currentValueSeconds = 0;
-    this.circleFillLength = 0; // Assicurati che sia esattamente 0
+    this.circleFillLength = 0;
     
     // Forza il change detection
     this.cdRef.detectChanges();
@@ -155,7 +158,16 @@ export class TimerComponent implements OnInit, OnChanges{
 
   //circonferenza del cerchio del timer
   get circleBaseLength(): number {
-    return this.sizeCircle * Math.PI;
+    const currentWidth = window.innerWidth;
+    
+    // Ricalcola solo se le dimensioni della finestra sono cambiate
+    if (this._lastWindowWidth !== currentWidth) {
+      this._lastWindowWidth = currentWidth;
+      this._cachedSizeCircle = this.sizeCircle;
+      this._cachedCircleBaseLength = this._cachedSizeCircle * Math.PI;
+    }
+    
+    return this._cachedCircleBaseLength;
   }
 
   //parte del circonferenza riempita in un secondo
@@ -219,6 +231,9 @@ export class TimerComponent implements OnInit, OnChanges{
     const currentTotalSeconds = this.currentValueMinutes * 60 + this.currentValueSeconds;
     const elapsedSeconds = Math.max(0, totalSeconds - currentTotalSeconds);
     
+    // Forza il ricalcolo delle dimensioni del cerchio prima di calcolare la progress bar
+    this._lastWindowWidth = 0;
+    
     this.circleFillLength = Math.min(
       this.fractionsInOneSecond * elapsedSeconds,
       this.circleBaseLength
@@ -232,11 +247,19 @@ export class TimerComponent implements OnInit, OnChanges{
       this.toggleCounter();
     }
   }
+
+  private resizeTimeout: any;
   @HostListener('window:resize', ['$event'])
   onResize() {
-    if (this.isCounting && this.currentValueSeconds > 0) {
-      this.setRemainingTime(this.currentValueSeconds);
-      this.cdRef.detectChanges();
+    // Usa debounce per evitare troppi ricalcoli durante il resize
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
     }
+    
+    this.resizeTimeout = setTimeout(() => {
+      // Ricalcola la progress bar in base alle nuove dimensioni
+      this.syncProgressBar();
+      this.cdRef.detectChanges();
+    }, 100); // 100ms di debounce
   }
 }
