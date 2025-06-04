@@ -49,18 +49,17 @@ export class TimerComponent implements OnInit, OnChanges{
 
   //metodo richiamato ogni qualvolta che il componente timer subisce un cambiamento
   ngOnChanges(changes: SimpleChanges): void {
-    //controllo se esiste un cambiamento per la variabile intervalDuration
     if (changes['intervalDuration']) {
       this.currentValueMinutes = changes['intervalDuration'].currentValue;
-      this.fractionsInOneSecond;
+      // Sincronizza la progress bar dopo il cambio di durata
+      this.syncProgressBar();
     }
+    
     if (changes['size']) {
-      this.circleBaseLength;
-      this.fractionsInOneSecond;
+      // Ricalcola la progress bar quando cambia la dimensione
+      this.syncProgressBar();
     }
-    //se ci sono stati cambiamenti, ma non è il primo cambiamento 
-    //(ovvero quello che avviene all'inizializzazione) e non è stato premuto il tasto di reset di sessione
-    //facciamo partire il timer
+    
     if (changes['timerMode'] && !changes['timerMode'].firstChange && !this.isForcedEndSession) {
       this.startTimer();
     }
@@ -84,8 +83,10 @@ export class TimerComponent implements OnInit, OnChanges{
   //metodo invocato quando l'utente mette in pausa il timer
   pauseTimer(): void {
     this.isCounting = false;
-    //stoppo il timer
     clearInterval(this.countingInterval);
+    
+    // Sincronizza la progress bar quando si mette in pausa
+    this.syncProgressBar();
   }
 
   //metodo invoca quando l'utente clicca il bottone per resettare il ciclo di quel timer
@@ -93,7 +94,10 @@ export class TimerComponent implements OnInit, OnChanges{
     this.pauseTimer();
     this.currentValueMinutes = this.intervalDuration;
     this.currentValueSeconds = 0;
-    this.circleFillLength = 0;
+    this.circleFillLength = 0; // Assicurati che sia esattamente 0
+    
+    // Forza il change detection
+    this.cdRef.detectChanges();
   }
 
   //metodo invocato quando l'utente forza il passaggio successivo alla fase successiva
@@ -194,11 +198,32 @@ export class TimerComponent implements OnInit, OnChanges{
     this.pauseTimer();
     this.currentValueMinutes = Math.floor(seconds / 60);
     this.currentValueSeconds = seconds % 60;
+    
+    // Calcolo più preciso della progress bar
     const totalSeconds = this.intervalDuration * 60;
-    const elapsedSeconds = totalSeconds - seconds;
-    this.circleFillLength = this.fractionsInOneSecond * elapsedSeconds;
+    const elapsedSeconds = Math.max(0, totalSeconds - seconds);
+    
+    // Assicurati che la progress bar non superi mai il 100%
+    this.circleFillLength = Math.min(
+      this.fractionsInOneSecond * elapsedSeconds,
+      this.circleBaseLength
+    );
+    
+    // Forza il change detection per aggiornare la UI
+    this.cdRef.detectChanges();
   }
 
+  // metodo per sincronizzare la progress bar
+  private syncProgressBar(): void {
+    const totalSeconds = this.intervalDuration * 60;
+    const currentTotalSeconds = this.currentValueMinutes * 60 + this.currentValueSeconds;
+    const elapsedSeconds = Math.max(0, totalSeconds - currentTotalSeconds);
+    
+    this.circleFillLength = Math.min(
+      this.fractionsInOneSecond * elapsedSeconds,
+      this.circleBaseLength
+    );
+  }
 
   //metodo che ascolta la tastiera che serve per stoppare/avviare il timer con il stato 'spazio'
   @HostListener('document:keyup', ['$event'])

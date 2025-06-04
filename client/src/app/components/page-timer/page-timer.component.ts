@@ -31,31 +31,56 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
 
   //quando il componente viene inizializzato carico i settings iniziali
   ngOnInit(): void {
+    this.loadSettings();
+    this.currentIntervalDuration = this.settings.work;
+    this.cicles = Array(this.settings.cicle).fill(false);
+    
     const savedState = localStorage.getItem(POMODORO_STATE_KEY);
+    
     if (savedState) {
-      this.loadSettings();
-      this.currentIntervalDuration = this.settings.work;
-      this.cicles = Array(this.settings.cicle).fill(false);
-      if (savedState) {
+      try {
         const state = JSON.parse(savedState);
         this.currentTimerMode = state.sessionType || 'Focus';
         this.cicles = state.cicles || this.cicles;
         this.isSessionActive = state.isSessionActive || false;
 
-        const now = Date.now();
-        const elapsed = Math.floor((now - state.timestamp) / 1000);
+        // Determina la durata corretta basata sulla modalità
+        this.currentIntervalDuration = this.currentTimerMode === 'Focus' 
+          ? this.settings.work 
+          : this.settings.break;
 
+        // Valida il tempo rimanente per evitare valori inconsistenti
         let remaining = state.remainingTime;
+        const maxTime = this.currentIntervalDuration * 60;
+        
+        // Se il tempo rimanente è superiore alla durata massima, resetta
+        if (remaining > maxTime || remaining < 0) {
+          remaining = maxTime;
+        }
+
         setTimeout(() => {
-            this.timerComponent.setRemainingTime(remaining);
+          this.timerComponent.setRemainingTime(remaining);
         }, 0);
+        
+      } catch (error) {
+        console.error('Errore nel caricamento dello stato salvato:', error);
+        // In caso di errore, inizializza con valori di default
+        this.initializeDefaultTimer();
       }
     } else {
-      // se non c'è stato salvato, imposta il timer correttamente
-      setTimeout(() => {
-        this.timerComponent.setRemainingTime(this.currentIntervalDuration * 60);
-      }, 0);
+      this.initializeDefaultTimer();
     }
+  }
+
+  //metodo per inizializzare il timer con valori di default
+  private initializeDefaultTimer(): void {
+    this.currentIntervalDuration = this.settings.work;
+    this.currentTimerMode = 'Focus';
+    this.isSessionActive = false;
+    
+    setTimeout(() => {
+      this.timerComponent.setRemainingTime(this.currentIntervalDuration * 60);
+    }, 0);
   }
 
   //metodo che ritorna true 
@@ -68,19 +93,29 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
   }
 
   ngOnDestroy(): void {
-    this.timerComponent.pauseTimer();
-    const now = Date.now();
+    if (this.timerComponent) {
+      this.timerComponent.pauseTimer();
+      
+      // Assicurati che il tempo rimanente sia valido
+      let remainingTime = this.timerComponent.remainingTime;
+      const maxTime = this.currentIntervalDuration * 60;
+      
+      // Valida il tempo rimanente
+      if (remainingTime > maxTime || remainingTime < 0) {
+        remainingTime = maxTime;
+      }
 
-    const state: PomodoroState = {
-      remainingTime: this.timerComponent.remainingTime ?? this.currentIntervalDuration * 60,
-      sessionType: this.currentTimerMode,
-      timestamp: now,
-      cicles: this.cicles,
-      isCounting: this.timerComponent.isCounting,
-      isSessionActive: this.isSessionActive
-    };
+      const state: PomodoroState = {
+        remainingTime: remainingTime,
+        sessionType: this.currentTimerMode,
+        timestamp: Date.now(),
+        cicles: this.cicles,
+        isCounting: this.timerComponent.isCounting,
+        isSessionActive: this.isSessionActive
+      };
 
-    localStorage.setItem(POMODORO_STATE_KEY, JSON.stringify(state));
+      localStorage.setItem(POMODORO_STATE_KEY, JSON.stringify(state));
+    }
   }
 
   canDeactivate(): Promise<boolean> | boolean {
@@ -99,7 +134,7 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
   }
 
   
-  EndSession() {
+  EndSession(): void {
     // Ripristina completamente i cicli a "false"
     this.cicles = Array(this.settings.cicle).fill(false);
 
@@ -111,8 +146,18 @@ export class PageTimerComponent implements OnInit , OnDestroy, CanComponentDeact
     this.currentIntervalDuration = this.settings.work || 30;
     this.currentTimerMode = 'Focus';
     this.isSessionActive = false;
+    
+    // Rimuovi lo stato salvato
     localStorage.removeItem(POMODORO_STATE_KEY);
+    
+    // Assicurati che il timer sia inizializzato correttamente
+    setTimeout(() => {
+      if (this.timerComponent) {
+        this.timerComponent.setRemainingTime(this.currentIntervalDuration * 60);
+      }
+    }, 0);
   }
+
   forcedEndSession(){
     this.isForcedEndSession = true;
     this.timerComponent.pauseTimer();
