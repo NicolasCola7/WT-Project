@@ -163,12 +163,16 @@ body {
 }
 
 /* Riga con icona e valore */
-.preview-item {
+.preview-item div{
   display: flex;
   align-items: center;
   margin: 8px 0;
   color: #444;
   font-size: 1rem;
+}
+.preview-item{
+  display: flex;
+  justify-content: space-between;
 }
 
 .preview-icon {
@@ -189,7 +193,7 @@ body {
     font-size: 1.1rem;
   }
 
-  .preview-item {
+  .preview-item div{
     font-size: 0.95rem;
   }
 
@@ -210,7 +214,7 @@ body {
     font-size: 0.8rem;
   }
 
-  .preview-item {
+  .preview-item div {
     font-size: 0.8rem;
     flex-direction: row;
     align-items: flex-start;

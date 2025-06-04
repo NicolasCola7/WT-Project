@@ -58,9 +58,7 @@ gridster-item:hover {
     }
 
     gridster-item {
-        width: 100% !important;
-        min-height: 120px;
-        margin-bottom: 10px;
+        min-height: 70vh;
     }
 }
 

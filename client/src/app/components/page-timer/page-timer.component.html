@@ -35,26 +35,36 @@
         </div>
       </div>
       <div *ngIf="isPreviewMode" class="preview-info">
-        <h3 class="preview-title">
-          IMPOSTAZIONI POMODORO ATTUALE
-        </h3>
+        <h3 class="preview-title">POMODORO ATTUALE</h3>
 
         <div class="preview-item">
-          <mat-icon class="preview-icon">check_circle</mat-icon>
-          <span>Cicli terminati:</span>
-          <strong>{{ cicleFinished }}/{{ cicles.length }}</strong>
+          <div>
+            <mat-icon class="preview-icon">check_circle</mat-icon>
+            <span>Cicli terminati:</span>
+          </div>
+          <div>
+            <strong>{{ cicleFinished }}/{{ cicles.length }}</strong>
+          </div>
         </div>
 
         <div class="preview-item">
-          <mat-icon class="preview-icon">timer</mat-icon>
-          <span>Tempo di focus: </span>
-          <strong>{{ settings.work }} min</strong>
+          <div>
+            <mat-icon class="preview-icon">timer</mat-icon>
+            <span>Tempo di focus: </span>
+          </div>
+          <div>
+            <strong>{{ settings.work }} min</strong>
+          </div>
         </div>
 
         <div class="preview-item">
-          <mat-icon class="preview-icon">coffee</mat-icon>
-          <span>Tempo di break: </span>
-          <strong>{{ settings.break }} min</strong>
+          <div>
+            <mat-icon class="preview-icon">coffee</mat-icon>
+            <span>Tempo di break: </span>
+          </div>
+          <div>
+            <strong>{{ settings.break }} min</strong>
+          </div>
         </div>
       </div>
 
@@ -70,7 +80,7 @@
   </main>
   <div class="center-wrapper" *ngIf="showAnimation">
     <div class="session-complete-animation">
-      <p>🎉 Sessione completata! Ottimo lavoro! 🎉</p>
+      <p>Sessione completata! Ottimo lavoro!</p>
     </div>
   </div>   
 </div>
