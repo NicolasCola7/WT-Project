@@ -1,0 +1,1 @@
+Per avviare l'applicazione vedi il seguente [documento](https://github.com/NicolasCola7/WT-Project/blob/main/README_TW-Project.pdf). Nota che, per usare correttamente l'applicazione, è necessario fornire una chiave API di OpenAI valida, da inserire in /server/.env
