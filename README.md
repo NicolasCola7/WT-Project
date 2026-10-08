@@ -1,49 +1,49 @@
 # Selfie
 
-Web app **full-stack** per organizzare la vita di uno studente universitario: calendario, timer di studio, note e un assistente basato sull'intelligenza artificiale.
-Progetto del corso di Tecnologie Web, Laurea Triennale in Informatica per il Management, Università di Bologna (2025).
+A **full-stack** web app to organise a university student's life: calendar, study timer, notes and an AI-powered assistant.
+Project for the Web Technologies course, BSc in Computer Science for Management, University of Bologna (2025).
 
-📄 **Guida completa all'avvio:** [README_TW-Project.pdf](README_TW-Project.pdf)
+**Full setup guide (in Italian):** [README_TW-Project.pdf](README_TW-Project.pdf)
 
-## Funzionalità
+## Features
 
-- **Calendario** con eventi singoli e ricorrenti, importazione ed esportazione (iCal, Google Calendar)
-- **Timer Pomodoro** per organizzare le sessioni di studio
-- **Note** con supporto a Markdown e formule LaTeX
-- **Time Machine** per simulare date diverse e testare l'app
-- **Assistente AI** basato sulle API di OpenAI
-- **Registrazione e login** con autenticazione JWT
+- **Calendar** with one-off and recurring events, import and export (iCal, Google Calendar)
+- **Pomodoro timer** to organise study sessions
+- **Notes** with Markdown and LaTeX formula support
+- **Time Machine** to simulate different dates and test the app
+- **AI assistant** built on the OpenAI API
+- **Sign-up and login** with JWT authentication
 
-## Tecnologie
+## Technologies
 
-| Parte | Tecnologie |
+| Part | Technologies |
 | --- | --- |
-| Front-end | Angular 19, TypeScript, Angular Material, Bootstrap, FullCalendar |
-| Back-end | Node.js, Express, Mongoose, JWT |
+| Front end | Angular 19, TypeScript, Angular Material, Bootstrap, FullCalendar |
+| Back end | Node.js, Express, Mongoose, JWT |
 | Database | MongoDB |
-| Intelligenza artificiale | OpenAI API |
+| Artificial intelligence | OpenAI API |
 
-## Come avviarlo
+## How to run it
 
-1. Installa le dipendenze dalla cartella principale:
+1. Install the dependencies from the main folder:
 
         npm install
 
-2. Crea il file `server/.env` con queste variabili:
+2. Create the `server/.env` file with these variables:
 
         PORT=3000
         MONGODB_URI=mongodb://localhost:27017/selfie
-        JWT_SECRET=una-stringa-lunga-e-casuale
-        API_KEY=la-tua-chiave-openai
+        JWT_SECRET=a-long-random-string
+        API_KEY=your-openai-key
 
-3. Avvia l'applicazione:
+3. Start the application:
 
         npm run start
 
-4. Apri http://localhost:4200 nel browser.
+4. Open http://localhost:4200 in your browser.
 
-Nella repo c'è anche `mongodump_root_folder.zip` con dati di esempio da importare in MongoDB: i passaggi sono nella guida PDF.
+The repository also includes `mongodump_root_folder.zip` with sample data to import into MongoDB: the steps are in the PDF guide.
 
-## Gruppo
+## Team
 
 Matteo Boscherini, Alessandro Campedelli, Nicolas Cola
