@@ -6,3 +6,4 @@ node_modules
 /client/dist
 package-lock.json
 data
+server/.env
